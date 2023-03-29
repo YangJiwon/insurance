@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.insurance.kakao.insurace.mapper.InsuranceCommandMapper">
+    <insert id="insertContract" useGeneratedKeys="true" keyColumn="CONTRACT_NO" keyProperty="contractNo">
+        INSERT INTO CONTRACT(CONTRACT_NAME, PRODUCT_NO, PRODUCT_NAME, CONTRACT_PERIOD, INSURANCE_START_DATE,
+                             INSURANCE_END_DATE, TOTAL_AMOUNT, CONTRACT_STATUS)
+                     VALUES(#{contractName}, #{productNo}, #{productName}, #{contractPeriod}, #{insuranceStartDate},
+                            #{insuranceEndDate}, #{totalAmount}, #{confirmStatus})
+    </insert>
+
+    <insert id="insertGuaranteeOfContract">
+        INSERT INTO CONTRACT_GUARANTEE(CONTRACT_NO, GUARANTEE_NO)
+        VALUES
+        <foreach collection="guaranteeNoList" item="no"  separator=",">
+            (#{contractNo}, #{no})
+        </foreach>
+    </insert>
+
+    <delete id="deleteGuaranteeOfContract">
+        DELETE FROM CONTRACT_GUARANTEE
+        WHERE CONTRACT_NO = #{contractNo}
+        AND GUARANTEE_NO IN
+        <foreach collection="guaranteeNoList" item="no" separator="," open="(" close=")">
+            #{no}
+        </foreach>
+    </delete>
+
+    <update id="updateContractPeriod">
+        UPDATE CONTRACT
+        SET INSURANCE_END_DATE = #{endDate},
+            CONTRACT_PERIOD = #{contractPeriod}
+        WHERE CONTRACT_NO = #{contractNo}
+    </update>
+
+    <update id="updateContractStatus">
+        UPDATE CONTRACT
+        SET CONTRACT_STATUS = #{contractStatus}
+        WHERE CONTRACT_NO = #{contractNo}
+    </update>
+
+    <update id="updateTotalAmount">
+        UPDATE CONTRACT
+        SET TOTAL_AMOUNT = #{totalAmount},
+            UPDATE_DATE = CURRENT_TIMESTAMP
+        WHERE CONTRACT_NO = #{contractNo}
+    </update>
+</mapper>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.insurance.kakao.insurace.mapper.InsuranceQueryMapper">
+    <resultMap id="productResponse" type="com.insurance.kakao.insurace.model.response.ProductResponse" autoMapping="true"/>
+    <resultMap id="guaranteeResponse" type="com.insurance.kakao.insurace.model.response.GuaranteeResponse" autoMapping="true"/>
+    <resultMap id="contractResponse" type="com.insurance.kakao.insurace.model.response.ContractResponse" autoMapping="true"/>
+    <resultMap id="contractDetailResponse" type="com.insurance.kakao.insurace.model.response.ContractDetailResponse" autoMapping="true"/>
+
+    <select id="getProductInfo" resultMap="productResponse">
+        SELECT PRODUCT_NAME AS productName,
+               PRODUCT_MIN_PERIOD AS minPeriod,
+               PRODUCT_MAX_PERIOD AS maxPeriod
+        FROM PRODUCT
+        WHERE PRODUCT_NO = #{productNo}
+        AND PRODUCT_STATUS = 'Y'
+    </select>
+
+    <select id="selectGuaranteeList" resultMap="guaranteeResponse">
+        SELECT GUARANTEE_NO AS guaranteeNo,
+               GUARANTEE_NAME AS guaranteeName,
+               PRODUCT_NO AS productNo,
+               SUBSCRIPTION_AMOUNT AS subscriptionAmount,
+               STANDARD_AMOUNT AS standardAmount
+        FROM GUARANTEE
+        WHERE GUARANTEE_NO IN
+        <foreach collection="guaranteeNoList" item="no" separator="," open="(" close=")">
+            #{no}
+        </foreach>
+    </select>
+
+    <select id="getContractInfo" resultMap="contractResponse">
+        SELECT INSURANCE_START_DATE AS insuranceStartDate,
+               CONTRACT_PERIOD AS contractPeriod,
+               PRODUCT_NO AS productNo,
+               CONTRACT_STATUS AS contractStatus
+        FROM CONTRACT
+        WHERE CONTRACT_NO = #{contractNo}
+    </select>
+
+    <select id="selectGuaranteeNoList" resultType="Integer">
+        SELECT GUARANTEE_NO
+        FROM CONTRACT_GUARANTEE
+        WHERE CONTRACT_NO = #{contractNo}
+    </select>
+
+    <select id="getContractDetail" resultMap="contractDetailResponse">
+        SELECT C.CONTRACT_NAME AS contractName,
+               C.CONTRACT_PERIOD AS contractPeriod,
+               C.INSURANCE_START_DATE AS insuranceStartDate,
+               C.INSURANCE_END_DATE AS insuranceEndDate,
+               C.REGISTRATION_DATE AS registrationDate,
+               C.UPDATE_DATE AS updateDate,
+               C.TOTAL_AMOUNT AS totalAmount,
+               C.CONTRACT_STATUS AS contractStatus,
+               P.PRODUCT_NAME AS productName
+        FROM CONTRACT C INNER JOIN PRODUCT P ON C.PRODUCT_NO = P.PRODUCT_NO
+        WHERE C.CONTRACT_NO = #{contractNo}
+    </select>
+</mapper>

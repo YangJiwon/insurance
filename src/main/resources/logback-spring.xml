@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 로그파일 저장 경로 -->
+    <property name="LOG_DIR" value="/Users/yangjiwon/work/stduy" />
+
+    <!-- CONSOLE -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                [%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} : %30logger{5} - %msg%n
+            </Pattern>
+        </layout>
+    </appender>
+
+    <root level="debug">
+        <appender-ref ref="CONSOLE" />
+    </root>
+    <logger name="com.insurance.kakao" level="debug" additivity="false">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+    <logger name="access-log" level="info" additivity="false">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+    <logger name="jdbc.sqltiming" level="debug" additivity="false">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+    <logger name="jdbc.resultsettable" level="debug" additivity="false">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+</configuration>
