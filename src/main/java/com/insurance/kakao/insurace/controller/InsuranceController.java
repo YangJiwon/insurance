@@ -16,7 +16,7 @@ import com.insurance.kakao.insurace.model.response.GuaranteeResponse;
 import com.insurance.kakao.insurace.model.vo.UpdateContract;
 import com.insurance.kakao.insurace.service.InsuranceInsertService;
 import com.insurance.kakao.insurace.service.InsuranceSelectService;
-import com.insurance.kakao.insurace.service.InsuranceUpdateService;
+import com.insurance.kakao.insurace.service.update.InsuranceUpdateService;
 import com.insurance.kakao.insurace.service.update.UpdateContractServiceEnums;
 
 import lombok.RequiredArgsConstructor;

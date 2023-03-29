@@ -21,20 +21,20 @@ import lombok.NoArgsConstructor;
 @Schema(description = "계약 요청")
 public class CreateContractRequest {
 	@NotBlank
-	@Schema(description = "계약 명")
+	@Schema(description = "계약 명", example = "테스트 계약")
 	private String contractName;
 
 	@NotNull
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd") //TODO:: example
 	@Schema(description = "보험 시작 일자")
 	private LocalDate insuranceStartDate;
 
 	@Min(1)
-	@Schema(description = "계약 기간")
+	@Schema(description = "계약 기간", example = "2")
 	private int contractPeriod;
 
 	@NotEmpty
-	@Schema(description = "담보 번호 리스트")
+	@Schema(description = "담보 번호 리스트") //TODO:: example
 	private List<Integer> guaranteeNoList;
 
 	public LocalDate getInsuranceEndDate(){

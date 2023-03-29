@@ -7,11 +7,11 @@ import lombok.Getter;
 
 @Getter
 public class UpdateContractPeriodRequest {
-	@Min(0)
-	@Schema(description = "계약 번호")
+	@Min(1)
+	@Schema(description = "계약 번호", example = "1")
 	private int contractNo;
 
-	@Min(0)
-	@Schema(description = "계약 기간")
+	@Min(1)
+	@Schema(description = "계약 기간", example = "2")
 	private int contractPeriod;
 }

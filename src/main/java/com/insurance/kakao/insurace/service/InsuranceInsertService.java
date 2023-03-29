@@ -36,7 +36,7 @@ public class InsuranceInsertService {
 		int productNo = guaranteeList.get(0).getProductNo();
 		int contractPeriod = contract.getContractPeriod();
 		double totalAmount = insuranceSelectService.getTotalAmount(guaranteeList, contractPeriod);
-		ProductResponse product = insuranceSelectService.getProduct(productNo, contractPeriod);
+		ProductResponse product = insuranceSelectService.getProductInfo(productNo, contractPeriod);
 
 		CreateContract createContract = CreateContract.builder()
 				.contractName(contract.getContractName())
@@ -54,7 +54,7 @@ public class InsuranceInsertService {
 			throw new BusinessErrorCodeException(ErrorCode.ERROR1);
 		}
 
-		if(command.insertGuaranteeOfContract(createContract.getContractNo(), createContract.getGuaranteeNoList()) != 1) {
+		if(command.insertGuaranteeOfContract(createContract.getContractNo(), guaranteeNoList) != guaranteeNoList.size()) {
 			throw new BusinessErrorCodeException(ErrorCode.ERROR7);
 		}
 	}

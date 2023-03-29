@@ -10,11 +10,11 @@ import lombok.Getter;
 
 @Getter
 public class UpdateGuaranteeRequest {
-	@Min(0)
-	@Schema(description = "계약 번호")
+	@Min(1)
+	@Schema(description = "계약 번호", example = "1")
 	private int contractNo;
 
 	@NotEmpty
-	@Schema(description = "추가/삭제 담보 번호 리스트")
+	@Schema(description = "추가/삭제 담보 번호 리스트") //TODO:: example
 	private List<Integer> guaranteeNoList;
 }

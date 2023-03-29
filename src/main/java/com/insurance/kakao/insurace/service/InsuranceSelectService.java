@@ -21,13 +21,13 @@ import lombok.RequiredArgsConstructor;
 public class InsuranceSelectService {
 	private final InsuranceQueryMapper query;
 
-	public ProductResponse getProduct(int productNo, int contractPeriod){
+	public ProductResponse getProductInfo(int productNo, int contractPeriod){
 		ProductResponse product = query.getProductInfo(productNo);
 		if(ObjectUtils.isEmpty(product)){
 			throw new BusinessErrorCodeException(ErrorCode.ERROR2);
 		}
 
-		if(contractPeriod > product.getMaxPeriod() || contractPeriod < product.getMinPeriod()){
+		if(product.isNotValidPeriod(contractPeriod)){
 			throw new BusinessErrorCodeException(ErrorCode.ERROR3);
 		}
 		return product;
@@ -52,14 +52,17 @@ public class InsuranceSelectService {
 			throw new BusinessErrorCodeException(ErrorCode.ERROR4);
 		}
 
-		boolean isSameProduct = guaranteeList.stream()
-										.map(GuaranteeResponse::getProductNo)
-										.distinct()
-										.count() == 1;
-		if(!isSameProduct){
+		if(!isNotSameProduct(guaranteeList)){
 			throw new BusinessErrorCodeException(ErrorCode.ERROR5);
 		}
 		return guaranteeList;
+	}
+
+	private boolean isNotSameProduct(List<GuaranteeResponse> guaranteeList){
+		return guaranteeList.stream()
+					   .map(GuaranteeResponse::getProductNo)
+					   .distinct()
+					   .count() != 1;
 	}
 
 	public double getTotalAmount(List<GuaranteeResponse> guaranteeList, int contractPeriod){
@@ -70,11 +73,19 @@ public class InsuranceSelectService {
 	}
 
 	public ContractResponse getContractInfo(int contractNo){
-		return query.getContractInfo(contractNo);
+		ContractResponse contractResponse = query.getContractInfo(contractNo);
+		if(ObjectUtils.isEmpty(contractResponse)){
+			throw new BusinessErrorCodeException(ErrorCode.ERROR18);
+		}
+		return contractResponse;
 	}
 
 	public ContractDetailResponse getContractDetail(int contractNo){
 		ContractDetailResponse contractDetailResponse = query.getContractDetail(contractNo);
+		if(ObjectUtils.isEmpty(contractDetailResponse)){
+			throw new BusinessErrorCodeException(ErrorCode.ERROR18);
+		}
+
 		return contractDetailResponse.toBuilder()
 				.guaranteeNameList(this.selectGuaranteeList(contractNo))
 				.build();

@@ -1,9 +1,11 @@
 package com.insurance.kakao.insurace.controller;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +27,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-//@Validated
+@Validated
 @Tag(name = "계약관리 시스템", description = "계약관리 시스템 API")
 public interface InsuranceControllerApi {
 	@Operation(
@@ -51,7 +53,7 @@ public interface InsuranceControllerApi {
 			}
 	)
 	@PostMapping(value = "/contract/guarantee")
-	ResponseEntity<?> InsertGuaranteeOfContract(@RequestBody UpdateGuaranteeRequest guarantee);
+	ResponseEntity<?> InsertGuaranteeOfContract(@Valid @RequestBody UpdateGuaranteeRequest guarantee);
 
 	@Operation(
 			summary = "담보 삭제",
@@ -63,7 +65,7 @@ public interface InsuranceControllerApi {
 			}
 	)
 	@DeleteMapping(value = "/contract/guarantee")
-	ResponseEntity<?> DeleteGuaranteeOfContract(@RequestBody UpdateGuaranteeRequest guarantee);
+	ResponseEntity<?> DeleteGuaranteeOfContract(@Valid @RequestBody UpdateGuaranteeRequest guarantee);
 
 	@Operation(
 			summary = "계약 기간 변경",
@@ -75,7 +77,7 @@ public interface InsuranceControllerApi {
 			}
 	)
 	@PutMapping(value = "/contract/period")
-	ResponseEntity<?> UpdateContractPeriod(@RequestBody UpdateContractPeriodRequest contractPeriod);
+	ResponseEntity<?> UpdateContractPeriod(@Valid @RequestBody UpdateContractPeriodRequest contractPeriod);
 
 	@Operation(
 			summary = "계약 상태 변경",
@@ -87,7 +89,7 @@ public interface InsuranceControllerApi {
 			}
 	)
 	@PutMapping(value = "/contract/status")
-	ResponseEntity<?> UpdateContractStatus(@RequestBody UpdateContractStatusRequest contractStatus);
+	ResponseEntity<?> UpdateContractStatus(@Valid @RequestBody UpdateContractStatusRequest contractStatus);
 
 	@Operation(
 			summary = "예상 보험료 계산",
@@ -116,5 +118,5 @@ public interface InsuranceControllerApi {
 	)
 	@GetMapping(value = "/{contractNo}/contract")
 	ResponseEntity<?> getContractDetail(@Parameter(name = "contractNo", description = "계약 번호")
-										@PathVariable(name = "contractNo") int contractNo);
+										@PathVariable(name = "contractNo") @Min(1) int contractNo);
 }

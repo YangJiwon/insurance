@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.fasterxml.classmate.TypeResolver;
+import com.insurance.kakao.insurace.model.response.ContractDetailResponse;
+import com.insurance.kakao.insurace.model.response.GuaranteeResponse;
 
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -18,7 +20,9 @@ public class SwaggerConfig {
 	public Docket api(TypeResolver typeResolver){
 		return new Docket(DocumentationType.OAS_30)
 				.additionalModels(
-						typeResolver.resolve(Void.class)
+						typeResolver.resolve(Void.class),
+						typeResolver.resolve(ContractDetailResponse.class),
+						typeResolver.resolve(GuaranteeResponse.class)
 				)
 				.useDefaultResponseMessages(true)
 				.apiInfo(apiInfo())

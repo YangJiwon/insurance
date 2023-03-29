@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Getter
-@Builder
+@Builder(toBuilder = true)
 @EqualsAndHashCode
 public class UpdateContract {
 	private int contractNo;

@@ -2,10 +2,13 @@ package com.insurance.kakao.insurace.service.update;
 
 import com.insurance.kakao.insurace.model.vo.UpdateContract;
 
-public interface InsuranceModifiable {
-	void insuranceUpdate(UpdateContract updateContract);
-
-	default void isNotUpdate(UpdateContract updateContract){
-		// nothing
+interface InsuranceModifiable {
+	default void insuranceUpdate(UpdateContract updateContract){
+		validation(updateContract);
+		update(updateContract);
 	}
+
+	void validation(UpdateContract updateContract);
+
+	void update(UpdateContract updateContract);
 }
