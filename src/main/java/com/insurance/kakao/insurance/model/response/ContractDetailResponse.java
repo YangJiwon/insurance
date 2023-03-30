@@ -40,7 +40,7 @@ public class ContractDetailResponse {
 	@Schema(description = "총 보험료", example = "104000")
 	private double totalAmount;
 
-	@Schema(description = "계약 상태", example = "N")
+	@Schema(description = "계약 상태", example = "N-정상계약, W-청약철회, E-기간만료")
 	private String contractStatus;
 
 	@Schema(description = "상품번호", example = "1")

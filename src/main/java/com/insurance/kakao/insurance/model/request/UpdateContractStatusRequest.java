@@ -15,6 +15,6 @@ public class UpdateContractStatusRequest {
 	private int contractNo;
 
 	@NotNull
-	@Schema(description = "계약 상태", example = "NORMAL")
+	@Schema(description = "계약 상태", example = "NORMAL-정상계약, WITHDRAW-청약철회, EXPIRE-기간만료")
 	private ContractStatusEnum contractStatus;
 }

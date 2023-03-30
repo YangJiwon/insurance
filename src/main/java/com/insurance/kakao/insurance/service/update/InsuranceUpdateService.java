@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.insurance.kakao.insurance.common.exception.BusinessErrorCodeException;
 import com.insurance.kakao.insurance.common.exception.ErrorCode;
 import com.insurance.kakao.insurance.mapper.InsuranceCommandMapper;
+import com.insurance.kakao.insurance.model.enums.ContractStatusEnum;
 import com.insurance.kakao.insurance.model.vo.UpdateContract;
 import com.insurance.kakao.insurance.service.InsuranceSelectService;
 
@@ -22,11 +23,16 @@ public class InsuranceUpdateService {
 
 	@Transactional
 	public void updateContract(UpdateContract updateContract){
+		int contractNo = updateContract.getContractNo();
+		String status = insuranceSelectService.getContractInfo(contractNo).getContractStatus();
+		if(ContractStatusEnum.isExpire(status)){
+			throw new BusinessErrorCodeException(ErrorCode.ERROR17);
+		}
+
 		InsuranceModifiable insuranceModifiable = insuranceModifiableMap.get(updateContract.getServiceName());
 		insuranceModifiable.validation(updateContract);
 		insuranceModifiable.insuranceUpdate(updateContract);
 
-		int contractNo = updateContract.getContractNo();
 		double totalAmount = insuranceSelectService.getTotalAmount(contractNo);
 		if(command.updateTotalAmount(contractNo, totalAmount) != 1){
 			throw new BusinessErrorCodeException(ErrorCode.ERROR20);

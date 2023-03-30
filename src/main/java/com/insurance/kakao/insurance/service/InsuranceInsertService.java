@@ -27,7 +27,7 @@ public class InsuranceInsertService {
 	private final InsuranceSelectService insuranceSelectService;
 
 	@Transactional
-	public void createContract(CreateContractRequest contract) {
+	public Integer createContract(CreateContractRequest contract) {
 		LocalDate endDate = contract.getInsuranceEndDate();
 		if (LocalDate.now().isAfter(endDate)) {
 			throw new BusinessErrorCodeException(ErrorCode.ERROR11);
@@ -61,9 +61,12 @@ public class InsuranceInsertService {
 			throw new BusinessErrorCodeException(ErrorCode.ERROR1);
 		}
 
-		if (command.insertGuaranteeOfContract(createContract.getContractNo(), guaranteeNoList) != guaranteeNoList.size()) {
+		int contractNo = createContract.getContractNo();
+		if (command.insertGuaranteeOfContract(contractNo, guaranteeNoList) != guaranteeNoList.size()) {
 			throw new BusinessErrorCodeException(ErrorCode.ERROR7);
 		}
+
+		return contractNo;
 	}
 
 	@Transactional

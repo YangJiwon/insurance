@@ -31,8 +31,7 @@ public class InsuranceController implements InsuranceControllerApi{
 
 	@Override
 	public ResponseEntity<?> createContract(CreateContractRequest contract){
-		insuranceInsertService.createContract(contract);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok(insuranceInsertService.createContract(contract));
 	}
 
 	@Override

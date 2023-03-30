@@ -12,4 +12,8 @@ public enum ContractStatusEnum {
 	@Getter
 	private final String status;
 	private final String desc;
+
+	public static boolean isExpire(String s){
+		return EXPIRE.getStatus().equals(s);
+	}
 }

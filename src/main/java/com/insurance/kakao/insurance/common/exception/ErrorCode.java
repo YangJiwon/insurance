@@ -24,7 +24,7 @@ public enum ErrorCode {
 	ERROR14(HttpStatus.BAD_REQUEST, "현재 가지고 있는 상품과 맞지 않는 담보입니다"),
 	ERROR15(HttpStatus.BAD_REQUEST, "이미 보유한 담보입니다"),
 	ERROR16(HttpStatus.BAD_REQUEST, "잘못된 삭제 요청입니다"),
-	ERROR17(HttpStatus.BAD_REQUEST, "만료 상태의 계약은 상태 업데이트가 불가합니다"),
+	ERROR17(HttpStatus.BAD_REQUEST, "만료 상태의 계약은 변경이 불가합니다"),
 	ERROR18(HttpStatus.BAD_REQUEST, "계약 조회에 실패하였습니다"),
 	ERROR19(HttpStatus.BAD_REQUEST, "존재하지 않는 담보 요청이 존재합니다"),
 	ERROR20(HttpStatus.INTERNAL_SERVER_ERROR, "계약 업데이트에 실패하였습니다"),
