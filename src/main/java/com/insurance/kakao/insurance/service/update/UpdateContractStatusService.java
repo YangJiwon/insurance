@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import com.insurance.kakao.insurance.common.exception.BusinessErrorCodeException;
 import com.insurance.kakao.insurance.common.exception.ErrorCode;
 import com.insurance.kakao.insurance.mapper.InsuranceCommandMapper;
+import com.insurance.kakao.insurance.model.response.ContractResponse;
 import com.insurance.kakao.insurance.model.vo.UpdateContract;
+import com.insurance.kakao.insurance.service.InsuranceSelectService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -13,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 class UpdateContractStatusService implements InsuranceModifiable {
 	private final InsuranceCommandMapper command;
+	private final InsuranceSelectService insuranceSelectService;
 
 	@Override
 	public void update(UpdateContract updateContract) {
@@ -23,6 +26,11 @@ class UpdateContractStatusService implements InsuranceModifiable {
 
 	@Override
 	public void validation(UpdateContract updateContract){
-
+		int contractNo = updateContract.getContractNo();
+		ContractResponse contract = insuranceSelectService.getContractInfo(contractNo);
+		String curContractStatus = contract.getContractStatus();
+		if(curContractStatus.equals(updateContract.getContractStatusValue())){
+			throw new BusinessErrorCodeException(ErrorCode.ERROR24);
+		}
 	}
 }

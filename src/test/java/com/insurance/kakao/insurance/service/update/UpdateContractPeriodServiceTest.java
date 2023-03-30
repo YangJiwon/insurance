@@ -35,28 +35,42 @@ class UpdateContractPeriodServiceTest {
 	private InsuranceSelectService selectService;
 
 	private final int contractNo = 2;
-	private final int contractPeriod = 2;
+	private final int requestContractPeriod = 3;
+	private final int curContractPeriod = 6;
+	final int productNo = 1;
+	final ContractResponse contractResponse = new ContractResponse(LocalDate.parse("2023-01-23"), curContractPeriod, productNo, ContractStatusEnum.NORMAL.getStatus());
 
 	@Nested
 	@DisplayName("계약 기간 변경시 벨리데이션")
 	class Validation {
 		final ProductResponse product = new ProductResponse("테스트 상품", 3, 12);
-		final int productNo = 1;
-		final ContractResponse contractResponse = new ContractResponse(LocalDate.parse("2023-01-23"), contractNo, productNo, ContractStatusEnum.NORMAL.getStatus());
-		final UpdateContract updateContract = getUpdateContract(6);
+		final UpdateContract updateContract = getUpdateContract(requestContractPeriod);
+
+		@Test
+		@DisplayName("현재 기간과 동일한 요청값일떄")
+		void samePeriod() {
+			final UpdateContract samePeriod = getUpdateContract(curContractPeriod);
+
+			given(selectService.getContractInfo(contractNo)).willReturn(contractResponse);
+
+			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
+					updateContractPeriodService.validation(samePeriod));
+
+			assertEquals(exception.getErrorCode(), ErrorCode.ERROR23);
+		}
 
 		@Test
 		@DisplayName("변경하려는 기간이 상품의 최소 기간보다 작을때")
 		void minPeriod() {
-			final UpdateContract updateContractMinPeriod = getUpdateContract(2);
-			isNotValidPeriod(updateContractMinPeriod);
+			final UpdateContract updateContract = getUpdateContract(2);
+			isNotValidPeriod(updateContract);
 		}
 
 		@Test
 		@DisplayName("변경하려는 기간이 상품의 최대 기간보다 클 떄")
 		void maxPeriod() {
-			final UpdateContract updateContractMaxPeriod = getUpdateContract(15);
-			isNotValidPeriod(updateContractMaxPeriod);
+			final UpdateContract updateContract = getUpdateContract(15);
+			isNotValidPeriod(updateContract);
 		}
 
 		private void isNotValidPeriod(UpdateContract updateContract){
@@ -72,7 +86,7 @@ class UpdateContractPeriodServiceTest {
 		@Test
 		@DisplayName("변경하려는 종료기간이 오늘날짜보다 이전일 떄")
 		void endDateEarlierThanNow() {
-			final ContractResponse notValidEndDate = new ContractResponse(LocalDate.parse("2022-01-23"), contractNo, productNo, ContractStatusEnum.NORMAL.getStatus());
+			final ContractResponse notValidEndDate = new ContractResponse(LocalDate.parse("2022-01-23"), curContractPeriod, productNo, ContractStatusEnum.NORMAL.getStatus());
 
 			given(selectService.getContractInfo(contractNo)).willReturn(notValidEndDate);
 			given(selectService.getProductInfo(productNo)).willReturn(product);
@@ -96,16 +110,14 @@ class UpdateContractPeriodServiceTest {
 	@Nested
 	@DisplayName("계약 기간 업데이트")
 	class UpdatePeriod {
-		final UpdateContract updateContract = getUpdateContract(contractPeriod);
-		final int productNo = 1;
-		final ContractResponse contractResponse = new ContractResponse(LocalDate.parse("2023-01-23"), contractNo, productNo, ContractStatusEnum.NORMAL.getStatus());
-		final LocalDate endDate = CommonUtil.plusMonth(contractResponse.getInsuranceStartDate(), contractPeriod);
+		final UpdateContract updateContract = getUpdateContract(requestContractPeriod);
+		final LocalDate endDate = CommonUtil.plusMonth(contractResponse.getInsuranceStartDate(), requestContractPeriod);
 
 		@Test
 		@DisplayName("계약기간 업데이트 성공")
 		void updatePeriod() {
 			given(selectService.getContractInfo(contractNo)).willReturn(contractResponse);
-			given(command.updateContractPeriod(contractNo, endDate, contractPeriod)).willReturn(1);
+			given(command.updateContractPeriod(contractNo, endDate, requestContractPeriod)).willReturn(1);
 
 			assertDoesNotThrow(() -> updateContractPeriodService.update(updateContract));
 		}
@@ -114,7 +126,7 @@ class UpdateContractPeriodServiceTest {
 		@DisplayName("계약기간 업데이트 실패")
 		void updatePeriodException() {
 			given(selectService.getContractInfo(contractNo)).willReturn(contractResponse);
-			given(command.updateContractPeriod(contractNo, endDate, contractPeriod)).willReturn(0);
+			given(command.updateContractPeriod(contractNo, endDate, requestContractPeriod)).willReturn(0);
 
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					updateContractPeriodService.update(updateContract));
