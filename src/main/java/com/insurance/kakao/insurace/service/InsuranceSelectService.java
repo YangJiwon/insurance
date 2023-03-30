@@ -21,15 +21,12 @@ import lombok.RequiredArgsConstructor;
 public class InsuranceSelectService {
 	private final InsuranceQueryMapper query;
 
-	public ProductResponse getProductInfo(int productNo, int contractPeriod){
+	public ProductResponse getProductInfo(int productNo){
 		ProductResponse product = query.getProductInfo(productNo);
 		if(ObjectUtils.isEmpty(product)){
 			throw new BusinessErrorCodeException(ErrorCode.ERROR2);
 		}
 
-		if(product.isNotValidPeriod(contractPeriod)){
-			throw new BusinessErrorCodeException(ErrorCode.ERROR3);
-		}
 		return product;
 	}
 

@@ -27,7 +27,9 @@ public enum ErrorCode {
 	ERROR17(HttpStatus.BAD_REQUEST, "만료 상태의 계약은 상태 업데이트가 불가합니다"),
 	ERROR18(HttpStatus.BAD_REQUEST, "계약 조회에 실패하였습니다"),
 	ERROR19(HttpStatus.BAD_REQUEST, "존재하지 않는 담보 요청이 존재합니다"),
-	ERROR20(HttpStatus.INTERNAL_SERVER_ERROR, "계약 업데이트에 실패하였습니다");
+	ERROR20(HttpStatus.INTERNAL_SERVER_ERROR, "계약 업데이트에 실패하였습니다"),
+	ERROR21(HttpStatus.INTERNAL_SERVER_ERROR, "상품 생성에 실패하였습니다"),
+	ERROR22(HttpStatus.INTERNAL_SERVER_ERROR, "담보 생성에 실패하였습니다");
 
 	private final HttpStatus httpStatus;
 	private final String errMsg;

@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.insurance.kakao.insurace.model.request.CreateGuaranteeRequest;
+import com.insurance.kakao.insurace.model.request.CreateProductRequest;
 import com.insurance.kakao.insurace.model.vo.CreateContract;
 
 @Mapper
@@ -20,4 +22,8 @@ public interface InsuranceCommandMapper {
 	int updateContractStatus(int contractNo, String contractStatus);
 
 	int updateTotalAmount(int contractNo, double totalAmount);
+
+	int insertProduct(CreateProductRequest createProduct);
+
+	int insertGuarantee(int productNo, List<CreateGuaranteeRequest> createGuaranteeList);
 }

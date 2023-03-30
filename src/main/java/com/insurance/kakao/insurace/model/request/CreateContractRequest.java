@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-@Schema(description = "계약 요청")
+@Schema(description = "계약 등록 요청")
 public class CreateContractRequest {
 	@NotBlank
 	@Schema(description = "계약 명", example = "테스트 계약")

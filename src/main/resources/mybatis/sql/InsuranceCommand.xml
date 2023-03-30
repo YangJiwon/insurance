@@ -45,4 +45,17 @@
             UPDATE_DATE = CURRENT_TIMESTAMP
         WHERE CONTRACT_NO = #{contractNo}
     </update>
+
+    <insert id="insertProduct" useGeneratedKeys="true" keyColumn="PRODUCT_NO" keyProperty="productNo">
+        INSERT INTO PRODUCT(PRODUCT_NAME, PRODUCT_MIN_PERIOD, PRODUCT_MAX_PERIOD)
+                     VALUES(#{productName}, #{minPeriod}, #{maxPeriod})
+    </insert>
+
+    <insert id ="insertGuarantee">
+        INSERT INTO GUARANTEE(GUARANTEE_NAME, PRODUCT_NO, SUBSCRIPTION_AMOUNT, STANDARD_AMOUNT)
+        VALUES
+        <foreach collection="createGuaranteeList" item="guarantee"  separator=",">
+            (#{guarantee.guaranteeName}, #{productNo}, #{guarantee.subscriptionAmount}, #{guarantee.standardAmount})
+        </foreach>
+    </insert>
 </mapper>

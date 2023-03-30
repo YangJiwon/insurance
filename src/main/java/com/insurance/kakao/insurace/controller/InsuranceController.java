@@ -5,17 +5,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.insurance.kakao.insurace.model.request.CreateContractRequest;
+import com.insurance.kakao.insurace.model.request.CreateGuaranteeRequest;
+import com.insurance.kakao.insurace.model.request.CreateProductRequest;
 import com.insurance.kakao.insurace.model.request.UpdateContractPeriodRequest;
 import com.insurance.kakao.insurace.model.request.UpdateContractStatusRequest;
 import com.insurance.kakao.insurace.model.request.UpdateGuaranteeRequest;
 import com.insurance.kakao.insurace.model.response.GuaranteeResponse;
 import com.insurance.kakao.insurace.model.vo.UpdateContract;
-import com.insurance.kakao.insurace.service.InsuranceInsertService;
 import com.insurance.kakao.insurace.service.InsuranceSelectService;
+import com.insurance.kakao.insurace.service.insert.InsuranceInsertService;
 import com.insurance.kakao.insurace.service.update.InsuranceUpdateService;
 import com.insurance.kakao.insurace.service.update.UpdateContractServiceEnums;
 
@@ -29,13 +30,13 @@ public class InsuranceController implements InsuranceControllerApi{
 	private final InsuranceUpdateService insuranceUpdateService;
 
 	@Override
-	public ResponseEntity<?> CreateContract(@RequestBody CreateContractRequest contract){
-		insuranceInsertService.insertContract(contract);
+	public ResponseEntity<?> createContract(CreateContractRequest contract){
+		insuranceInsertService.createContract(contract);
 		return ResponseEntity.ok().build();
 	}
 
 	@Override
-	public ResponseEntity<?> InsertGuaranteeOfContract(UpdateGuaranteeRequest guarantee) {
+	public ResponseEntity<?> insertGuaranteeOfContract(UpdateGuaranteeRequest guarantee) {
 		UpdateContract updateContract = UpdateContract.builder()
 				.contractNo(guarantee.getContractNo())
 				.guaranteeNoList(guarantee.getGuaranteeNoList())
@@ -47,7 +48,7 @@ public class InsuranceController implements InsuranceControllerApi{
 	}
 
 	@Override
-	public ResponseEntity<?> DeleteGuaranteeOfContract(UpdateGuaranteeRequest guarantee) {
+	public ResponseEntity<?> deleteGuaranteeOfContract(UpdateGuaranteeRequest guarantee) {
 		UpdateContract updateContract = UpdateContract.builder()
 				.contractNo(guarantee.getContractNo())
 				.guaranteeNoList(guarantee.getGuaranteeNoList())
@@ -59,7 +60,7 @@ public class InsuranceController implements InsuranceControllerApi{
 	}
 
 	@Override
-	public ResponseEntity<?> UpdateContractPeriod(UpdateContractPeriodRequest contractPeriod) {
+	public ResponseEntity<?> updateContractPeriod(UpdateContractPeriodRequest contractPeriod) {
 		UpdateContract updateContract = UpdateContract.builder()
 				.contractNo(contractPeriod.getContractNo())
 				.contractPeriod(contractPeriod.getContractPeriod())
@@ -71,7 +72,7 @@ public class InsuranceController implements InsuranceControllerApi{
 	}
 
 	@Override
-	public ResponseEntity<?> UpdateContractStatus(UpdateContractStatusRequest contractStatus) {
+	public ResponseEntity<?> updateContractStatus(UpdateContractStatusRequest contractStatus) {
 		UpdateContract updateContract = UpdateContract.builder()
 				.contractNo(contractStatus.getContractNo())
 				.contractStatus(contractStatus.getContractStatus())
@@ -83,7 +84,7 @@ public class InsuranceController implements InsuranceControllerApi{
 	}
 
 	@Override
-	public ResponseEntity<?> calculateEstimateAmount(String guarantees, int contractPeriod){
+	public ResponseEntity<?> getEstimateAmount(String guarantees, int contractPeriod){
 		String[] split = guarantees.split(",");//todo::
 		List<Integer> guaranteeNoList = Arrays.stream(split).map(Integer::parseInt).collect(Collectors.toList());
 
@@ -94,5 +95,17 @@ public class InsuranceController implements InsuranceControllerApi{
 	@Override
 	public ResponseEntity<?> getContractDetail(int contractNo){
 		return ResponseEntity.ok(insuranceSelectService.getContractDetail(contractNo));
+	}
+
+	@Override
+	public ResponseEntity<?> createProduct(CreateProductRequest createProduct) {
+		insuranceInsertService.createProduct(createProduct);
+		return ResponseEntity.ok().build();
+	}
+
+	@Override
+	public ResponseEntity<?> createGuarantee(int productNo, List<CreateGuaranteeRequest> createGuaranteeList){
+		insuranceInsertService.createGuarantee(productNo, createGuaranteeList);
+		return ResponseEntity.ok().build();
 	}
 }

@@ -37,7 +37,7 @@ class UpdateContractPeriodService implements InsuranceModifiable {
 		int contractPeriod = updateContract.getContractPeriod();
 		int productNo = insuranceSelectService.getContractInfo(contractNo).getProductNo();
 
-		ProductResponse product = insuranceSelectService.getProductInfo(productNo, contractPeriod);
+		ProductResponse product = insuranceSelectService.getProductInfo(productNo);
 		if(product.isNotValidPeriod(contractPeriod)){
 			throw new BusinessErrorCodeException(ErrorCode.ERROR3);
 		}

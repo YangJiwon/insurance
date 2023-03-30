@@ -1,7 +1,10 @@
 package com.insurance.kakao.insurace.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.insurance.kakao.insurace.model.request.CreateContractRequest;
+import com.insurance.kakao.insurace.model.request.CreateGuaranteeRequest;
+import com.insurance.kakao.insurace.model.request.CreateProductRequest;
 import com.insurance.kakao.insurace.model.request.UpdateContractPeriodRequest;
 import com.insurance.kakao.insurace.model.request.UpdateContractStatusRequest;
 import com.insurance.kakao.insurace.model.request.UpdateGuaranteeRequest;
@@ -41,7 +46,7 @@ public interface InsuranceControllerApi {
 			}
 	)
 	@PostMapping(value = "/contract")
-	ResponseEntity<?> CreateContract(@Valid @RequestBody CreateContractRequest contract);
+	ResponseEntity<?> createContract(@Valid @RequestBody CreateContractRequest contract);
 
 	@Operation(
 			summary = "담보 추가",
@@ -53,7 +58,7 @@ public interface InsuranceControllerApi {
 			}
 	)
 	@PostMapping(value = "/contract/guarantee")
-	ResponseEntity<?> InsertGuaranteeOfContract(@Valid @RequestBody UpdateGuaranteeRequest guarantee);
+	ResponseEntity<?> insertGuaranteeOfContract(@Valid @RequestBody UpdateGuaranteeRequest guarantee);
 
 	@Operation(
 			summary = "담보 삭제",
@@ -65,7 +70,7 @@ public interface InsuranceControllerApi {
 			}
 	)
 	@DeleteMapping(value = "/contract/guarantee")
-	ResponseEntity<?> DeleteGuaranteeOfContract(@Valid @RequestBody UpdateGuaranteeRequest guarantee);
+	ResponseEntity<?> deleteGuaranteeOfContract(@Valid @RequestBody UpdateGuaranteeRequest guarantee);
 
 	@Operation(
 			summary = "계약 기간 변경",
@@ -77,7 +82,7 @@ public interface InsuranceControllerApi {
 			}
 	)
 	@PutMapping(value = "/contract/period")
-	ResponseEntity<?> UpdateContractPeriod(@Valid @RequestBody UpdateContractPeriodRequest contractPeriod);
+	ResponseEntity<?> updateContractPeriod(@Valid @RequestBody UpdateContractPeriodRequest contractPeriod);
 
 	@Operation(
 			summary = "계약 상태 변경",
@@ -89,7 +94,7 @@ public interface InsuranceControllerApi {
 			}
 	)
 	@PutMapping(value = "/contract/status")
-	ResponseEntity<?> UpdateContractStatus(@Valid @RequestBody UpdateContractStatusRequest contractStatus);
+	ResponseEntity<?> updateContractStatus(@Valid @RequestBody UpdateContractStatusRequest contractStatus);
 
 	@Operation(
 			summary = "예상 보험료 계산",
@@ -101,11 +106,11 @@ public interface InsuranceControllerApi {
 							content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = Double.class)))
 			}
 	)
-	@GetMapping(value = "/calculate-estimate-amount")
-	ResponseEntity<?> calculateEstimateAmount(@Parameter(name = "guarantees", description = "담보 번호")
-											  @RequestParam(name = "guarantees") String guarantees,
-											  @Parameter(name = "contractPeriod", description = "계약 기간")
-											  @RequestParam(name = "contractPeriod") int contractPeriod);
+	@GetMapping(value = "/estimate-amount")
+	ResponseEntity<?> getEstimateAmount(@Parameter(name = "guarantees", description = "담보 번호")
+										@RequestParam(name = "guarantees") String guarantees,
+										@Parameter(name = "contractPeriod", description = "계약 기간")
+										@RequestParam(name = "contractPeriod") int contractPeriod);
 
 	@Operation(
 			summary = "계약 정보 조회",
@@ -119,4 +124,30 @@ public interface InsuranceControllerApi {
 	@GetMapping(value = "/{contractNo}/contract")
 	ResponseEntity<?> getContractDetail(@Parameter(name = "contractNo", description = "계약 번호")
 										@PathVariable(name = "contractNo") @Min(1) int contractNo);
+
+	@Operation(
+			summary = "새로운 상품 등록",
+			description = "새로운 상품을 등록합니다.",
+			responses = {
+					@ApiResponse(description = "Success",
+							responseCode = "200",
+							content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema()))
+			}
+	)
+	@PostMapping(value = "/product")
+	ResponseEntity<?> createProduct(@Valid @RequestBody CreateProductRequest createProduct);
+
+	@Operation(
+			summary = "새로운 담보 등록",
+			description = "기존 상품에 새로운 담보를 등록합니다.",
+			responses = {
+					@ApiResponse(description = "Success",
+							responseCode = "200",
+							content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema()))
+			}
+	)
+	@PostMapping(value = "/{productNo}/guarantee")
+	ResponseEntity<?> createGuarantee(@Parameter(name = "productNo", description = "상품 번호")
+									  @PathVariable(name = "productNo") @Min(1) int productNo,
+									  @Valid @RequestBody @NotEmpty List<CreateGuaranteeRequest> createGuaranteeList);
 }
