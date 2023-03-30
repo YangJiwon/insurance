@@ -60,4 +60,10 @@
         FROM CONTRACT C INNER JOIN PRODUCT P ON C.PRODUCT_NO = P.PRODUCT_NO
         WHERE C.CONTRACT_NO = #{contractNo}
     </select>
+
+    <select id="selectSendAdviceNoteList" resultType="Integer">
+        SELECT CONTRACT_NO
+        FROM CONTRACT
+        WHERE INSURANCE_END_DATE = #{targetExpireDate}
+    </select>
 </mapper>

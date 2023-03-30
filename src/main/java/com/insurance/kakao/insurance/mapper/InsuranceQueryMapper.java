@@ -1,5 +1,6 @@
 package com.insurance.kakao.insurance.mapper;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -20,4 +21,6 @@ public interface InsuranceQueryMapper {
 	List<Integer> selectGuaranteeNoList(int contractNo);
 
 	ContractDetailResponse getContractDetail(int contractNo);
+
+	List<Integer> selectSendAdviceNoteList(LocalDate targetExpireDate);
 }
