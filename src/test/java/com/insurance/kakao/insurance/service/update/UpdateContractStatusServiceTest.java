@@ -33,7 +33,7 @@ class UpdateContractStatusServiceTest {
 	private InsuranceSelectService selectService;
 
 	private final int contractNo = 2;
-	private ContractStatusEnum requestStatus = ContractStatusEnum.WITHDRAW;
+	private final ContractStatusEnum requestStatus = ContractStatusEnum.WITHDRAW;
 	private final UpdateContract updateContract = getUpdateContract(requestStatus);
 	private final ContractResponse contractResponse = new ContractResponse(LocalDate.parse("2023-01-23"), 1, 1, ContractStatusEnum.NORMAL.getStatus());
 

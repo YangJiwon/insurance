@@ -2,10 +2,12 @@ package com.insurance.kakao.insurance.model.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
+@EqualsAndHashCode
 public class GuaranteeResponse {
 	@Schema(description = "담보 번호", example = "1")
 	private int guaranteeNo;

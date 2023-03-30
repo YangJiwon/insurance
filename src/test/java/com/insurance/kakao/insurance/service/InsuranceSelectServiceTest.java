@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import org.apache.commons.collections4.CollectionUtils;
+
+
 import com.insurance.kakao.insurance.common.exception.BusinessErrorCodeException;
 import com.insurance.kakao.insurance.common.exception.ErrorCode;
 import com.insurance.kakao.insurance.mapper.InsuranceQueryMapper;
@@ -36,15 +39,31 @@ class InsuranceSelectServiceTest {
 	final int contractNo = 1;
 	final List<Integer> guaranteeNoList = List.of(1,2);
 
+	final List<GuaranteeResponse> guaranteeAllList = List.of(
+			new GuaranteeResponse(1, "테스트담보", 1, 10000, 100),
+			new GuaranteeResponse(2, "테스트담보2", 1, 20000, 200),
+			new GuaranteeResponse(3, "테스트담보3", 1, 30000, 400),
+			new GuaranteeResponse(4, "테스트담보4", 1, 40000, 500),
+			new GuaranteeResponse(5, "테스트담보5", 2, 50000, 500)
+	);
+
 	final List<GuaranteeResponse> guaranteeList = List.of(
 			new GuaranteeResponse(1, "테스트담보", 1, 10000, 100),
 			new GuaranteeResponse(2, "테스트담보2", 1, 20000, 200)
 	);
+
 	final ContractDetailResponse contractDetailResponse = new ContractDetailResponse(1, "테스트 계약", 2,
 			LocalDate.parse("2023-03-12"), LocalDate.parse("2023-04-11"), LocalDateTime.now(),
 			null, 104000, ContractStatusEnum.NORMAL.getStatus(),
 			1, "테스트상품", 1, 3, guaranteeList);
 
+	final List<ProductResponse> allProductList = List.of(
+			new ProductResponse(1, "여행자보험1", 1, 3),
+			new ProductResponse(2, "여행자보험2", 2, 6),
+			new ProductResponse(3, "여행자보험3", 1, 5),
+			new ProductResponse(4, "여행자보험4", 2, 9),
+			new ProductResponse(5, "여행자보험5", 1, 12)
+	);
 
 	@Nested
 	@DisplayName("상품 정보 조회")
@@ -52,20 +71,22 @@ class InsuranceSelectServiceTest {
 		@Test
 		@DisplayName("상품 정보 조회 성공")
 		void product() {
-			ProductResponse productResponse = new ProductResponse("여행자보험", 1, 3);
+			given(query.selectAllProductInfo()).willReturn(allProductList);
 
-			given(query.getProductInfo(productNo)).willReturn(productResponse);
+			ProductResponse response = insuranceSelectService.getProductInfo(productNo);
 
-			assertDoesNotThrow(() -> insuranceSelectService.getProductInfo(productNo));
+			assertEquals(allProductList.get(0), response);
 		}
 
 		@Test
 		@DisplayName("상품 정보 없음")
 		void emptyProduct() {
-			given(query.getProductInfo(productNo)).willReturn(null);
+			final int notExistProductNo = 100;
+
+			given(query.selectAllProductInfo()).willReturn(allProductList);
 
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
-					insuranceSelectService.getProductInfo(productNo));
+					insuranceSelectService.getProductInfo(notExistProductNo));
 
 			assertEquals(exception.getErrorCode(), ErrorCode.ERROR2);
 		}
@@ -103,18 +124,22 @@ class InsuranceSelectServiceTest {
 		@Test
 		@DisplayName("담보 리스트 조회 성공")
 		void guaranteeList() {
-			given(query.selectGuaranteeList(guaranteeNoList)).willReturn(guaranteeList);
+			given(query.selectAllGuaranteeList()).willReturn(guaranteeAllList);
 
-			assertDoesNotThrow(() -> insuranceSelectService.selectGuaranteeList(guaranteeNoList));
+			List<GuaranteeResponse> responseList = insuranceSelectService.selectGuaranteeList(guaranteeNoList);
+
+			assertTrue(CollectionUtils.isEqualCollection(responseList, guaranteeList));
 		}
 
 		@Test
 		@DisplayName("담보 리스트 없음")
 		void emptyGuaranteeList() {
-			given(query.selectGuaranteeList(guaranteeNoList)).willReturn(null);
+			final List<Integer> notExistGuaranteeNoList = List.of(100,200);
+
+			given(query.selectAllGuaranteeList()).willReturn(guaranteeAllList);
 
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
-					insuranceSelectService.selectGuaranteeList(guaranteeNoList));
+					insuranceSelectService.selectGuaranteeList(notExistGuaranteeNoList));
 
 			assertEquals(exception.getErrorCode(), ErrorCode.ERROR4);
 		}
@@ -122,15 +147,12 @@ class InsuranceSelectServiceTest {
 		@Test
 		@DisplayName("2개 이상의 담보 리스트가 조회")
 		void otherProductGuaranteeList() {
-			final List<GuaranteeResponse> guaranteeListWithOtherProduct = List.of(
-					new GuaranteeResponse(1, "테스트담보", 1, 10000, 100),
-					new GuaranteeResponse(2, "다른 상품의 테스트담보", 2, 20000, 200)
-			);
+			final List<Integer> otherProductGuaranteeNoList = List.of(1,5);
 
-			given(query.selectGuaranteeList(guaranteeNoList)).willReturn(guaranteeListWithOtherProduct);
+			given(query.selectAllGuaranteeList()).willReturn(guaranteeAllList);
 
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
-					insuranceSelectService.selectGuaranteeList(guaranteeNoList));
+					insuranceSelectService.selectGuaranteeList(otherProductGuaranteeNoList));
 
 			assertEquals(exception.getErrorCode(), ErrorCode.ERROR5);
 		}
@@ -178,7 +200,7 @@ class InsuranceSelectServiceTest {
 		void contract() {
 			given(query.getContractDetail(contractNo)).willReturn(contractDetailResponse);
 			given(query.selectGuaranteeNoList(contractNo)).willReturn(guaranteeNoList);
-			given(query.selectGuaranteeList(guaranteeNoList)).willReturn(guaranteeList);
+			given(query.selectAllGuaranteeList()).willReturn(guaranteeAllList);
 
 			assertDoesNotThrow(() -> insuranceSelectService.getContractDetail(contractNo));
 		}

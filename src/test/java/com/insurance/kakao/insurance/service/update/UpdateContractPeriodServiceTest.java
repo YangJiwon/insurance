@@ -37,24 +37,24 @@ class UpdateContractPeriodServiceTest {
 	private final int contractNo = 2;
 	private final int requestContractPeriod = 3;
 	private final int curContractPeriod = 6;
-	final int productNo = 1;
-	final ContractResponse contractResponse = new ContractResponse(LocalDate.parse("2023-01-23"), curContractPeriod, productNo, ContractStatusEnum.NORMAL.getStatus());
+	private final int productNo = 1;
+	private final ContractResponse contractResponse = new ContractResponse(LocalDate.parse("2023-01-23"), curContractPeriod, productNo, ContractStatusEnum.NORMAL.getStatus());
 
 	@Nested
 	@DisplayName("계약 기간 변경시 벨리데이션")
 	class Validation {
-		final ProductResponse product = new ProductResponse("테스트 상품", 3, 12);
+		final ProductResponse product = new ProductResponse(1, "테스트 상품", 3, 12);
 		final UpdateContract updateContract = getUpdateContract(requestContractPeriod);
 
 		@Test
 		@DisplayName("현재 기간과 동일한 요청값일떄")
 		void samePeriod() {
-			final UpdateContract samePeriod = getUpdateContract(curContractPeriod);
+			final UpdateContract updateContract = getUpdateContract(curContractPeriod);
 
 			given(selectService.getContractInfo(contractNo)).willReturn(contractResponse);
 
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
-					updateContractPeriodService.validation(samePeriod));
+					updateContractPeriodService.validation(updateContract));
 
 			assertEquals(exception.getErrorCode(), ErrorCode.ERROR23);
 		}

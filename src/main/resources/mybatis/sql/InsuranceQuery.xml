@@ -7,25 +7,21 @@
     <resultMap id="contractResponse" type="com.insurance.kakao.insurance.model.response.ContractResponse" autoMapping="true"/>
     <resultMap id="contractDetailResponse" type="com.insurance.kakao.insurance.model.response.ContractDetailResponse" autoMapping="true"/>
 
-    <select id="getProductInfo" resultMap="productResponse">
-        SELECT PRODUCT_NAME AS productName,
+    <select id="selectAllProductInfo" resultMap="productResponse">
+        SELECT PRODUCT_NO AS productNo,
+               PRODUCT_NAME AS productName,
                PRODUCT_MIN_PERIOD AS minPeriod,
                PRODUCT_MAX_PERIOD AS maxPeriod
         FROM PRODUCT
-        WHERE PRODUCT_NO = #{productNo}
     </select>
 
-    <select id="selectGuaranteeList" resultMap="guaranteeResponse">
+    <select id="selectAllGuaranteeList" resultMap="guaranteeResponse">
         SELECT GUARANTEE_NO AS guaranteeNo,
                GUARANTEE_NAME AS guaranteeName,
                PRODUCT_NO AS productNo,
                SUBSCRIPTION_AMOUNT AS subscriptionAmount,
                STANDARD_AMOUNT AS standardAmount
         FROM GUARANTEE
-        WHERE GUARANTEE_NO IN
-        <foreach collection="guaranteeNoList" item="no" separator="," open="(" close=")">
-            #{no}
-        </foreach>
     </select>
 
     <select id="getContractInfo" resultMap="contractResponse">

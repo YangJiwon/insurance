@@ -49,7 +49,7 @@ public class InsuranceInsertServiceTest {
 				new GuaranteeResponse(2, "테스트담보2", 1, 20000, 200),
 				new GuaranteeResponse(3, "테스트담보3", 1, 30000, 300)
 		);
-		final ProductResponse product = new ProductResponse("테스트 상품", 3, 12);
+		final ProductResponse product = new ProductResponse(1, "테스트 상품", 3, 12);
 		final CreateContractRequest createContractRequest = new CreateContractRequest("계약명", LocalDate.parse("2023-03-31"), contractPeriod, guaranteeNoList);
 
 		@Test
@@ -189,7 +189,7 @@ public class InsuranceInsertServiceTest {
 				new CreateGuaranteeRequest("테스트 담보2", 120000, 200, productNo),
 				new CreateGuaranteeRequest("테스트 담보3", 130000, 300, productNo)
 		);
-		final ProductResponse product = new ProductResponse("테스트 상품", 3, 12);
+		final ProductResponse product = new ProductResponse(1, "테스트 상품", 3, 12);
 
 		@Test
 		@DisplayName("상품 조회 실패")

@@ -1,6 +1,8 @@
 package com.insurance.kakao.insurance.service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -22,12 +24,19 @@ public class InsuranceSelectService {
 	private final InsuranceQueryMapper query;
 
 	public ProductResponse getProductInfo(int productNo){
-		ProductResponse product = query.getProductInfo(productNo);
-		if(ObjectUtils.isEmpty(product)){
+		List<ProductResponse> productList = selectAllProductInfo();
+		Optional<ProductResponse> findProduct = productList.stream()
+				.filter(v -> v.getProductNo() == productNo)
+				.findFirst();
+
+		if(findProduct.isEmpty()){
 			throw new BusinessErrorCodeException(ErrorCode.ERROR2);
 		}
+		return findProduct.get();
+	}
 
-		return product;
+	public List<ProductResponse> selectAllProductInfo(){
+		return query.selectAllProductInfo();
 	}
 
 	public List<Integer> selectGuaranteeNoList(int contractNo){
@@ -44,7 +53,11 @@ public class InsuranceSelectService {
 	}
 
 	public List<GuaranteeResponse> selectGuaranteeList(List<Integer> guaranteeNoList){
-		List<GuaranteeResponse> guaranteeList = query.selectGuaranteeList(guaranteeNoList);
+		List<GuaranteeResponse> allGuaranteeList = selectAllGuaranteeList();
+		List<GuaranteeResponse> guaranteeList = allGuaranteeList.stream()
+				.filter(v -> guaranteeNoList.contains(v.getGuaranteeNo()))
+				.collect(Collectors.toList());
+
 		if(CollectionUtils.isEmpty(guaranteeList)){
 			throw new BusinessErrorCodeException(ErrorCode.ERROR4);
 		}
@@ -53,6 +66,10 @@ public class InsuranceSelectService {
 			throw new BusinessErrorCodeException(ErrorCode.ERROR5);
 		}
 		return guaranteeList;
+	}
+
+	public List<GuaranteeResponse> selectAllGuaranteeList(){
+		return query.selectAllGuaranteeList();
 	}
 
 	private boolean isNotSameProduct(List<GuaranteeResponse> guaranteeList){
@@ -82,6 +99,8 @@ public class InsuranceSelectService {
 		}
 		return contractResponse;
 	}
+
+
 
 	public ContractDetailResponse getContractDetail(int contractNo){
 		ContractDetailResponse contractDetailResponse = query.getContractDetail(contractNo);

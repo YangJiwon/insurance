@@ -1,30 +1,32 @@
  package com.insurance.kakao.insurance.service;
 
-import java.time.LocalDate;
-import java.util.List;
+ import java.time.LocalDate;
+ import java.util.List;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
+ import org.springframework.stereotype.Service;
+ import org.springframework.transaction.annotation.Transactional;
+ import org.springframework.util.ObjectUtils;
 
-import com.insurance.kakao.insurance.common.exception.BusinessErrorCodeException;
-import com.insurance.kakao.insurance.common.exception.ErrorCode;
-import com.insurance.kakao.insurance.mapper.InsuranceCommandMapper;
-import com.insurance.kakao.insurance.model.enums.ContractStatusEnum;
-import com.insurance.kakao.insurance.model.request.CreateContractRequest;
-import com.insurance.kakao.insurance.model.request.CreateGuaranteeRequest;
-import com.insurance.kakao.insurance.model.request.CreateProductRequest;
-import com.insurance.kakao.insurance.model.response.GuaranteeResponse;
-import com.insurance.kakao.insurance.model.response.ProductResponse;
-import com.insurance.kakao.insurance.model.vo.CreateContract;
+ import com.insurance.kakao.insurance.common.CacheKeyConstants;
+ import com.insurance.kakao.insurance.common.exception.BusinessErrorCodeException;
+ import com.insurance.kakao.insurance.common.exception.ErrorCode;
+ import com.insurance.kakao.insurance.mapper.InsuranceCommandMapper;
+ import com.insurance.kakao.insurance.model.enums.ContractStatusEnum;
+ import com.insurance.kakao.insurance.model.request.CreateContractRequest;
+ import com.insurance.kakao.insurance.model.request.CreateGuaranteeRequest;
+ import com.insurance.kakao.insurance.model.request.CreateProductRequest;
+ import com.insurance.kakao.insurance.model.response.GuaranteeResponse;
+ import com.insurance.kakao.insurance.model.response.ProductResponse;
+ import com.insurance.kakao.insurance.model.vo.CreateContract;
 
-import lombok.RequiredArgsConstructor;
+ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class InsuranceInsertService {
 	private final InsuranceCommandMapper command;
 	private final InsuranceSelectService insuranceSelectService;
+	private final CacheService cacheService;
 
 	@Transactional
 	public Integer createContract(CreateContractRequest contract) {
@@ -79,6 +81,8 @@ public class InsuranceInsertService {
 		if(command.insertGuarantee(createProduct.getProductNo(), createGuaranteeList) != createGuaranteeList.size()){
 			throw new BusinessErrorCodeException(ErrorCode.ERROR22);
 		}
+
+		cacheService.removeCacheByName(CacheKeyConstants.PRODUCT);
 	}
 
 	@Transactional
@@ -91,5 +95,7 @@ public class InsuranceInsertService {
 		if(command.insertGuarantee(productNo, createGuaranteeList) != createGuaranteeList.size()){
 			throw new BusinessErrorCodeException(ErrorCode.ERROR22);
 		}
+
+		cacheService.removeCacheByName(CacheKeyConstants.GUARANTEE);
 	}
 }

@@ -37,12 +37,12 @@ class UpdateContractServiceTest {
 	private InsertGuaranteeOfContractService insertGuaranteeOfContractService;
 
 	private final int contractNo = 2;
-	final UpdateContract updateContract = UpdateContract.builder()
+	private final UpdateContract updateContract = UpdateContract.builder()
 			.contractNo(contractNo)
 			.guaranteeNoList(List.of(1,2,3))
 			.serviceName("com.insurance.kakao.insurance.service.update.InsertGuaranteeOfContractService#0")
 			.build();
-	final double totalAmount = 123000;
+	private final double totalAmount = 123000;
 
 	@Nested
 	@DisplayName("만료상태인 경우 체크")

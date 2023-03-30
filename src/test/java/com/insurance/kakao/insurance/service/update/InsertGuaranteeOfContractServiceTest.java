@@ -41,8 +41,7 @@ class InsertGuaranteeOfContractServiceTest {
 	class Validation {
 		final List<Integer> requestGuaranteeNoList = List.of(1,2);
 		final UpdateContract updateContract = getUpdateContract(requestGuaranteeNoList);
-		final int productNo = 1;
-		final ContractResponse contractResponse = new ContractResponse(LocalDate.parse("2023-03-23"), contractNo, productNo, ContractStatusEnum.NORMAL.getStatus());
+		final ContractResponse contractResponse = new ContractResponse(LocalDate.parse("2023-03-23"), contractNo, 1, ContractStatusEnum.NORMAL.getStatus());
 
 		@Test
 		@DisplayName("등록하려는 담보 리스트에 없는 담보 존재")
@@ -79,7 +78,7 @@ class InsertGuaranteeOfContractServiceTest {
 		@Test
 		@DisplayName("등록하려는 담보 리스트에 이미 가지고 있는 담보 존재")
 		void alreadyExistGuarantee() {
-			final List<GuaranteeResponse> guaranteeList = List.of(
+			final List<GuaranteeResponse> requestGuaranteeList = List.of(
 					new GuaranteeResponse(1, "테스트담보", 1, 10000, 100),
 					new GuaranteeResponse(2, "테스트담보2", 1, 20000, 200)
 			);
@@ -88,7 +87,7 @@ class InsertGuaranteeOfContractServiceTest {
 					new GuaranteeResponse(1, "테스트담보", 1, 10000, 100)
 			);
 
-			given(selectService.selectGuaranteeList(requestGuaranteeNoList)).willReturn(guaranteeList);
+			given(selectService.selectGuaranteeList(requestGuaranteeNoList)).willReturn(requestGuaranteeList);
 			given(selectService.getContractInfo(contractNo)).willReturn(contractResponse);
 			given(selectService.selectGuaranteeList(contractNo)).willReturn(curGuaranteeList);
 
