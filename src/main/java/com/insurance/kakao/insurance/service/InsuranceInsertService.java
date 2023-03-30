@@ -1,4 +1,4 @@
-package com.insurance.kakao.insurance.service.insert;
+ package com.insurance.kakao.insurance.service;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,7 +17,6 @@ import com.insurance.kakao.insurance.model.request.CreateProductRequest;
 import com.insurance.kakao.insurance.model.response.GuaranteeResponse;
 import com.insurance.kakao.insurance.model.response.ProductResponse;
 import com.insurance.kakao.insurance.model.vo.CreateContract;
-import com.insurance.kakao.insurance.service.InsuranceSelectService;
 
 import lombok.RequiredArgsConstructor;
 

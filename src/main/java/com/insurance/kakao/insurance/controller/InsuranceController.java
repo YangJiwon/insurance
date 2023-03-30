@@ -16,7 +16,7 @@ import com.insurance.kakao.insurance.model.request.UpdateGuaranteeRequest;
 import com.insurance.kakao.insurance.model.response.GuaranteeResponse;
 import com.insurance.kakao.insurance.model.vo.UpdateContract;
 import com.insurance.kakao.insurance.service.InsuranceSelectService;
-import com.insurance.kakao.insurance.service.insert.InsuranceInsertService;
+import com.insurance.kakao.insurance.service.InsuranceInsertService;
 import com.insurance.kakao.insurance.service.update.InsuranceUpdateService;
 import com.insurance.kakao.insurance.service.update.UpdateContractServiceEnums;
 
