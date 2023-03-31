@@ -15,10 +15,11 @@ Preferences > Plugins > Browse repositories.. > Lombok 검색 > Install > restar
 2. 아래 이미지처럼 설정합니다. 계정은 rennes91/123qwe 입니다.
 <img width="466" alt="image" src="https://user-images.githubusercontent.com/9064323/229078474-518d8063-b4c8-4f1b-9459-f172ef471fb7.png">
 3. 아래 스크립트를 사용해 테이블을 생성합니다.
+
 ```
 -- 계약 테이블
 CREATE TABLE IF NOT EXISTS CONTRACT (
-  CONTRACT_NO INT NOT NULL AUTO_INCREMENT, -- 계약번호
+  CONTRACT_NO INT NOT NULL AUTO_INCREMENT, -- 계약번호
   CONTRACT_NAME VARCHAR(100) NOT NULL, -- 계약명
   PRODUCT_NO INT NOT NULL, -- 상품번호
   CONTRACT_PERIOD INT NOT NULL,  --계약기간
@@ -62,7 +63,6 @@ CREATE TABLE IF NOT EXISTS PRODUCT_GUARANTEE (
   GUARANTEE_NO INT NOT NULL, -- 담보번호
   PRIMARY KEY (PRODUCT_NO, GUARANTEE_NO)
 );
-
 ```
 
 # Swagger URL
