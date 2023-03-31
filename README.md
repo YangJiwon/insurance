@@ -41,5 +41,8 @@ API 목록 및 테스트는 http://localhost:8080/swagger-ui/index.html#/  에�
 
 * 계약 정보 조회 API (GET /{contractNo}/contract)
 > 계약 정보를 조회할 수 있습니다. 계약 번호를 요청값으로 받습니다.
+<img width="401" alt="image" src="https://user-images.githubusercontent.com/9064323/229109241-3e0729cc-981a-4757-b01c-745fbcb4741f.png">
 
-![Uploading image.png…]()
+* 담보 추가 API (POST /contract/guarantee)
+> 계약에 담보를 추가가 가능합니다. 계약 번호와 추가할 담보 리스트를 요청값으로 받으며, 추가된 담보 리스트에 따라 총 보험료가 재계산됩니다.
+<img width="354" alt="image" src="https://user-images.githubusercontent.com/9064323/229109436-202fd70c-a4d3-4434-bf18-4140b3367168.png">
