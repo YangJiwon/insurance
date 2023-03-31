@@ -55,7 +55,6 @@ public class InsuranceInsertService {
 				.contractName(contract.getContractName())
 				.contractPeriod(contractPeriod)
 				.productNo(productNo)
-				.productName(product.getProductName())
 				.totalAmount(totalAmount)
 				.confirmStatus(ContractStatusEnum.NORMAL.getStatus())
 				.insuranceStartDate(startDate)

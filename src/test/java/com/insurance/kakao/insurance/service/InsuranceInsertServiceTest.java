@@ -103,7 +103,6 @@ public class InsuranceInsertServiceTest {
 				.contractName(createContractRequest.getContractName())
 				.contractPeriod(contractPeriod)
 				.productNo(productNo)
-				.productName(product.getProductName())
 				.totalAmount(totalAmount)
 				.confirmStatus(ContractStatusEnum.NORMAL.getStatus())
 				.insuranceStartDate(createContractRequest.getInsuranceStartDate())

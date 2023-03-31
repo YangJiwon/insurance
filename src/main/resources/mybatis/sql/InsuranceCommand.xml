@@ -3,10 +3,10 @@
 
 <mapper namespace="com.insurance.kakao.insurance.mapper.InsuranceCommandMapper">
     <insert id="insertContract" useGeneratedKeys="true" keyColumn="CONTRACT_NO" keyProperty="contractNo">
-        INSERT INTO CONTRACT(CONTRACT_NAME, PRODUCT_NO, PRODUCT_NAME, CONTRACT_PERIOD, INSURANCE_START_DATE,
+        INSERT INTO CONTRACT(CONTRACT_NAME, PRODUCT_NO, CONTRACT_PERIOD, INSURANCE_START_DATE,
                              INSURANCE_END_DATE, TOTAL_AMOUNT, CONTRACT_STATUS)
-                     VALUES(#{contractName}, #{productNo}, #{productName}, #{contractPeriod}, #{insuranceStartDate},
-                            #{insuranceEndDate}, #{totalAmount}, #{confirmStatus})
+                     VALUES(#{contractName}, #{productNo}, #{contractPeriod}, #{insuranceStartDate}, #{insuranceEndDate},
+                            #{totalAmount}, #{confirmStatus})
     </insert>
 
     <insert id="insertGuaranteeOfContract">

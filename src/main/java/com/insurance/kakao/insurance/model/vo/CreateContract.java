@@ -15,9 +15,8 @@ public class CreateContract {
 	private String contractName;
 	private int contractPeriod;
 	private int productNo;
-	private String productName;
-
 	private double totalAmount;
+
 	private String confirmStatus;
 	private LocalDate insuranceStartDate;
 	private LocalDate insuranceEndDate;
