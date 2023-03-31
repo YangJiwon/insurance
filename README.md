@@ -6,7 +6,7 @@ Spring Boot, JAVA 11, MyBatis, Swagger3, H2를 사용하였습니다.
 2. JDK는 11버전으로 부탁드립니다.
 3. Local 환경이다보니 h2 설정이 필요합니다.
 
-# H2 DB connections 환경 설정
+# H2 DB 설정
 1. http://localhost:8080/h2-console 에서 접근 가능합니다.
 2. 설정은 아래 이미지를 참고 부탁드립니다. 계정은 sa/123qwe 입니다.
 <img width="462" alt="image" src="https://user-images.githubusercontent.com/9064323/229141575-43aed92f-d8d6-43a5-b3e3-e1e90ab11aad.png">
