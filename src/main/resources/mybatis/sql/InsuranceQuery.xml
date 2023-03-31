@@ -32,7 +32,7 @@
         WHERE CONTRACT_NO = #{contractNo}
     </select>
 
-    <select id="selectGuaranteeNoList" resultType="Integer">
+    <select id="selectContractGuaranteeMappingNoList" resultType="Integer">
         SELECT GUARANTEE_NO
         FROM CONTRACT_GUARANTEE
         WHERE CONTRACT_NO = #{contractNo}
@@ -62,7 +62,7 @@
         WHERE INSURANCE_END_DATE = #{targetExpireDate}
     </select>
 
-    <select id="selectGuaranteeMappingList" resultType="Integer">
+    <select id="selectProductGuaranteeMappingList" resultType="Integer">
         SELECT GUARANTEE_NO
         FROM PRODUCT_GUARANTEE
         WHERE PRODUCT_NO = #{productNo}

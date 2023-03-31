@@ -96,22 +96,22 @@ class InsuranceSelectServiceTest {
 		@Test
 		@DisplayName("담보 번호 리스트 조회 성공")
 		void guaranteeNoList() {
-			List<Integer> guaranteeNoList = List.of(1,2,3);
+			List<Integer> contractGuaranteeMappingNoList = List.of(1,2,3);
 
-			given(query.selectGuaranteeNoList(contractNo)).willReturn(guaranteeNoList);
+			given(query.selectContractGuaranteeMappingNoList(contractNo)).willReturn(contractGuaranteeMappingNoList);
 
-			assertDoesNotThrow(() -> insuranceSelectService.selectGuaranteeNoList(contractNo));
+			assertDoesNotThrow(() -> insuranceSelectService.selectContractGuaranteeMappingNoList(contractNo));
 		}
 
 		@Test
 		@DisplayName("담보 번호 리스트 없음")
 		void emptyGuaranteeNoList() {
-			given(query.selectGuaranteeNoList(contractNo)).willReturn(null);
+			given(query.selectContractGuaranteeMappingNoList(contractNo)).willReturn(null);
 
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
-					insuranceSelectService.selectGuaranteeNoList(contractNo));
+					insuranceSelectService.selectContractGuaranteeMappingNoList(contractNo));
 
-			assertEquals(exception.getErrorCode(), ErrorCode.SELECT_GUARANTEE_NO_LIST);
+			assertEquals(exception.getErrorCode(), ErrorCode.SELECT_CONTRACT_GUARANTEE_MAPPING_NO_LIST);
 		}
 	}
 
@@ -184,7 +184,7 @@ class InsuranceSelectServiceTest {
 		@DisplayName("계약 상세 정보 조회 성공")
 		void contract() {
 			given(query.getContractDetail(contractNo)).willReturn(contractDetailResponse);
-			given(query.selectGuaranteeNoList(contractNo)).willReturn(guaranteeNoList);
+			given(query.selectContractGuaranteeMappingNoList(contractNo)).willReturn(guaranteeNoList);
 			given(query.selectAllGuaranteeList()).willReturn(guaranteeAllList);
 
 			assertDoesNotThrow(() -> insuranceSelectService.getContractDetail(contractNo));
@@ -203,34 +203,34 @@ class InsuranceSelectServiceTest {
 
 	@Nested
 	@DisplayName("담보 매핑 정보 조회")
-	class SelectGuaranteeMappingList {
+	class SelectProductGuaranteeMappingList {
 		final List<Integer> mappingList = List.of(1,2,3);
 
 		@Test
 		@DisplayName("담보 매핑 정보 조회 성공")
-		void guaranteeMapping() {
-			given(query.selectGuaranteeMappingList(productNo)).willReturn(mappingList);
+		void productGuaranteeMapping() {
+			given(query.selectProductGuaranteeMappingList(productNo)).willReturn(mappingList);
 
-			assertDoesNotThrow(() -> insuranceSelectService.selectGuaranteeMappingList(productNo));
+			assertDoesNotThrow(() -> insuranceSelectService.selectProductGuaranteeMappingList(productNo));
 		}
 
 		@Test
 		@DisplayName("담보 매핑 정보 조회 실패")
-		void emptyGuaranteeMapping() {
-			given(query.selectGuaranteeMappingList(productNo)).willReturn(null);
+		void emptyproductGuaranteeMapping() {
+			given(query.selectProductGuaranteeMappingList(productNo)).willReturn(null);
 
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
-					insuranceSelectService.selectGuaranteeMappingList(contractNo));
+					insuranceSelectService.selectProductGuaranteeMappingList(contractNo));
 
-			assertEquals(exception.getErrorCode(), ErrorCode.SELECT_GUARANTEE_MAPPING_LIST);
+			assertEquals(exception.getErrorCode(), ErrorCode.SELECT_PRODUCT_GUARANTEE_MAPPING_LIST);
 		}
 
 		@Test
 		@DisplayName("담보 매핑정보에 없는 담보 갯수 조회")
-		void notExistGuaranteeList() {
+		void notExistProductGuaranteeList() {
 			final List<Integer> notExistGuaranteeNoList = List.of(4,5);
 
-			given(query.selectGuaranteeMappingList(productNo)).willReturn(mappingList);
+			given(query.selectProductGuaranteeMappingList(productNo)).willReturn(mappingList);
 
 			long count = insuranceSelectService.getNotExistGuaranteeCount(productNo, notExistGuaranteeNoList);
 
@@ -239,10 +239,10 @@ class InsuranceSelectServiceTest {
 
 		@Test
 		@DisplayName("담보 매핑정보에 있는 담보 갯수 조회")
-		void existGuaranteeList() {
+		void existProductGuaranteeMappingList() {
 			final List<Integer> guaranteeNoList = List.of(1,2,3);
 
-			given(query.selectGuaranteeMappingList(productNo)).willReturn(mappingList);
+			given(query.selectProductGuaranteeMappingList(productNo)).willReturn(mappingList);
 
 			long count = insuranceSelectService.getNotExistGuaranteeCount(productNo, guaranteeNoList);
 

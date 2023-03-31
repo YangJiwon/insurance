@@ -22,11 +22,11 @@ public interface InsuranceQueryMapper {
 
 	ContractResponse getContractInfo(int contractNo);
 
-	List<Integer> selectGuaranteeNoList(int contractNo);
+	List<Integer> selectContractGuaranteeMappingNoList(int contractNo);
 
 	ContractDetailResponse getContractDetail(int contractNo);
 
 	List<Integer> selectSendAdviceNoteList(LocalDate targetExpireDate);
 
-	List<Integer> selectGuaranteeMappingList(int productNo);
+	List<Integer> selectProductGuaranteeMappingList(int productNo);
 }

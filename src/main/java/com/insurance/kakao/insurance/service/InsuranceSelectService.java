@@ -39,17 +39,17 @@ public class InsuranceSelectService {
 		return query.selectAllProductList();
 	}
 
-	public List<Integer> selectGuaranteeNoList(int contractNo){
-		List<Integer> guaranteeNoList = query.selectGuaranteeNoList(contractNo);
-		if(CollectionUtils.isEmpty(guaranteeNoList)){
-			throw new BusinessErrorCodeException(ErrorCode.SELECT_GUARANTEE_NO_LIST);
+	public List<Integer> selectContractGuaranteeMappingNoList(int contractNo){
+		List<Integer> contractGuaranteeMappingNoList = query.selectContractGuaranteeMappingNoList(contractNo);
+		if(CollectionUtils.isEmpty(contractGuaranteeMappingNoList)){
+			throw new BusinessErrorCodeException(ErrorCode.SELECT_CONTRACT_GUARANTEE_MAPPING_NO_LIST);
 		}
-		return guaranteeNoList;
+		return contractGuaranteeMappingNoList;
 	}
 
 	public List<GuaranteeResponse> selectGuaranteeList(int contractNo){
-		List<Integer> guaranteeNoList = this.selectGuaranteeNoList(contractNo);
-		return this.selectGuaranteeList(guaranteeNoList);
+		List<Integer> contractGuaranteeMappingNoList = this.selectContractGuaranteeMappingNoList(contractNo);
+		return this.selectGuaranteeList(contractGuaranteeMappingNoList);
 	}
 
 	public List<GuaranteeResponse> selectGuaranteeList(List<Integer> guaranteeNoList){
@@ -101,18 +101,18 @@ public class InsuranceSelectService {
 				.build();
 	}
 
-	public List<Integer> selectGuaranteeMappingList(int productNo){
-		List<Integer> mappingList = query.selectGuaranteeMappingList(productNo);
+	public List<Integer> selectProductGuaranteeMappingList(int productNo){
+		List<Integer> mappingList = query.selectProductGuaranteeMappingList(productNo);
 		if(CollectionUtils.isEmpty(mappingList)){
-			throw new BusinessErrorCodeException(ErrorCode.SELECT_GUARANTEE_MAPPING_LIST);
+			throw new BusinessErrorCodeException(ErrorCode.SELECT_PRODUCT_GUARANTEE_MAPPING_LIST);
 		}
 		return mappingList;
 	}
 
 	public long getNotExistGuaranteeCount(int productNo, List<Integer> guaranteeNoList){
-		List<Integer> guaranteeMappingList = this.selectGuaranteeMappingList(productNo);
+		List<Integer> productGuaranteeMappingList = this.selectProductGuaranteeMappingList(productNo);
 		return guaranteeNoList.stream()
-				.filter(v -> !guaranteeMappingList.contains(v))
+				.filter(v -> !productGuaranteeMappingList.contains(v))
 				.count();
 	}
 }

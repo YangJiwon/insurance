@@ -43,7 +43,7 @@ class DeleteGuaranteeOfContractServiceTest {
 			final List<Integer> requestGuaranteeNoList = List.of(1,2);
 			final UpdateContract updateContract = getUpdateContract(requestGuaranteeNoList);
 
-			given(selectService.selectGuaranteeNoList(contractNo)).willReturn(guaranteeNoList);
+			given(selectService.selectContractGuaranteeMappingNoList(contractNo)).willReturn(guaranteeNoList);
 
 			assertDoesNotThrow(() -> deleteGuaranteeOfContractService.validation(updateContract));
 		}
@@ -65,7 +65,7 @@ class DeleteGuaranteeOfContractServiceTest {
 		private void validationFail(List<Integer> requestGuaranteeNoList){
 			final UpdateContract updateContract = getUpdateContract(requestGuaranteeNoList);
 
-			given(selectService.selectGuaranteeNoList(contractNo)).willReturn(guaranteeNoList);
+			given(selectService.selectContractGuaranteeMappingNoList(contractNo)).willReturn(guaranteeNoList);
 
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					deleteGuaranteeOfContractService.validation(updateContract));

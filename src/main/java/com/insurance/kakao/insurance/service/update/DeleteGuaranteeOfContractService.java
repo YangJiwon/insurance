@@ -28,8 +28,8 @@ class DeleteGuaranteeOfContractService implements InsuranceModifiable {
 
 	@Override
 	public void validation(UpdateContract updateContract){
-		List<Integer> guaranteeNoList = insuranceSelectService.selectGuaranteeNoList(updateContract.getContractNo());
-		int curSize = guaranteeNoList.size();
+		List<Integer> contractGuaranteeMappingNoList = insuranceSelectService.selectContractGuaranteeMappingNoList(updateContract.getContractNo());
+		int curSize = contractGuaranteeMappingNoList.size();
 		int requestSize = updateContract.getGuaranteeNoSize();
 		if(curSize <= requestSize){
 			throw new BusinessErrorCodeException(ErrorCode.NOT_VALID_DELETE_REQUEST);

@@ -13,7 +13,7 @@ public enum ErrorCode {
 	NOT_VALID_CONTRACT_PERIOD(HttpStatus.BAD_REQUEST, "잘못된 계약기간입니다"),
 	SELECT_GUARANTEE_LIST(HttpStatus.BAD_REQUEST, "담보 리스트 조회에 실패하였습니다"),
 	INSERT_GUARANTEE_OF_CONTRACT(HttpStatus.BAD_REQUEST, "계약 담보 생성에 실패하였습니다"),
-	SELECT_GUARANTEE_NO_LIST(HttpStatus.BAD_REQUEST, "담보 번호 리스트 조회에 실패하였습니다"),
+	SELECT_CONTRACT_GUARANTEE_MAPPING_NO_LIST(HttpStatus.BAD_REQUEST, "담보 번호 리스트 조회에 실패하였습니다"),
 	DELETE_GUARANTEE_OF_CONTRACT(HttpStatus.INTERNAL_SERVER_ERROR, "계약 담보 삭제에 실패하였습니다"),
 	NOT_VALID_END_DATE(HttpStatus.BAD_REQUEST, "종료일은 오늘보다 이전일 수 없습니다"),
 	UPDATE_CONTRACT_PERIOD(HttpStatus.INTERNAL_SERVER_ERROR, "계약 기간 업데이트에 실패하였습니다"),
@@ -28,7 +28,7 @@ public enum ErrorCode {
 	SAME_CONTRACT_PERIOD(HttpStatus.BAD_REQUEST, "현재 계약기간과 동일합니다"),
 	SAME_CONTRACT_STATUS(HttpStatus.BAD_REQUEST, "현재 계약상태와 동일합니다"),
 	NOT_VALID_GUARANTEE(HttpStatus.BAD_REQUEST, "맞지 않는 담보입니다"),
-	SELECT_GUARANTEE_MAPPING_LIST(HttpStatus.BAD_REQUEST, "상품에 포함된 담보 리스트 조회에 실패하였습니다"),
+	SELECT_PRODUCT_GUARANTEE_MAPPING_LIST(HttpStatus.BAD_REQUEST, "상품에 포함된 담보 리스트 조회에 실패하였습니다"),
 	CREATE_GUARANTEE_MAPPING(HttpStatus.INTERNAL_SERVER_ERROR, "담보 매핑 생성에 실패하였습니다");
 
 	private final HttpStatus httpStatus;
