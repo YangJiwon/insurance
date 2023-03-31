@@ -15,6 +15,6 @@ public class UpdateGuaranteeRequest {
 	private int contractNo;
 
 	@NotEmpty
-	@Schema(description = "추가/삭제 담보 번호 리스트") //TODO:: example
+	@Schema(description = "추가/삭제 담보 번호 리스트")
 	private List<Integer> guaranteeNoList;
 }

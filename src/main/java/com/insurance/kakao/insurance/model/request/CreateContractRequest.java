@@ -27,7 +27,7 @@ public class CreateContractRequest {
 	private String contractName;
 
 	@NotNull
-	@DateTimeFormat(pattern = "yyyy-MM-dd") //TODO:: example
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Schema(description = "보험 시작 일자")
 	private LocalDate insuranceStartDate;
 
@@ -36,7 +36,7 @@ public class CreateContractRequest {
 	private int contractPeriod;
 
 	@NotEmpty
-	@Schema(description = "담보 번호 리스트") //TODO:: example
+	@Schema(description = "담보 번호 리스트")
 	private List<Integer> guaranteeNoList;
 
 	public LocalDate getInsuranceEndDate(){

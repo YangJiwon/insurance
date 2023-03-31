@@ -36,7 +36,7 @@ public class SwaggerConfig {
 		return new ApiInfoBuilder()
 				.title("카카오페이 손해보험 사전과제")
 				.description("계약관리시스템")
-				.version("0.1")
+				.version("1.0")
 				.build();
 	}
 }

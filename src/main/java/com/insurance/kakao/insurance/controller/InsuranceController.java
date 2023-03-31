@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.insurance.kakao.insurance.model.request.CreateContractRequest;
@@ -85,7 +86,10 @@ public class InsuranceController implements InsuranceControllerApi{
 	@Override
 	public ResponseEntity<?> getEstimateAmount(String guarantees, int contractPeriod){
 		String[] split = guarantees.split(",");//todo::
-		List<Integer> guaranteeNoList = Arrays.stream(split).map(Integer::parseInt).collect(Collectors.toList());
+		List<Integer> guaranteeNoList = Arrays.stream(split)
+				.filter(v -> !ObjectUtils.isEmpty(v))
+				.map(Integer::parseInt)
+				.collect(Collectors.toList());
 
 		List<GuaranteeResponse> guaranteeList = insuranceSelectService.selectGuaranteeList(guaranteeNoList);
 		return ResponseEntity.ok(insuranceSelectService.getTotalAmount(guaranteeList, contractPeriod));
