@@ -1,7 +1,7 @@
 # With Springboot framework
 Spring Boot, JAVA 11, MyBatis, Swagger3, H2를 사용하였습니다.
 
-# Local Mac 기준 선행조건 순서 Intellij 기준 Setup
+# 선행조건
 1. https://github.com/kakao-insurance-quiz/20230327-yjw.git main 브랜치로 내려받기 하시면 됩니다.
 2. JDK는 11버전으로 부탁드립니다.
 3. Local 환경이다보니 h2 설정이 필요합니다.
