@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS PRODUCT_GUARANTEE (
 );
 ```
 
-# 테이블 
+# 테이블 정보
 ```
 CONTRACT 테이블은 기본적인 계약 정보 및 보유한 상품의 번호를 가지고 있으며,
 해당 계약의 상품 담보는 CONTRACT_GUARANTEE 테이블에서 보유하고 있습니다.
