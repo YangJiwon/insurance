@@ -10,7 +10,7 @@
 
 @Service
 @RequiredArgsConstructor
-public class InsuranceInsertService {
+public class InsuranceCreateService {
 	private final Map<String, InsuranceCreatable> insuranceCreatableMap;
 
 	public void create(CreateInsurance createInsurance) {

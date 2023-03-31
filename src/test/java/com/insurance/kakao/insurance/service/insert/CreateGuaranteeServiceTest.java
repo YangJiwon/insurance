@@ -34,21 +34,20 @@ class CreateGuaranteeServiceTest {
 	private InsuranceSelectService selectService;
 
 	final int productNo = 1;
+	final List<CreateGuaranteeRequest> createGuaranteeList = List.of(
+			new CreateGuaranteeRequest("테스트 담보", 10000, 100, 1),
+			new CreateGuaranteeRequest("테스트 담보2", 120000, 200, 2)
+	);
+	final List<Integer> guaranteeNoList = createGuaranteeList.stream()
+			.map(CreateGuaranteeRequest::getGuaranteeNo)
+			.collect(Collectors.toList());
+	final ProductResponse product = new ProductResponse(productNo, "테스트 상품", 3, 12);
+	final CreateInsurance createInsurance = getCreateInsurance(productNo, createGuaranteeList);
+
 
 	@Nested
 	@DisplayName("담보 등록")
 	class CreateGuarantee{
-		final List<CreateGuaranteeRequest> createGuaranteeList = List.of(
-				new CreateGuaranteeRequest("테스트 담보", 10000, 100, 1),
-				new CreateGuaranteeRequest("테스트 담보2", 120000, 200, 2),
-				new CreateGuaranteeRequest("테스트 담보3", 130000, 300, 3)
-		);
-		final List<Integer> guaranteeNoList = createGuaranteeList.stream()
-				.map(CreateGuaranteeRequest::getGuaranteeNo)
-				.collect(Collectors.toList());
-		final ProductResponse product = new ProductResponse(1, "테스트 상품", 3, 12);
-		final CreateInsurance createInsurance = getCreateInsurance(productNo, createGuaranteeList);
-
 		@Test
 		@DisplayName("담보 등록 실패")
 		void createGuaranteeException(){

@@ -37,24 +37,23 @@ class CreateContractServiceTest {
 	private InsuranceSelectService selectService;
 
 	final int productNo = 1;
+	final int contractPeriod = 3;
+	final double totalAmount = 1000230;
+	final List<Integer> guaranteeNoList = List.of(1,2,3);
+	final List<GuaranteeResponse> guaranteeList = List.of(
+			new GuaranteeResponse(1, "테스트담보", 10000, 100),
+			new GuaranteeResponse(2, "테스트담보2", 20000, 200),
+			new GuaranteeResponse(3, "테스트담보3", 30000, 300)
+	);
+	final ProductResponse product = new ProductResponse(productNo, "테스트 상품", 3, 12);
+	final CreateContractRequest createContractRequest = new CreateContractRequest("계약명", LocalDate.now(), contractPeriod, productNo, guaranteeNoList);
+	final CreateInsurance createInsurance = getCreateInsurance(createContractRequest);
 
 	@Nested
 	@DisplayName("계약 등록")
 	class CreateContractTest{
-		final int contractPeriod = 3;
-		final double totalAmount = 1000230;
-		final List<Integer> guaranteeNoList = List.of(1,2,3);
-		final List<GuaranteeResponse> guaranteeList = List.of(
-				new GuaranteeResponse(1, "테스트담보", 10000, 100),
-				new GuaranteeResponse(2, "테스트담보2", 20000, 200),
-				new GuaranteeResponse(3, "테스트담보3", 30000, 300)
-		);
-		final ProductResponse product = new ProductResponse(productNo, "테스트 상품", 3, 12);
-		final CreateContractRequest createContractRequest = new CreateContractRequest("계약명", LocalDate.now(), contractPeriod, productNo, guaranteeNoList);
-		final CreateInsurance createInsurance = getCreateInsurance(createContractRequest);
-
 		@Test
-		@DisplayName("종료일자가 오늘 날짜보다 이전")
+		@DisplayName("시작일자가 오늘 날짜보다 이전")
 		void createProductException(){
 			final CreateInsurance isNotValidEndDate = getCreateInsurance(new CreateContractRequest("계약명", LocalDate.parse("2020-03-31"), 3, productNo, guaranteeNoList));
 
@@ -88,12 +87,10 @@ class CreateContractServiceTest {
 
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					createContractService.create(hasMinPeriod));
-
 			assertEquals(exception.getErrorCode(), ErrorCode.NOT_VALID_CONTRACT_PERIOD);
 
 			exception = assertThrows(BusinessErrorCodeException.class, () ->
 					createContractService.create(hasMaxPeriod));
-
 			assertEquals(exception.getErrorCode(), ErrorCode.NOT_VALID_CONTRACT_PERIOD);
 		}
 

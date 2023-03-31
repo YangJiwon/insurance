@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -33,21 +32,16 @@ class CreateProductServiceTest {
 	private CreateGuaranteeService createGuaranteeService;
 
 	final int productNo = 1;
+	final List<CreateGuaranteeRequest> createGuaranteeList = List.of(
+			new CreateGuaranteeRequest("테스트 담보", 10000, 100, 1),
+			new CreateGuaranteeRequest("테스트 담보2", 120000, 200, 2)
+	);
+	final CreateProductRequest createProduct = new CreateProductRequest("상품명", 1, 3, createGuaranteeList, productNo);
+	final CreateInsurance createInsurance = getCreateInsurance(createProduct);
 
 	@Nested
 	@DisplayName("상품 등록")
 	class CreateProduct{
-		final List<CreateGuaranteeRequest> createGuaranteeList = List.of(
-				new CreateGuaranteeRequest("테스트 담보", 10000, 100, 1),
-				new CreateGuaranteeRequest("테스트 담보2", 120000, 200, 2),
-				new CreateGuaranteeRequest("테스트 담보3", 130000, 300, 3)
-		);
-		final List<Integer> guaranteeNoList = createGuaranteeList.stream()
-				.map(CreateGuaranteeRequest::getGuaranteeNo)
-				.collect(Collectors.toList());
-		final CreateProductRequest createProduct = new CreateProductRequest("상품명", 1, 3, createGuaranteeList, productNo);
-		final CreateInsurance createInsurance = getCreateInsurance(createProduct);
-
 		@Test
 		@DisplayName("상품 등록 실패")
 		void createProductException(){
@@ -63,8 +57,6 @@ class CreateProductServiceTest {
 		@DisplayName("상품 등록 성공")
 		void createProduct(){
 			given(command.insertProduct(createProduct)).willReturn(1);
-		//	given(command.insertGuarantee(productNo, createGuaranteeList)).willReturn(createGuaranteeList.size());
-	//		given(command.insertGuaranteeOfProduct(productNo, guaranteeNoList)).willReturn(guaranteeNoList.size());
 
 			assertDoesNotThrow(() -> createProductService.create(createInsurance));
 		}

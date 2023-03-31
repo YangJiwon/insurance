@@ -14,11 +14,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import com.insurance.kakao.insurance.model.request.CreateContractRequest;
 import com.insurance.kakao.insurance.model.vo.CreateInsurance;
 
-@SpringBootTest(classes = {InsuranceInsertService.class})
-@DisplayName("보험 관련 등록 서비스")
-class InsuranceInsertServiceTest {
+@SpringBootTest(classes = {InsuranceCreateService.class})
+@DisplayName("보험 관련 등록 서비스 테스트")
+class InsuranceCreateServiceTest {
 	@Autowired
-	private InsuranceInsertService insuranceInsertService;
+	private InsuranceCreateService insuranceCreateService;
 
 	@MockBean
 	private CreateContractService createContractService;
@@ -31,6 +31,6 @@ class InsuranceInsertServiceTest {
 	@Test
 	@DisplayName("등록 로직 정상")
 	void create(){
-		assertDoesNotThrow(() -> insuranceInsertService.create(createInsurance));
+		assertDoesNotThrow(() -> insuranceCreateService.create(createInsurance));
 	}
 }

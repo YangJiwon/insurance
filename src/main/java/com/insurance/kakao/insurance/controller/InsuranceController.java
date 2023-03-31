@@ -19,7 +19,7 @@ import com.insurance.kakao.insurance.model.vo.CreateInsurance;
 import com.insurance.kakao.insurance.model.vo.UpdateContract;
 import com.insurance.kakao.insurance.service.InsuranceSelectService;
 import com.insurance.kakao.insurance.service.insert.CreateInsuranceServiceEnums;
-import com.insurance.kakao.insurance.service.insert.InsuranceInsertService;
+import com.insurance.kakao.insurance.service.insert.InsuranceCreateService;
 import com.insurance.kakao.insurance.service.update.InsuranceUpdateService;
 import com.insurance.kakao.insurance.service.update.UpdateContractServiceEnums;
 
@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class InsuranceController implements InsuranceControllerApi{
 	private final InsuranceSelectService insuranceSelectService;
-	private final InsuranceInsertService insuranceInsertService;
+	private final InsuranceCreateService insuranceCreateService;
 	private final InsuranceUpdateService insuranceUpdateService;
 
 	@Override
@@ -39,7 +39,7 @@ public class InsuranceController implements InsuranceControllerApi{
 				.serviceName(CreateInsuranceServiceEnums.CONTRACT.getName())
 				.build();
 
-		insuranceInsertService.create(createInsurance);
+		insuranceCreateService.create(createInsurance);
 		return ResponseEntity.ok().build();
 	}
 
@@ -115,7 +115,7 @@ public class InsuranceController implements InsuranceControllerApi{
 				.serviceName(CreateInsuranceServiceEnums.PRODUCT.getName())
 				.build();
 
-		insuranceInsertService.create(createInsurance);
+		insuranceCreateService.create(createInsurance);
 		return ResponseEntity.ok().build();
 	}
 
@@ -127,7 +127,7 @@ public class InsuranceController implements InsuranceControllerApi{
 				.serviceName(CreateInsuranceServiceEnums.GUARANTEE.getName())
 				.build();
 
-		insuranceInsertService.create(createInsurance);
+		insuranceCreateService.create(createInsurance);
 		return ResponseEntity.ok().build();
 	}
 }
