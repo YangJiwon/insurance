@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS PRODUCT_GUARANTEE (
   PRIMARY KEY (PRODUCT_NO, GUARANTEE_NO)
 );
 ```
+```
 CONTRACT 테이블은 기본적인 계약 정보 및 보유한 상품의 번호를 가지고 있으며,
 해당 계약의 상품 담보는 CONTRACT_GUARANTEE 테이블에서 보유하고 있습니다.
 
@@ -67,7 +68,7 @@ GUARANTEE 테이블은 담보 정보를 가지고 있습니다.
 PRODUCT 테이블은 상품 정보를 가지고 있으며 최소/최대 계약기간을 포함합니다.
 최소/최대 계약기간을 벗어난다면 비즈니스 로직에서 exception이 발생합니다.
 해당 상품에 어떤 담보가 존재하는지는 PRODUCT_GUARANTEE 테이블에서 확인 가능합니다.
-
+```
 
 # Swagger URL
 API 목록 및 테스트는 http://localhost:8080/swagger-ui/index.html#/  에서 가능합니다.
