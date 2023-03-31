@@ -10,7 +10,6 @@ Spring Boot, JAVA 11, MyBatis, Swagger3, H2를 사용하였습니다.
 1. http://localhost:8080/h2-console 에서 접근 가능합니다.
 2. 설정은 아래 이미지를 참고 부탁드립니다. 계정은 sa/123qwe 입니다.
 <img width="462" alt="image" src="https://user-images.githubusercontent.com/9064323/229141575-43aed92f-d8d6-43a5-b3e3-e1e90ab11aad.png">
-
 3. 아래 스크립트를 사용해 테이블을 생성합니다.
 
 ```
@@ -61,6 +60,14 @@ CREATE TABLE IF NOT EXISTS PRODUCT_GUARANTEE (
   PRIMARY KEY (PRODUCT_NO, GUARANTEE_NO)
 );
 ```
+CONTRACT 테이블은 기본적인 계약 정보 및 보유한 상품의 번호를 가지고 있으며,
+해당 계약의 상품 담보는 CONTRACT_GUARANTEE 테이블에서 보유하고 있습니다.
+
+GUARANTEE 테이블은 담보 정보를 가지고 있습니다.
+PRODUCT 테이블은 상품 정보를 가지고 있으며 최소/최대 계약기간을 포함합니다.
+최소/최대 계약기간을 벗어난다면 비즈니스 로직에서 exception이 발생합니다.
+해당 상품에 어떤 담보가 존재하는지는 PRODUCT_GUARANTEE 테이블에서 확인 가능합니다.
+
 
 # Swagger URL
 API 목록 및 테스트는 http://localhost:8080/swagger-ui/index.html#/  에서 가능합니다.
@@ -79,7 +86,7 @@ API 목록 및 테스트는 http://localhost:8080/swagger-ui/index.html#/  에�
 > 계약 등록 API 입니다. 상품번호 및 계약에 사용할 담보 리스트를 요청값으로 받습니다.
 ```
 *유효성검사
-계약날짜는 오늘보다 이전일 수 없습니다.
+계약 시작일은 오늘보다 이전일 수 없습니다.
 계약기간은 상품의 최소 계약기간보다 작거나 최대 계약기간보다 크면 안됩니다.
 담보 리스트의 정보는 상품번호 하위의 담보 정보여야만 합니다.
 ```
