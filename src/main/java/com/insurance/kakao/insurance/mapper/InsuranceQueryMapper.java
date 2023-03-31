@@ -15,7 +15,7 @@ import com.insurance.kakao.insurance.model.response.ProductResponse;
 @Mapper
 public interface InsuranceQueryMapper {
 	@Cacheable(cacheNames = CacheKeyConstants.PRODUCT)
-	List<ProductResponse> selectAllProductInfo();
+	List<ProductResponse> selectAllProductList();
 
 	@Cacheable(cacheNames = CacheKeyConstants.GUARANTEE)
 	List<GuaranteeResponse> selectAllGuaranteeList();

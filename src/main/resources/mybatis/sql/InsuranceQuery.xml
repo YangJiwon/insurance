@@ -7,7 +7,7 @@
     <resultMap id="contractResponse" type="com.insurance.kakao.insurance.model.response.ContractResponse" autoMapping="true"/>
     <resultMap id="contractDetailResponse" type="com.insurance.kakao.insurance.model.response.ContractDetailResponse" autoMapping="true"/>
 
-    <select id="selectAllProductInfo" resultMap="productResponse">
+    <select id="selectAllProductList" resultMap="productResponse">
         SELECT PRODUCT_NO AS productNo,
                PRODUCT_NAME AS productName,
                PRODUCT_MIN_PERIOD AS minPeriod,

@@ -36,6 +36,9 @@ public class InsuranceInsertServiceTest {
 	@MockBean
 	private InsuranceSelectService selectService;
 
+	@MockBean
+	private CacheService cacheService;
+
 	final int productNo = 1;
 
 	@Nested

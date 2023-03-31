@@ -24,7 +24,7 @@ public class InsuranceSelectService {
 	private final InsuranceQueryMapper query;
 
 	public ProductResponse getProductInfo(int productNo){
-		List<ProductResponse> productList = selectAllProductInfo();
+		List<ProductResponse> productList = selectAllProductList();
 		Optional<ProductResponse> findProduct = productList.stream()
 				.filter(v -> v.getProductNo() == productNo)
 				.findFirst();
@@ -35,8 +35,8 @@ public class InsuranceSelectService {
 		return findProduct.get();
 	}
 
-	public List<ProductResponse> selectAllProductInfo(){
-		return query.selectAllProductInfo();
+	public List<ProductResponse> selectAllProductList(){
+		return query.selectAllProductList();
 	}
 
 	public List<Integer> selectGuaranteeNoList(int contractNo){

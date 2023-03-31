@@ -7,15 +7,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
-import org.apache.commons.collections4.CollectionUtils;
-
 
 import com.insurance.kakao.insurance.common.exception.BusinessErrorCodeException;
 import com.insurance.kakao.insurance.common.exception.ErrorCode;
@@ -71,7 +69,7 @@ class InsuranceSelectServiceTest {
 		@Test
 		@DisplayName("상품 정보 조회 성공")
 		void product() {
-			given(query.selectAllProductInfo()).willReturn(allProductList);
+			given(query.selectAllProductList()).willReturn(allProductList);
 
 			ProductResponse response = insuranceSelectService.getProductInfo(productNo);
 
@@ -83,7 +81,7 @@ class InsuranceSelectServiceTest {
 		void emptyProduct() {
 			final int notExistProductNo = 100;
 
-			given(query.selectAllProductInfo()).willReturn(allProductList);
+			given(query.selectAllProductList()).willReturn(allProductList);
 
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					insuranceSelectService.getProductInfo(notExistProductNo));
