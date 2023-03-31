@@ -160,9 +160,9 @@ public class InsuranceInsertServiceTest {
 	@DisplayName("상품 등록")
 	class CreateProduct{
 		final List<CreateGuaranteeRequest> createGuaranteeList = List.of(
-				new CreateGuaranteeRequest("테스트 담보", 10000, 100, productNo, 1),
-				new CreateGuaranteeRequest("테스트 담보2", 120000, 200, productNo, 2),
-				new CreateGuaranteeRequest("테스트 담보3", 130000, 300, productNo, 3)
+				new CreateGuaranteeRequest("테스트 담보", 10000, 100, 1),
+				new CreateGuaranteeRequest("테스트 담보2", 120000, 200, 2),
+				new CreateGuaranteeRequest("테스트 담보3", 130000, 300, 3)
 		);
 		final List<Integer> guaranteeNoList = createGuaranteeList.stream()
 				.map(CreateGuaranteeRequest::getGuaranteeNo)
@@ -195,9 +195,9 @@ public class InsuranceInsertServiceTest {
 	@DisplayName("담보 등록")
 	class CreateGuarantee{
 		final List<CreateGuaranteeRequest> createGuaranteeList = List.of(
-				new CreateGuaranteeRequest("테스트 담보", 10000, 100, productNo, 1),
-				new CreateGuaranteeRequest("테스트 담보2", 120000, 200, productNo, 2),
-				new CreateGuaranteeRequest("테스트 담보3", 130000, 300, productNo, 3)
+				new CreateGuaranteeRequest("테스트 담보", 10000, 100, 1),
+				new CreateGuaranteeRequest("테스트 담보2", 120000, 200, 2),
+				new CreateGuaranteeRequest("테스트 담보3", 130000, 300, 3)
 		);
 		final List<Integer> guaranteeNoList = createGuaranteeList.stream()
 				.map(CreateGuaranteeRequest::getGuaranteeNo)

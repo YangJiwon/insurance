@@ -35,7 +35,6 @@ class InsuranceSelectServiceTest {
 
 	final int productNo = 1;
 	final int contractNo = 1;
-	final List<Integer> guaranteeNoList = List.of(1,2);
 
 	final List<GuaranteeResponse> guaranteeAllList = List.of(
 			new GuaranteeResponse(1, "테스트담보", 10000, 100),
@@ -44,7 +43,9 @@ class InsuranceSelectServiceTest {
 			new GuaranteeResponse(4, "테스트담보4",  40000, 500),
 			new GuaranteeResponse(5, "테스트담보5",  50000, 500)
 	);
-
+	
+	final List<Integer> guaranteeNoList = List.of(1,2);
+	
 	final List<GuaranteeResponse> guaranteeList = List.of(
 			new GuaranteeResponse(1, "테스트담보",  10000, 100),
 			new GuaranteeResponse(2, "테스트담보2",  20000, 200)
@@ -91,11 +92,11 @@ class InsuranceSelectServiceTest {
 	}
 
 	@Nested
-	@DisplayName("담보 번호 리스트 조회")
-	class GetGuaranteeNoList {
+	@DisplayName("계약에 매핑된 담보 번호 리스트 조회")
+	class SelectContractGuaranteeNoList {
 		@Test
-		@DisplayName("담보 번호 리스트 조회 성공")
-		void guaranteeNoList() {
+		@DisplayName("계약에 매핑된 담보 번호 리스트 조회 성공")
+		void contractGuaranteeNoList() {
 			List<Integer> contractGuaranteeMappingNoList = List.of(1,2,3);
 
 			given(query.selectContractGuaranteeMappingNoList(contractNo)).willReturn(contractGuaranteeMappingNoList);
@@ -104,8 +105,8 @@ class InsuranceSelectServiceTest {
 		}
 
 		@Test
-		@DisplayName("담보 번호 리스트 없음")
-		void emptyGuaranteeNoList() {
+		@DisplayName("계약에 매핑된 번호 리스트 없음")
+		void emptyContractGuaranteeNoList() {
 			given(query.selectContractGuaranteeMappingNoList(contractNo)).willReturn(null);
 
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
@@ -202,12 +203,12 @@ class InsuranceSelectServiceTest {
 	}
 
 	@Nested
-	@DisplayName("담보 매핑 정보 조회")
+	@DisplayName("상품/담보 매핑 정보 조회")
 	class SelectProductGuaranteeMappingList {
 		final List<Integer> mappingList = List.of(1,2,3);
 
 		@Test
-		@DisplayName("담보 매핑 정보 조회 성공")
+		@DisplayName("상품/담보 매핑 정보 조회 성공")
 		void productGuaranteeMapping() {
 			given(query.selectProductGuaranteeMappingList(productNo)).willReturn(mappingList);
 
@@ -215,8 +216,8 @@ class InsuranceSelectServiceTest {
 		}
 
 		@Test
-		@DisplayName("담보 매핑 정보 조회 실패")
-		void emptyproductGuaranteeMapping() {
+		@DisplayName("상품/담보 매핑 정보 조회 실패")
+		void emptyProductGuaranteeMapping() {
 			given(query.selectProductGuaranteeMappingList(productNo)).willReturn(null);
 
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
@@ -226,27 +227,18 @@ class InsuranceSelectServiceTest {
 		}
 
 		@Test
-		@DisplayName("담보 매핑정보에 없는 담보 갯수 조회")
+		@DisplayName("상품/담보 매핑정보 담보 요청 갯수 조회")
 		void notExistProductGuaranteeList() {
 			final List<Integer> notExistGuaranteeNoList = List.of(4,5);
+			final List<Integer> existGuaranteeNoList = List.of(1,2,3);
 
 			given(query.selectProductGuaranteeMappingList(productNo)).willReturn(mappingList);
 
-			long count = insuranceSelectService.getNotExistGuaranteeCount(productNo, notExistGuaranteeNoList);
+			long notExistCount = insuranceSelectService.getNotExistGuaranteeCount(productNo, notExistGuaranteeNoList);
+			long existCount = insuranceSelectService.getNotExistGuaranteeCount(productNo, existGuaranteeNoList);
 
-			assertEquals(count, notExistGuaranteeNoList.size());
-		}
-
-		@Test
-		@DisplayName("담보 매핑정보에 있는 담보 갯수 조회")
-		void existProductGuaranteeMappingList() {
-			final List<Integer> guaranteeNoList = List.of(1,2,3);
-
-			given(query.selectProductGuaranteeMappingList(productNo)).willReturn(mappingList);
-
-			long count = insuranceSelectService.getNotExistGuaranteeCount(productNo, guaranteeNoList);
-
-			assertEquals(count, 0);
+			assertEquals(notExistCount, notExistGuaranteeNoList.size());
+			assertEquals(existCount, 0);
 		}
 	}
 }
