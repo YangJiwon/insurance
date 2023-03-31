@@ -12,7 +12,7 @@ Preferences > Plugins > Browse repositories.. > Lombok 검색 > Install > restar
 
 # H2 DB connections 환경 설정
 1. http://localhost:8080/h2-console 에서 접근 가능합니다.
-2. 아래 이미지처럼 설정합니다. 계정은 rennes91/123qwe 입니다.
+2. 설정은 아래 이미지를 참고 부탁드립니다. 계정은 rennes91/123qwe 입니다.
 <img width="466" alt="image" src="https://user-images.githubusercontent.com/9064323/229078474-518d8063-b4c8-4f1b-9459-f172ef471fb7.png">
 3. 아래 스크립트를 사용해 테이블을 생성합니다.
 
