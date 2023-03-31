@@ -44,5 +44,37 @@ API 목록 및 테스트는 http://localhost:8080/swagger-ui/index.html#/  에�
 <img width="401" alt="image" src="https://user-images.githubusercontent.com/9064323/229109241-3e0729cc-981a-4757-b01c-745fbcb4741f.png">
 
 * 담보 추가 API (POST /contract/guarantee)
-> 계약에 담보를 추가가 가능합니다. 계약 번호와 추가할 담보 리스트를 요청값으로 받으며, 추가된 담보 리스트에 따라 총 보험료가 재계산됩니다.
+> 계약에 담보 추가가 가능합니다. 계약 번호와 추가할 담보 리스트를 요청값으로 받으며, 추가된 담보 리스트에 따라 총 보험료가 재계산됩니다.
+```
+만료 상태의 계약은 담보 추가가 불가합니다.
+현재 계약의 상품에 해당하는 담보만 추가 가능합니다.
+이미 존재하는 담보가 있다면 추가가 불가합니다.
+
+```
 <img width="354" alt="image" src="https://user-images.githubusercontent.com/9064323/229109436-202fd70c-a4d3-4434-bf18-4140b3367168.png">
+
+* 담보 삭제 API (DELETE /contract/guarantee)
+> 계약에 담보 삭제가 가능합니다. 계약 번호와 삭제할 담보 리스트를 요청값으로 받으며, 삭제된 담보 리스트에 따라 총 보험료가 재계산됩니다.
+```
+만료 상태의 계약은 담보 삭제가 불가합니다.
+현재 가지고 있는 담보 모두를 삭제할 수는 없습니다.
+```
+<img width="366" alt="image" src="https://user-images.githubusercontent.com/9064323/229109768-5c304cd1-befc-49bd-9d39-a0942fe717c0.png">
+
+* 계약기간 변경 API (PUT /contract/period)
+> 계약 종료일 변경이 가능합니다. 계약 기간을 요청값으로 받아 계약 시작일 기준으로 종료일을 재계산합니다.
+```
+만료 상태의 계약은 기간 변경이 불가합니다.
+현재 계약기간과 동일한 입력값이라면 수정 로직을 수행하지 않습니다.
+현재 계약 상품에 해당하는 최소/최대 계약기간 범위내에서만 수정이 가능합니다.
+계산된 종료일이 오늘 날짜보다 이전이라면 수정이 불가합니다.
+```
+<img width="363" alt="image" src="https://user-images.githubusercontent.com/9064323/229109860-54cec48c-2824-46ef-86fa-1927a2c9a9d6.png">
+
+* 계약상태 변경 API (PUT /contract/status)
+> 계약 상태 변경이 가능합니다. 계약 상태를 요청값으로 받아 계약상태를 변경합니다.
+```
+만료 상태의 계약은 상태 변경이 불가합니다.
+현재 계약상태와 동일한 입력값이라면 수정 로직을 수행하지 않습니다.
+```
+<img width="397" alt="image" src="https://user-images.githubusercontent.com/9064323/229110164-a8e29f06-931c-4d47-92c0-ad265a61a2ae.png">
