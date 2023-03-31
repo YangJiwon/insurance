@@ -24,6 +24,7 @@ public enum ErrorCode {
 	UPDATE_EXPIRE_CONTRACT(HttpStatus.BAD_REQUEST, "만료 상태의 계약은 변경이 불가합니다"),
 	SELECT_CONTRACT(HttpStatus.BAD_REQUEST, "계약 조회에 실패하였습니다"),
 	UPDATE_TOTAL_AMOUNT(HttpStatus.INTERNAL_SERVER_ERROR, "총 보험료 업데이트에 실패하였습니다"),
+	UPDATE_ONLY_DATE(HttpStatus.INTERNAL_SERVER_ERROR, "수정 날짜 업데이트에 실패하였습니다"),
 	INSERT_PRODUCT(HttpStatus.INTERNAL_SERVER_ERROR, "상품 생성에 실패하였습니다"),
 	INSERT_GUARANTEE(HttpStatus.INTERNAL_SERVER_ERROR, "담보 생성에 실패하였습니다"),
 	SAME_CONTRACT_PERIOD(HttpStatus.BAD_REQUEST, "현재 계약기간과 동일합니다"),

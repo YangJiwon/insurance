@@ -62,6 +62,38 @@ class UpdateContractServiceTest {
 	}
 
 	@Nested
+	@DisplayName("수정일 수정")
+	class UpdateDate{
+		final ContractResponse contract = new ContractResponse(LocalDate.parse("2023-01-23"), contractNo, 1, ContractStatusEnum.NORMAL.getStatus());
+
+		@Test
+		@DisplayName("isUpdateOnlyDate false 일시 수정일 수정로직 수행하지 않음")
+		void hasNotUpdateDateLogic(){
+			given(selectService.getContractInfo(contractNo)).willReturn(contract);
+			given(selectService.getTotalAmount(contractNo)).willReturn(totalAmount);
+			given(command.updateTotalAmount(contractNo, totalAmount)).willReturn(1);
+
+			insuranceUpdateService.updateContract(updateContract);
+
+			verify(command, times(0)).updateOnlyDate(contractNo);
+			verify(command, times(1)).updateTotalAmount(contractNo, totalAmount);
+		}
+
+		@Test
+		@DisplayName("isUpdateOnlyDate 메서드가 true 라면 수정일 수정로직만 수행")
+		void hasUpdateDateLogic(){
+			given(selectService.getContractInfo(contractNo)).willReturn(contract);
+			given(insertGuaranteeOfContractService.isUpdateOnlyDate()).willReturn(true);
+			given(command.updateOnlyDate(contractNo)).willReturn(1);
+
+			insuranceUpdateService.updateContract(updateContract);
+
+			verify(command, times(1)).updateOnlyDate(contractNo);
+			verify(command, times(0)).updateTotalAmount(contractNo, totalAmount);
+		}
+	}
+
+	@Nested
 	@DisplayName("총 보험료 수정")
 	class UpdateTotalAmount{
 		final ContractResponse contract = new ContractResponse(LocalDate.parse("2023-01-23"), contractNo, 1, ContractStatusEnum.NORMAL.getStatus());

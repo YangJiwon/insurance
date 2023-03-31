@@ -88,6 +88,12 @@ class UpdateContractStatusServiceTest {
 		}
 	}
 
+	@Test
+	@DisplayName("상태 변경 서비스는 총보험료는 수정하지 않고 수정일만 수정")
+	void isUpdateOnlyDateTrue() {
+		assertTrue(updateContractStatusService.isUpdateOnlyDate());
+	}
+
 	private UpdateContract getUpdateContract(ContractStatusEnum contractStatus){
 		return UpdateContract.builder()
 				.contractNo(contractNo)

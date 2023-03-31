@@ -33,4 +33,9 @@ class UpdateContractStatusService implements InsuranceModifiable {
 			throw new BusinessErrorCodeException(ErrorCode.SAME_CONTRACT_STATUS);
 		}
 	}
+
+	@Override
+	public boolean isUpdateOnlyDate(){
+		return true;
+	}
 }

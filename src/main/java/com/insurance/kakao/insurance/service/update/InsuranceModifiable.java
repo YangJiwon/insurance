@@ -11,4 +11,8 @@ interface InsuranceModifiable {
 	void validation(UpdateContract updateContract);
 
 	void update(UpdateContract updateContract);
+
+	default boolean isUpdateOnlyDate(){
+		return false;
+	}
 }

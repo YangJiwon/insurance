@@ -23,6 +23,8 @@ public interface InsuranceCommandMapper {
 
 	int updateTotalAmount(int contractNo, double totalAmount);
 
+	int updateOnlyDate(int contractNo);
+
 	int insertProduct(CreateProductRequest createProduct);
 
 	int insertGuaranteeOfProduct(int productNo, List<Integer> guaranteeNoList);

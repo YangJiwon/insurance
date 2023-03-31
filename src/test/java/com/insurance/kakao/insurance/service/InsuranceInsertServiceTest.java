@@ -64,7 +64,7 @@ public class InsuranceInsertServiceTest {
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					insuranceInsertService.createContract(isNotValidEndDate));
 
-			assertEquals(exception.getErrorCode(), ErrorCode.NOT_VALID_END_DATE);
+			assertEquals(exception.getErrorCode(), ErrorCode.NOT_VALID_START_DATE);
 		}
 
 		@Test

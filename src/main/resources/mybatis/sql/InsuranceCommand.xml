@@ -46,6 +46,12 @@
         WHERE CONTRACT_NO = #{contractNo}
     </update>
 
+    <update id="updateOnlyDate">
+        UPDATE CONTRACT
+        SET UPDATE_DATE = CURRENT_TIMESTAMP
+        WHERE CONTRACT_NO = #{contractNo}
+    </update>
+
     <insert id="insertProduct" useGeneratedKeys="true" keyColumn="PRODUCT_NO" keyProperty="productNo">
         INSERT INTO PRODUCT(PRODUCT_NAME, PRODUCT_MIN_PERIOD, PRODUCT_MAX_PERIOD)
                      VALUES(#{productName}, #{minPeriod}, #{maxPeriod})

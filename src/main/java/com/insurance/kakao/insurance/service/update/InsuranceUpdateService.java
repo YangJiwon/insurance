@@ -33,6 +33,13 @@ public class InsuranceUpdateService {
 		insuranceModifiable.validation(updateContract);
 		insuranceModifiable.insuranceUpdate(updateContract);
 
+		if(insuranceModifiable.isUpdateOnlyDate()){
+			if(command.updateOnlyDate(contractNo) != 1){
+				throw new BusinessErrorCodeException(ErrorCode.UPDATE_ONLY_DATE);
+			}
+			return;
+		}
+
 		double totalAmount = insuranceSelectService.getTotalAmount(contractNo);
 		if(command.updateTotalAmount(contractNo, totalAmount) != 1){
 			throw new BusinessErrorCodeException(ErrorCode.UPDATE_TOTAL_AMOUNT);
