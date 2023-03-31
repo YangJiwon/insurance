@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Getter
-@Builder(toBuilder = true)
+@Builder
 @EqualsAndHashCode
 public class CreateContract {
 	private int contractNo;

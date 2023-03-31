@@ -91,6 +91,19 @@ class UpdateContractServiceTest {
 			verify(command, times(1)).updateOnlyDate(contractNo);
 			verify(command, times(0)).updateTotalAmount(contractNo, totalAmount);
 		}
+
+		@Test
+		@DisplayName("수정일 수정 실패")
+		void updateDateException(){
+			given(selectService.getContractInfo(contractNo)).willReturn(contract);
+			given(insertGuaranteeOfContractService.isUpdateOnlyDate()).willReturn(true);
+			given(command.updateTotalAmount(contractNo, totalAmount)).willReturn(0);
+
+			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
+					insuranceUpdateService.updateContract(updateContract));
+
+			assertEquals(exception.getErrorCode(), ErrorCode.UPDATE_ONLY_DATE);
+		}
 	}
 
 	@Nested

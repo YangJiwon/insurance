@@ -15,9 +15,11 @@ import com.insurance.kakao.insurance.model.request.UpdateContractPeriodRequest;
 import com.insurance.kakao.insurance.model.request.UpdateContractStatusRequest;
 import com.insurance.kakao.insurance.model.request.UpdateGuaranteeRequest;
 import com.insurance.kakao.insurance.model.response.GuaranteeResponse;
+import com.insurance.kakao.insurance.model.vo.CreateInsurance;
 import com.insurance.kakao.insurance.model.vo.UpdateContract;
 import com.insurance.kakao.insurance.service.InsuranceSelectService;
-import com.insurance.kakao.insurance.service.InsuranceInsertService;
+import com.insurance.kakao.insurance.service.insert.CreateInsuranceServiceEnums;
+import com.insurance.kakao.insurance.service.insert.InsuranceInsertService;
 import com.insurance.kakao.insurance.service.update.InsuranceUpdateService;
 import com.insurance.kakao.insurance.service.update.UpdateContractServiceEnums;
 
@@ -32,7 +34,13 @@ public class InsuranceController implements InsuranceControllerApi{
 
 	@Override
 	public ResponseEntity<?> createContract(CreateContractRequest contract){
-		return ResponseEntity.ok(insuranceInsertService.createContract(contract));
+		CreateInsurance createInsurance = CreateInsurance.builder()
+				.createContractRequest(contract)
+				.serviceName(CreateInsuranceServiceEnums.CONTRACT.getName())
+				.build();
+
+		insuranceInsertService.create(createInsurance);
+		return ResponseEntity.ok().build();
 	}
 
 	@Override
@@ -102,13 +110,24 @@ public class InsuranceController implements InsuranceControllerApi{
 
 	@Override
 	public ResponseEntity<?> createProduct(CreateProductRequest createProduct) {
-		insuranceInsertService.createProduct(createProduct);
+		CreateInsurance createInsurance = CreateInsurance.builder()
+				.createProductRequest(createProduct)
+				.serviceName(CreateInsuranceServiceEnums.PRODUCT.getName())
+				.build();
+
+		insuranceInsertService.create(createInsurance);
 		return ResponseEntity.ok().build();
 	}
 
 	@Override
 	public ResponseEntity<?> createGuarantee(int productNo, List<CreateGuaranteeRequest> createGuaranteeList){
-		insuranceInsertService.createGuarantee(productNo, createGuaranteeList);
+		CreateInsurance createInsurance = CreateInsurance.builder()
+				.createGuaranteeRequest(createGuaranteeList)
+				.productNo(productNo)
+				.serviceName(CreateInsuranceServiceEnums.GUARANTEE.getName())
+				.build();
+
+		insuranceInsertService.create(createInsurance);
 		return ResponseEntity.ok().build();
 	}
 }
