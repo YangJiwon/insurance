@@ -3,17 +3,14 @@ Spring Boot, JAVA 11, MyBatis, Swagger3, H2를 사용하였습니다.
 
 # Local Mac 기준 선행조건 순서 Intellij 기준 Setup
 1. https://github.com/kakao-insurance-quiz/20230327-yjw.git main 브랜치로 내려받기 하시면 됩니다.
-2. IntelliJ에 Lombok Plugin을 설치합니다.
-```
-Preferences > Plugins > Browse repositories.. > Lombok 검색 > Install > restart
-```
-3. JDK는 11버전으로 부탁드립니다.
-4. Local 환경이다보니 h2 설정이 필요합니다.
+2. JDK는 11버전으로 부탁드립니다.
+3. Local 환경이다보니 h2 설정이 필요합니다.
 
 # H2 DB connections 환경 설정
 1. http://localhost:8080/h2-console 에서 접근 가능합니다.
-2. 설정은 아래 이미지를 참고 부탁드립니다. 계정은 rennes91/123qwe 입니다.
-<img width="466" alt="image" src="https://user-images.githubusercontent.com/9064323/229078474-518d8063-b4c8-4f1b-9459-f172ef471fb7.png">
+2. 설정은 아래 이미지를 참고 부탁드립니다. 계정은 sa/123qwe 입니다.
+<img width="462" alt="image" src="https://user-images.githubusercontent.com/9064323/229141575-43aed92f-d8d6-43a5-b3e3-e1e90ab11aad.png">
+
 3. 아래 스크립트를 사용해 테이블을 생성합니다.
 
 ```
