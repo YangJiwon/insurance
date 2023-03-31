@@ -21,7 +21,8 @@ Preferences > Plugins > Browse repositories.. > Lombok 검색 > Install > restar
 API 목록 및 테스트는 http://localhost:8080/swagger-ui/index.html#/  에서 가능합니다.
 
 * 새로운 상품 생성 API (POST /product)
-> 새로운 상품 등록이 가능합니다. 상품 정보 및 상품 하위의 담보 정보를 요청값으로 받습니다.
+> 새로운 상품 등록이 가능합니다. 
+> 상품 정보 및 상품 하위의 담보 정보를 요청값으로 받습니다.
 <img width="312" alt="image" src="https://user-images.githubusercontent.com/9064323/229086426-43a57dc6-ba7a-47a3-be19-a185cf7bd742.png">
 
 
@@ -37,3 +38,8 @@ API 목록 및 테스트는 http://localhost:8080/swagger-ui/index.html#/  에�
 담보 리스트의 정보는 상품번호 하위의 담보 정보여야만 합니다.
 ```
 <img width="588" alt="image" src="https://user-images.githubusercontent.com/9064323/229089810-f2976b61-6c76-4cc6-bec3-1c9c07167d9c.png">
+
+* 계약 정보 조회 API (GET /{contractNo}/contract)
+> 계약 정보를 조회할 수 있습니다. 계약 번호를 요청값으로 받습니다.
+
+![Uploading image.png…]()
