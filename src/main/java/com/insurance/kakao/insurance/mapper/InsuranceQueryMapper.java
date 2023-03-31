@@ -4,9 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.cache.annotation.Cacheable;
 
-import com.insurance.kakao.insurance.common.CacheKeyConstants;
 import com.insurance.kakao.insurance.model.response.ContractDetailResponse;
 import com.insurance.kakao.insurance.model.response.ContractResponse;
 import com.insurance.kakao.insurance.model.response.GuaranteeResponse;
@@ -14,11 +12,9 @@ import com.insurance.kakao.insurance.model.response.ProductResponse;
 
 @Mapper
 public interface InsuranceQueryMapper {
-	@Cacheable(cacheNames = CacheKeyConstants.PRODUCT)
-	List<ProductResponse> selectAllProductList();
+	ProductResponse getProductInfo(int productNo);
 
-	@Cacheable(cacheNames = CacheKeyConstants.GUARANTEE)
-	List<GuaranteeResponse> selectAllGuaranteeList();
+	List<GuaranteeResponse> selectGuaranteeList(List<Integer> guaranteeNoList);
 
 	ContractResponse getContractInfo(int contractNo);
 

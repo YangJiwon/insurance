@@ -7,7 +7,6 @@
  import org.springframework.stereotype.Service;
  import org.springframework.transaction.annotation.Transactional;
 
- import com.insurance.kakao.insurance.common.CacheKeyConstants;
  import com.insurance.kakao.insurance.common.exception.BusinessErrorCodeException;
  import com.insurance.kakao.insurance.common.exception.ErrorCode;
  import com.insurance.kakao.insurance.mapper.InsuranceCommandMapper;
@@ -26,7 +25,6 @@
 public class InsuranceInsertService {
 	private final InsuranceCommandMapper command;
 	private final InsuranceSelectService insuranceSelectService;
-	private final CacheService cacheService;
 
 	@Transactional
 	public Integer createContract(CreateContractRequest contract) {
@@ -84,14 +82,12 @@ public class InsuranceInsertService {
 		List<CreateGuaranteeRequest> guaranteeList = createProduct.getGuaranteeRequestList();
 
 		insertGuarantee(productNo, guaranteeList);
-		cacheService.removeCacheByName(CacheKeyConstants.PRODUCT);
 	}
 
 	@Transactional
 	public void createGuarantee(int productNo, List<CreateGuaranteeRequest> guaranteeList) {
 		ProductResponse product = insuranceSelectService.getProductInfo(productNo);
 		insertGuarantee(product.getProductNo(), guaranteeList);
-		cacheService.removeCacheByName(CacheKeyConstants.GUARANTEE);
 	}
 
 	private void insertGuarantee(int productNo, List<CreateGuaranteeRequest> guaranteeList){

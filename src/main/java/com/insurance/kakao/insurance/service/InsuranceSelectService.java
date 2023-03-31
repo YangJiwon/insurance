@@ -1,7 +1,6 @@
 package com.insurance.kakao.insurance.service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -24,19 +23,11 @@ public class InsuranceSelectService {
 	private final InsuranceQueryMapper query;
 
 	public ProductResponse getProductInfo(int productNo){
-		List<ProductResponse> productList = selectAllProductList();
-		Optional<ProductResponse> findProduct = productList.stream()
-				.filter(v -> v.getProductNo() == productNo)
-				.findFirst();
-
-		if(findProduct.isEmpty()){
+		ProductResponse productInfo = query.getProductInfo(productNo);
+		if(ObjectUtils.isEmpty(productInfo)){
 			throw new BusinessErrorCodeException(ErrorCode.SELECT_PRODUCT);
 		}
-		return findProduct.get();
-	}
-
-	public List<ProductResponse> selectAllProductList(){
-		return query.selectAllProductList();
+		return productInfo;
 	}
 
 	public List<Integer> selectContractGuaranteeMappingNoList(int contractNo){
@@ -53,20 +44,12 @@ public class InsuranceSelectService {
 	}
 
 	public List<GuaranteeResponse> selectGuaranteeList(List<Integer> guaranteeNoList){
-		List<GuaranteeResponse> allGuaranteeList = selectAllGuaranteeList();
-		List<GuaranteeResponse> guaranteeList = allGuaranteeList.stream()
-				.filter(v -> guaranteeNoList.contains(v.getGuaranteeNo()))
-				.collect(Collectors.toList());
-
+		List<GuaranteeResponse> guaranteeList = query.selectGuaranteeList(guaranteeNoList);
 		if(CollectionUtils.isEmpty(guaranteeList)){
 			throw new BusinessErrorCodeException(ErrorCode.SELECT_GUARANTEE_LIST);
 		}
 
 		return guaranteeList;
-	}
-
-	public List<GuaranteeResponse> selectAllGuaranteeList(){
-		return query.selectAllGuaranteeList();
 	}
 
 	public double getTotalAmount(int contractNo){
