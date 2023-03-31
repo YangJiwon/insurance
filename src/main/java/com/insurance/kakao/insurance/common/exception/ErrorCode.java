@@ -15,6 +15,7 @@ public enum ErrorCode {
 	INSERT_GUARANTEE_OF_CONTRACT(HttpStatus.BAD_REQUEST, "계약 담보 생성에 실패하였습니다"),
 	SELECT_CONTRACT_GUARANTEE_MAPPING_NO_LIST(HttpStatus.BAD_REQUEST, "담보 번호 리스트 조회에 실패하였습니다"),
 	DELETE_GUARANTEE_OF_CONTRACT(HttpStatus.INTERNAL_SERVER_ERROR, "계약 담보 삭제에 실패하였습니다"),
+	NOT_VALID_START_DATE(HttpStatus.BAD_REQUEST, "시작일은 오늘보다 이전일 수 없습니다"),
 	NOT_VALID_END_DATE(HttpStatus.BAD_REQUEST, "종료일은 오늘보다 이전일 수 없습니다"),
 	UPDATE_CONTRACT_PERIOD(HttpStatus.INTERNAL_SERVER_ERROR, "계약 기간 업데이트에 실패하였습니다"),
 	UPDATE_CONTRACT_STATUS(HttpStatus.INTERNAL_SERVER_ERROR, "계약 상태 업데이트에 실패하였습니다"),

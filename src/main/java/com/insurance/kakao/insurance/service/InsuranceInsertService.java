@@ -30,9 +30,9 @@ public class InsuranceInsertService {
 
 	@Transactional
 	public Integer createContract(CreateContractRequest contract) {
-		LocalDate endDate = contract.getInsuranceEndDate();
-		if (LocalDate.now().isAfter(endDate)) {
-			throw new BusinessErrorCodeException(ErrorCode.NOT_VALID_END_DATE);
+		LocalDate startDate = contract.getInsuranceStartDate();
+		if (startDate.isBefore(LocalDate.now())) {
+			throw new BusinessErrorCodeException(ErrorCode.NOT_VALID_START_DATE);
 		}
 
 		int contractPeriod = contract.getContractPeriod();
@@ -58,8 +58,8 @@ public class InsuranceInsertService {
 				.productName(product.getProductName())
 				.totalAmount(totalAmount)
 				.confirmStatus(ContractStatusEnum.NORMAL.getStatus())
-				.insuranceStartDate(contract.getInsuranceStartDate())
-				.insuranceEndDate(endDate)
+				.insuranceStartDate(startDate)
+				.insuranceEndDate(contract.getInsuranceEndDate())
 				.guaranteeNoList(guaranteeNoList)
 				.build();
 
