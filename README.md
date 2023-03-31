@@ -1,5 +1,5 @@
 # With Springboot framework
-Spring Boot, JAVA 11, MyBatis, Swagger3, H2, Caffeine cache를 사용하였습니다.
+Spring Boot, JAVA 11, MyBatis, Swagger3, H2를 사용하였습니다.
 
 # Local Mac 기준 선행조건 순서 Intellij 기준 Setup
 1. https://github.com/kakao-insurance-quiz/20230327-yjw.git main 브랜치로 내려받기 하시면 됩니다.
@@ -128,10 +128,7 @@ API 목록 및 테스트는 http://localhost:8080/swagger-ui/index.html#/  에�
 <img width="397" alt="image" src="https://user-images.githubusercontent.com/9064323/229110164-a8e29f06-931c-4d47-92c0-ad265a61a2ae.png">
 
 # 참고 사항
-1. 상품/담보 데이터의 경우 잦은 추가 및 수정은 일어나지 않을 것으로 판단했습니다. 
-이에 상품/담보 관련 데이터 조회시 전체 상품/담보 데이터를 조회하는 로직에 캐시를 사용했고, 
-전체 데이터 내에서 특정 상품/담보 정보를 조회할 수 있게 구현했습니다.
-상품/담보 수정 로직은 현재 존재하지 않는 스펙이라, 상품/담보 추가 API 호출시 해당 캐시를 제거하는 로직을 넣었습니다.
+1. 
 
 2. 안내장 발송 기능의 경우 배치를 활용할 수도 있지만 심플하게 @Scheduled 어노테이션을 사용하였습니다.
 매일 자정에 일주일 남은 계약들을 조회해 안내장 발송을 대신하는 로그를 남겼습니다.
