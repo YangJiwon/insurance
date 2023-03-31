@@ -62,7 +62,7 @@ API 목록 및 테스트는 http://localhost:8080/swagger-ui/index.html#/  에�
 <img width="366" alt="image" src="https://user-images.githubusercontent.com/9064323/229109768-5c304cd1-befc-49bd-9d39-a0942fe717c0.png">
 
 * 계약기간 변경 API (PUT /contract/period)
-> 계약 종료일 변경이 가능합니다. 계약 기간을 요청값으로 받아 계약 시작일 기준으로 종료일을 재계산합니다.
+> 계약 종료일 변경이 가능합니다. 변경할 기간을 요청값으로 받아 계약 시작일 기준으로 종료일을 재계산합니다.
 ```
 만료 상태의 계약은 기간 변경이 불가합니다.
 현재 계약기간과 동일한 입력값이라면 수정 로직을 수행하지 않습니다.
@@ -72,7 +72,7 @@ API 목록 및 테스트는 http://localhost:8080/swagger-ui/index.html#/  에�
 <img width="363" alt="image" src="https://user-images.githubusercontent.com/9064323/229109860-54cec48c-2824-46ef-86fa-1927a2c9a9d6.png">
 
 * 계약상태 변경 API (PUT /contract/status)
-> 계약 상태 변경이 가능합니다. 계약 상태를 요청값으로 받아 계약상태를 변경합니다.
+> 계약 상태 변경이 가능합니다. 변경할 상태를 요청값으로 받아 계약상태를 변경합니다.
 ```
 만료 상태의 계약은 상태 변경이 불가합니다.
 현재 계약상태와 동일한 입력값이라면 수정 로직을 수행하지 않습니다.
