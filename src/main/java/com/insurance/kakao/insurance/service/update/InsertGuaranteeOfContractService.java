@@ -23,7 +23,7 @@ class InsertGuaranteeOfContractService implements InsuranceModifiable {
 	public void update(UpdateContract updateContract) {
 		List<Integer> guaranteeNoList = updateContract.getGuaranteeNoList();
 		if(command.insertGuaranteeOfContract(updateContract.getContractNo(), guaranteeNoList) != guaranteeNoList.size()){
-			throw new BusinessErrorCodeException(ErrorCode.ERROR10);
+			throw new BusinessErrorCodeException(ErrorCode.INSERT_GUARANTEE_OF_CONTRACT);
 		}
 	}
 
@@ -32,25 +32,15 @@ class InsertGuaranteeOfContractService implements InsuranceModifiable {
 		int contractNo = updateContract.getContractNo();
 		List<Integer> guaranteeNoList = updateContract.getGuaranteeNoList();
 
-		List<GuaranteeResponse> requestGuaranteeList = insuranceSelectService.selectGuaranteeList(guaranteeNoList);
-		if(requestGuaranteeList.size() != guaranteeNoList.size()){
-			throw new BusinessErrorCodeException(ErrorCode.ERROR19);
-		}
-
-		if(isOtherProduct(requestGuaranteeList, contractNo)){
-			throw new BusinessErrorCodeException(ErrorCode.ERROR14);
+		int productNo = insuranceSelectService.getContractInfo(contractNo).getProductNo();
+		long notExistGuaranteeCount = insuranceSelectService.getNotExistGuaranteeCount(productNo, guaranteeNoList);
+		if(notExistGuaranteeCount > 0){
+			throw new BusinessErrorCodeException(ErrorCode.NOT_VALID_GUARANTEE);
 		}
 
 		if(isContainGuarantee(contractNo, guaranteeNoList)){
-			throw new BusinessErrorCodeException(ErrorCode.ERROR15);
+			throw new BusinessErrorCodeException(ErrorCode.ALREADY_EXIST_GUARANTEE);
 		}
-	}
-
-	private boolean isOtherProduct(List<GuaranteeResponse> requestGuaranteeList, int contractNo){
-		int productNo = insuranceSelectService.getContractInfo(contractNo).getProductNo();
-		return requestGuaranteeList.stream()
-				.map(GuaranteeResponse::getProductNo)
-				.anyMatch(v -> v != productNo);
 	}
 
 	private boolean isContainGuarantee(int contractNo, List<Integer> guaranteeNoList){

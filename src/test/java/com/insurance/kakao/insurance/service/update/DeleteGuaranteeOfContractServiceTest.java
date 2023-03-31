@@ -70,7 +70,7 @@ class DeleteGuaranteeOfContractServiceTest {
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					deleteGuaranteeOfContractService.validation(updateContract));
 
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR16);
+			assertEquals(exception.getErrorCode(), ErrorCode.NOT_VALID_DELETE_REQUEST);
 		}
 	}
 
@@ -96,7 +96,7 @@ class DeleteGuaranteeOfContractServiceTest {
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					deleteGuaranteeOfContractService.update(updateContract));
 
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR9);
+			assertEquals(exception.getErrorCode(), ErrorCode.DELETE_GUARANTEE_OF_CONTRACT);
 		}
 	}
 

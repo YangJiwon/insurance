@@ -28,7 +28,7 @@ class UpdateContractPeriodService implements InsuranceModifiable {
 		LocalDate endDate = getEndDate(contractNo, contractPeriod);
 
 		if(command.updateContractPeriod(contractNo, endDate, contractPeriod) != 1){
-			throw new BusinessErrorCodeException(ErrorCode.ERROR12);
+			throw new BusinessErrorCodeException(ErrorCode.UPDATE_CONTRACT_PERIOD);
 		}
 	}
 
@@ -40,18 +40,18 @@ class UpdateContractPeriodService implements InsuranceModifiable {
 		ContractResponse contract = insuranceSelectService.getContractInfo(contractNo);
 		int curContractPeriod = contract.getContractPeriod();
 		if(curContractPeriod == contractPeriod){
-			throw new BusinessErrorCodeException(ErrorCode.ERROR23);
+			throw new BusinessErrorCodeException(ErrorCode.SAME_CONTRACT_PERIOD);
 		}
 
 		int productNo = contract.getProductNo();
 		ProductResponse product = insuranceSelectService.getProductInfo(productNo);
 		if(product.isNotValidPeriod(contractPeriod)){
-			throw new BusinessErrorCodeException(ErrorCode.ERROR3);
+			throw new BusinessErrorCodeException(ErrorCode.NOT_VALID_CONTRACT_PERIOD);
 		}
 
 		LocalDate endDate = getEndDate(contract, contractPeriod);
 		if(LocalDate.now().isAfter(endDate)){
-			throw new BusinessErrorCodeException(ErrorCode.ERROR11);
+			throw new BusinessErrorCodeException(ErrorCode.NOT_VALID_END_DATE);
 		}
 	}
 

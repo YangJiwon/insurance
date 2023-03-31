@@ -34,6 +34,7 @@ public class CreateProductRequest {
 	@Schema(description = "담보 리스트")
 	private List<CreateGuaranteeRequest> guaranteeRequestList;
 
+	@Min(1)
 	@Schema(description = "상품 번호", hidden = true)
 	private int productNo;
 }

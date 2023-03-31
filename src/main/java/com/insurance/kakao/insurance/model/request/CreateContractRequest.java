@@ -35,6 +35,10 @@ public class CreateContractRequest {
 	@Schema(description = "계약 기간", example = "2")
 	private int contractPeriod;
 
+	@Min(1)
+	@Schema(description = "상품 번호", example = "1")
+	private int productNo;
+
 	@NotEmpty
 	@Schema(description = "담보 번호 리스트")
 	private List<Integer> guaranteeNoList;

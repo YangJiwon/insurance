@@ -57,7 +57,7 @@ class UpdateContractServiceTest {
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					insuranceUpdateService.updateContract(updateContract));
 
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR17);
+			assertEquals(exception.getErrorCode(), ErrorCode.UPDATE_EXPIRE_CONTRACT);
 		}
 	}
 
@@ -86,7 +86,7 @@ class UpdateContractServiceTest {
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					insuranceUpdateService.updateContract(updateContract));
 
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR20);
+			assertEquals(exception.getErrorCode(), ErrorCode.UPDATE_TOTAL_AMOUNT);
 		}
 	}
 }

@@ -56,7 +56,7 @@ class UpdateContractPeriodServiceTest {
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					updateContractPeriodService.validation(updateContract));
 
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR23);
+			assertEquals(exception.getErrorCode(), ErrorCode.SAME_CONTRACT_PERIOD);
 		}
 
 		@Test
@@ -80,7 +80,7 @@ class UpdateContractPeriodServiceTest {
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					updateContractPeriodService.validation(updateContract));
 
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR3);
+			assertEquals(exception.getErrorCode(), ErrorCode.NOT_VALID_CONTRACT_PERIOD);
 		}
 
 		@Test
@@ -94,7 +94,7 @@ class UpdateContractPeriodServiceTest {
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					updateContractPeriodService.validation(updateContract));
 
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR11);
+			assertEquals(exception.getErrorCode(), ErrorCode.NOT_VALID_END_DATE);
 		}
 
 		@Test
@@ -131,7 +131,7 @@ class UpdateContractPeriodServiceTest {
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					updateContractPeriodService.update(updateContract));
 
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR12);
+			assertEquals(exception.getErrorCode(), ErrorCode.UPDATE_CONTRACT_PERIOD);
 		}
 	}
 

@@ -20,7 +20,7 @@ class UpdateContractStatusService implements InsuranceModifiable {
 	@Override
 	public void update(UpdateContract updateContract) {
 		if(command.updateContractStatus(updateContract.getContractNo(), updateContract.getContractStatusValue()) != 1){
-			throw new BusinessErrorCodeException(ErrorCode.ERROR13);
+			throw new BusinessErrorCodeException(ErrorCode.UPDATE_CONTRACT_STATUS);
 		}
 	}
 
@@ -30,7 +30,7 @@ class UpdateContractStatusService implements InsuranceModifiable {
 		ContractResponse contract = insuranceSelectService.getContractInfo(contractNo);
 		String curContractStatus = contract.getContractStatus();
 		if(curContractStatus.equals(updateContract.getContractStatusValue())){
-			throw new BusinessErrorCodeException(ErrorCode.ERROR24);
+			throw new BusinessErrorCodeException(ErrorCode.SAME_CONTRACT_STATUS);
 		}
 	}
 }

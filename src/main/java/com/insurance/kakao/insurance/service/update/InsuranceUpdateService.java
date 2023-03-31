@@ -26,7 +26,7 @@ public class InsuranceUpdateService {
 		int contractNo = updateContract.getContractNo();
 		String status = insuranceSelectService.getContractInfo(contractNo).getContractStatus();
 		if(ContractStatusEnum.isExpire(status)){
-			throw new BusinessErrorCodeException(ErrorCode.ERROR17);
+			throw new BusinessErrorCodeException(ErrorCode.UPDATE_EXPIRE_CONTRACT);
 		}
 
 		InsuranceModifiable insuranceModifiable = insuranceModifiableMap.get(updateContract.getServiceName());
@@ -35,7 +35,7 @@ public class InsuranceUpdateService {
 
 		double totalAmount = insuranceSelectService.getTotalAmount(contractNo);
 		if(command.updateTotalAmount(contractNo, totalAmount) != 1){
-			throw new BusinessErrorCodeException(ErrorCode.ERROR20);
+			throw new BusinessErrorCodeException(ErrorCode.UPDATE_TOTAL_AMOUNT);
 		}
 	}
 }

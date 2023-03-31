@@ -18,7 +18,6 @@
     <select id="selectAllGuaranteeList" resultMap="guaranteeResponse">
         SELECT GUARANTEE_NO AS guaranteeNo,
                GUARANTEE_NAME AS guaranteeName,
-               PRODUCT_NO AS productNo,
                SUBSCRIPTION_AMOUNT AS subscriptionAmount,
                STANDARD_AMOUNT AS standardAmount
         FROM GUARANTEE
@@ -61,5 +60,11 @@
         SELECT CONTRACT_NO
         FROM CONTRACT
         WHERE INSURANCE_END_DATE = #{targetExpireDate}
+    </select>
+
+    <select id="selectGuaranteeMappingList" resultType="Integer">
+        SELECT GUARANTEE_NO
+        FROM PRODUCT_GUARANTEE
+        WHERE PRODUCT_NO = #{productNo}
     </select>
 </mapper>

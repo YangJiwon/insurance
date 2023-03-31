@@ -51,11 +51,19 @@
                      VALUES(#{productName}, #{minPeriod}, #{maxPeriod})
     </insert>
 
-    <insert id ="insertGuarantee">
-        INSERT INTO GUARANTEE(GUARANTEE_NAME, PRODUCT_NO, SUBSCRIPTION_AMOUNT, STANDARD_AMOUNT)
+    <insert id ="insertGuarantee" parameterType="java.util.List" useGeneratedKeys="true" keyColumn="GUARANTEE_NO" keyProperty="createGuaranteeList.guaranteeNo">
+        INSERT INTO GUARANTEE(GUARANTEE_NAME, SUBSCRIPTION_AMOUNT, STANDARD_AMOUNT)
         VALUES
-        <foreach collection="createGuaranteeList" item="guarantee"  separator=",">
-            (#{guarantee.guaranteeName}, #{productNo}, #{guarantee.subscriptionAmount}, #{guarantee.standardAmount})
+        <foreach collection="createGuaranteeList" item="guarantee" separator=",">
+            (#{guarantee.guaranteeName}, #{guarantee.subscriptionAmount}, #{guarantee.standardAmount})
+        </foreach>
+    </insert>
+
+    <insert id ="insertGuaranteeOfProduct">
+        INSERT INTO PRODUCT_GUARANTEE(PRODUCT_NO, GUARANTEE_NO)
+        VALUES
+        <foreach collection="guaranteeNoList" item="no"  separator=",">
+            (#{productNo}, #{no})
         </foreach>
     </insert>
 </mapper>

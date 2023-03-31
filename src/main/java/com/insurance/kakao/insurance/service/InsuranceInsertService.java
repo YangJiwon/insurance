@@ -2,10 +2,10 @@
 
  import java.time.LocalDate;
  import java.util.List;
+ import java.util.stream.Collectors;
 
  import org.springframework.stereotype.Service;
  import org.springframework.transaction.annotation.Transactional;
- import org.springframework.util.ObjectUtils;
 
  import com.insurance.kakao.insurance.common.CacheKeyConstants;
  import com.insurance.kakao.insurance.common.exception.BusinessErrorCodeException;
@@ -32,21 +32,25 @@ public class InsuranceInsertService {
 	public Integer createContract(CreateContractRequest contract) {
 		LocalDate endDate = contract.getInsuranceEndDate();
 		if (LocalDate.now().isAfter(endDate)) {
-			throw new BusinessErrorCodeException(ErrorCode.ERROR11);
+			throw new BusinessErrorCodeException(ErrorCode.NOT_VALID_END_DATE);
 		}
+
+		int contractPeriod = contract.getContractPeriod();
+		int productNo = contract.getProductNo();
 
 		List<Integer> guaranteeNoList = contract.getGuaranteeNoList();
-		List<GuaranteeResponse> guaranteeList = insuranceSelectService.selectGuaranteeList(guaranteeNoList);
-
-		int productNo = guaranteeList.get(0).getProductNo();
-		int contractPeriod = contract.getContractPeriod();
-		double totalAmount = insuranceSelectService.getTotalAmount(guaranteeList, contractPeriod);
-
-		ProductResponse product = insuranceSelectService.getProductInfo(productNo);
-		if(product.isNotValidPeriod(contractPeriod)){
-			throw new BusinessErrorCodeException(ErrorCode.ERROR3);
+		long notExistGuaranteeCount = insuranceSelectService.getNotExistGuaranteeCount(productNo, guaranteeNoList);
+		if(notExistGuaranteeCount > 0){
+			throw new BusinessErrorCodeException(ErrorCode.NOT_VALID_GUARANTEE);
 		}
 
+		List<GuaranteeResponse> guaranteeList = insuranceSelectService.selectGuaranteeList(guaranteeNoList);
+		ProductResponse product = insuranceSelectService.getProductInfo(productNo);
+		if(product.isNotValidPeriod(contractPeriod)) {
+			throw new BusinessErrorCodeException(ErrorCode.NOT_VALID_CONTRACT_PERIOD);
+		}
+
+		double totalAmount = insuranceSelectService.getTotalAmount(guaranteeList, contractPeriod);
 		CreateContract createContract = CreateContract.builder()
 				.contractName(contract.getContractName())
 				.contractPeriod(contractPeriod)
@@ -60,12 +64,12 @@ public class InsuranceInsertService {
 				.build();
 
 		if (command.insertContract(createContract) != 1) {
-			throw new BusinessErrorCodeException(ErrorCode.ERROR1);
+			throw new BusinessErrorCodeException(ErrorCode.INSERT_CONTRACT);
 		}
 
 		int contractNo = createContract.getContractNo();
 		if (command.insertGuaranteeOfContract(contractNo, guaranteeNoList) != guaranteeNoList.size()) {
-			throw new BusinessErrorCodeException(ErrorCode.ERROR7);
+			throw new BusinessErrorCodeException(ErrorCode.INSERT_GUARANTEE_OF_CONTRACT);
 		}
 
 		return contractNo;
@@ -74,28 +78,34 @@ public class InsuranceInsertService {
 	@Transactional
 	public void createProduct(CreateProductRequest createProduct) {
 		if(command.insertProduct(createProduct) != 1){
-			throw new BusinessErrorCodeException(ErrorCode.ERROR21);
+			throw new BusinessErrorCodeException(ErrorCode.INSERT_PRODUCT);
 		}
 
-		List<CreateGuaranteeRequest> createGuaranteeList = createProduct.getGuaranteeRequestList();
-		if(command.insertGuarantee(createProduct.getProductNo(), createGuaranteeList) != createGuaranteeList.size()){
-			throw new BusinessErrorCodeException(ErrorCode.ERROR22);
-		}
+		int productNo = createProduct.getProductNo();
+		List<CreateGuaranteeRequest> guaranteeList = createProduct.getGuaranteeRequestList();
 
+		insertGuarantee(productNo, guaranteeList);
 		cacheService.removeCacheByName(CacheKeyConstants.PRODUCT);
 	}
 
 	@Transactional
-	public void createGuarantee(int productNo, List<CreateGuaranteeRequest> createGuaranteeList) {
+	public void createGuarantee(int productNo, List<CreateGuaranteeRequest> guaranteeList) {
 		ProductResponse product = insuranceSelectService.getProductInfo(productNo);
-		if(ObjectUtils.isEmpty(product)){
-			throw new BusinessErrorCodeException(ErrorCode.ERROR2);
-		}
-
-		if(command.insertGuarantee(productNo, createGuaranteeList) != createGuaranteeList.size()){
-			throw new BusinessErrorCodeException(ErrorCode.ERROR22);
-		}
-
+		insertGuarantee(product.getProductNo(), guaranteeList);
 		cacheService.removeCacheByName(CacheKeyConstants.GUARANTEE);
+	}
+
+	private void insertGuarantee(int productNo, List<CreateGuaranteeRequest> guaranteeList){
+		if(command.insertGuarantee(productNo, guaranteeList) != guaranteeList.size()){
+			throw new BusinessErrorCodeException(ErrorCode.INSERT_GUARANTEE);
+		}
+
+		List<Integer> guaranteeNoList = guaranteeList.stream()
+				.map(CreateGuaranteeRequest::getGuaranteeNo)
+				.collect(Collectors.toList());
+
+		if(command.insertGuaranteeOfProduct(productNo, guaranteeNoList) != guaranteeNoList.size()){
+			throw new BusinessErrorCodeException(ErrorCode.CREATE_GUARANTEE_MAPPING);
+		}
 	}
 }

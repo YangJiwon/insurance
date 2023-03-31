@@ -30,7 +30,7 @@ public class InsuranceSelectService {
 				.findFirst();
 
 		if(findProduct.isEmpty()){
-			throw new BusinessErrorCodeException(ErrorCode.ERROR2);
+			throw new BusinessErrorCodeException(ErrorCode.SELECT_PRODUCT);
 		}
 		return findProduct.get();
 	}
@@ -42,7 +42,7 @@ public class InsuranceSelectService {
 	public List<Integer> selectGuaranteeNoList(int contractNo){
 		List<Integer> guaranteeNoList = query.selectGuaranteeNoList(contractNo);
 		if(CollectionUtils.isEmpty(guaranteeNoList)){
-			throw new BusinessErrorCodeException(ErrorCode.ERROR8);
+			throw new BusinessErrorCodeException(ErrorCode.SELECT_GUARANTEE_NO_LIST);
 		}
 		return guaranteeNoList;
 	}
@@ -59,24 +59,14 @@ public class InsuranceSelectService {
 				.collect(Collectors.toList());
 
 		if(CollectionUtils.isEmpty(guaranteeList)){
-			throw new BusinessErrorCodeException(ErrorCode.ERROR4);
+			throw new BusinessErrorCodeException(ErrorCode.SELECT_GUARANTEE_LIST);
 		}
 
-		if(isNotSameProduct(guaranteeList)){
-			throw new BusinessErrorCodeException(ErrorCode.ERROR5);
-		}
 		return guaranteeList;
 	}
 
 	public List<GuaranteeResponse> selectAllGuaranteeList(){
 		return query.selectAllGuaranteeList();
-	}
-
-	private boolean isNotSameProduct(List<GuaranteeResponse> guaranteeList){
-		return guaranteeList.stream()
-					   .map(GuaranteeResponse::getProductNo)
-					   .distinct()
-					   .count() != 1;
 	}
 
 	public double getTotalAmount(int contractNo){
@@ -95,21 +85,34 @@ public class InsuranceSelectService {
 	public ContractResponse getContractInfo(int contractNo){
 		ContractResponse contractResponse = query.getContractInfo(contractNo);
 		if(ObjectUtils.isEmpty(contractResponse)){
-			throw new BusinessErrorCodeException(ErrorCode.ERROR18);
+			throw new BusinessErrorCodeException(ErrorCode.SELECT_CONTRACT);
 		}
 		return contractResponse;
 	}
 
-
-
 	public ContractDetailResponse getContractDetail(int contractNo){
 		ContractDetailResponse contractDetailResponse = query.getContractDetail(contractNo);
 		if(ObjectUtils.isEmpty(contractDetailResponse)){
-			throw new BusinessErrorCodeException(ErrorCode.ERROR18);
+			throw new BusinessErrorCodeException(ErrorCode.SELECT_CONTRACT);
 		}
 
 		return contractDetailResponse.toBuilder()
 				.guaranteeNameList(this.selectGuaranteeList(contractNo))
 				.build();
+	}
+
+	public List<Integer> selectGuaranteeMappingList(int productNo){
+		List<Integer> mappingList = query.selectGuaranteeMappingList(productNo);
+		if(CollectionUtils.isEmpty(mappingList)){
+			throw new BusinessErrorCodeException(ErrorCode.SELECT_GUARANTEE_MAPPING_LIST);
+		}
+		return mappingList;
+	}
+
+	public long getNotExistGuaranteeCount(int productNo, List<Integer> guaranteeNoList){
+		List<Integer> guaranteeMappingList = this.selectGuaranteeMappingList(productNo);
+		return guaranteeNoList.stream()
+				.filter(v -> !guaranteeMappingList.contains(v))
+				.count();
 	}
 }

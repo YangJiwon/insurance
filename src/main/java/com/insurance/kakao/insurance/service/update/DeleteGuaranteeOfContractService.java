@@ -22,7 +22,7 @@ class DeleteGuaranteeOfContractService implements InsuranceModifiable {
 	public void update(UpdateContract updateContract) {
 		List<Integer> guaranteeNoList = updateContract.getGuaranteeNoList();
 		if(command.deleteGuaranteeOfContract(updateContract.getContractNo(), guaranteeNoList) != guaranteeNoList.size()){
-			throw new BusinessErrorCodeException(ErrorCode.ERROR9);
+			throw new BusinessErrorCodeException(ErrorCode.DELETE_GUARANTEE_OF_CONTRACT);
 		}
 	}
 
@@ -32,7 +32,7 @@ class DeleteGuaranteeOfContractService implements InsuranceModifiable {
 		int curSize = guaranteeNoList.size();
 		int requestSize = updateContract.getGuaranteeNoSize();
 		if(curSize <= requestSize){
-			throw new BusinessErrorCodeException(ErrorCode.ERROR16);
+			throw new BusinessErrorCodeException(ErrorCode.NOT_VALID_DELETE_REQUEST);
 		}
 	}
 }

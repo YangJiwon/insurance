@@ -29,4 +29,8 @@ public class CreateGuaranteeRequest {
 
 	@Schema(description = "상품번호", hidden = true)
 	private int productNo;
+
+	@Schema(description = "담보번호", hidden = true)
+	private int guaranteeNo;
+
 }

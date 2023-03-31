@@ -38,16 +38,16 @@ class InsuranceSelectServiceTest {
 	final List<Integer> guaranteeNoList = List.of(1,2);
 
 	final List<GuaranteeResponse> guaranteeAllList = List.of(
-			new GuaranteeResponse(1, "테스트담보", 1, 10000, 100),
-			new GuaranteeResponse(2, "테스트담보2", 1, 20000, 200),
-			new GuaranteeResponse(3, "테스트담보3", 1, 30000, 400),
-			new GuaranteeResponse(4, "테스트담보4", 1, 40000, 500),
-			new GuaranteeResponse(5, "테스트담보5", 2, 50000, 500)
+			new GuaranteeResponse(1, "테스트담보", 10000, 100),
+			new GuaranteeResponse(2, "테스트담보2", 20000, 200),
+			new GuaranteeResponse(3, "테스트담보3", 30000, 400),
+			new GuaranteeResponse(4, "테스트담보4",  40000, 500),
+			new GuaranteeResponse(5, "테스트담보5",  50000, 500)
 	);
 
 	final List<GuaranteeResponse> guaranteeList = List.of(
-			new GuaranteeResponse(1, "테스트담보", 1, 10000, 100),
-			new GuaranteeResponse(2, "테스트담보2", 1, 20000, 200)
+			new GuaranteeResponse(1, "테스트담보",  10000, 100),
+			new GuaranteeResponse(2, "테스트담보2",  20000, 200)
 	);
 
 	final ContractDetailResponse contractDetailResponse = new ContractDetailResponse(1, "테스트 계약", 2,
@@ -86,7 +86,7 @@ class InsuranceSelectServiceTest {
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					insuranceSelectService.getProductInfo(notExistProductNo));
 
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR2);
+			assertEquals(exception.getErrorCode(), ErrorCode.SELECT_PRODUCT);
 		}
 	}
 
@@ -111,7 +111,7 @@ class InsuranceSelectServiceTest {
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					insuranceSelectService.selectGuaranteeNoList(contractNo));
 
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR8);
+			assertEquals(exception.getErrorCode(), ErrorCode.SELECT_GUARANTEE_NO_LIST);
 		}
 	}
 
@@ -139,20 +139,7 @@ class InsuranceSelectServiceTest {
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					insuranceSelectService.selectGuaranteeList(notExistGuaranteeNoList));
 
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR4);
-		}
-
-		@Test
-		@DisplayName("2개 이상의 담보 리스트가 조회")
-		void otherProductGuaranteeList() {
-			final List<Integer> otherProductGuaranteeNoList = List.of(1,5);
-
-			given(query.selectAllGuaranteeList()).willReturn(guaranteeAllList);
-
-			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
-					insuranceSelectService.selectGuaranteeList(otherProductGuaranteeNoList));
-
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR5);
+			assertEquals(exception.getErrorCode(), ErrorCode.SELECT_GUARANTEE_LIST);
 		}
 	}
 
@@ -186,7 +173,7 @@ class InsuranceSelectServiceTest {
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					insuranceSelectService.getContractInfo(contractNo));
 
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR18);
+			assertEquals(exception.getErrorCode(), ErrorCode.SELECT_CONTRACT);
 		}
 	}
 
@@ -210,7 +197,56 @@ class InsuranceSelectServiceTest {
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					insuranceSelectService.getContractDetail(contractNo));
 
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR18);
+			assertEquals(exception.getErrorCode(), ErrorCode.SELECT_CONTRACT);
+		}
+	}
+
+	@Nested
+	@DisplayName("담보 매핑 정보 조회")
+	class SelectGuaranteeMappingList {
+		final List<Integer> mappingList = List.of(1,2,3);
+
+		@Test
+		@DisplayName("담보 매핑 정보 조회 성공")
+		void guaranteeMapping() {
+			given(query.selectGuaranteeMappingList(productNo)).willReturn(mappingList);
+
+			assertDoesNotThrow(() -> insuranceSelectService.selectGuaranteeMappingList(productNo));
+		}
+
+		@Test
+		@DisplayName("담보 매핑 정보 조회 실패")
+		void emptyGuaranteeMapping() {
+			given(query.selectGuaranteeMappingList(productNo)).willReturn(null);
+
+			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
+					insuranceSelectService.selectGuaranteeMappingList(contractNo));
+
+			assertEquals(exception.getErrorCode(), ErrorCode.SELECT_GUARANTEE_MAPPING_LIST);
+		}
+
+		@Test
+		@DisplayName("담보 매핑정보에 없는 담보 갯수 조회")
+		void notExistGuaranteeList() {
+			final List<Integer> notExistGuaranteeNoList = List.of(4,5);
+
+			given(query.selectGuaranteeMappingList(productNo)).willReturn(mappingList);
+
+			long count = insuranceSelectService.getNotExistGuaranteeCount(productNo, notExistGuaranteeNoList);
+
+			assertEquals(count, notExistGuaranteeNoList.size());
+		}
+
+		@Test
+		@DisplayName("담보 매핑정보에 있는 담보 갯수 조회")
+		void existGuaranteeList() {
+			final List<Integer> guaranteeNoList = List.of(1,2,3);
+
+			given(query.selectGuaranteeMappingList(productNo)).willReturn(mappingList);
+
+			long count = insuranceSelectService.getNotExistGuaranteeCount(productNo, guaranteeNoList);
+
+			assertEquals(count, 0);
 		}
 	}
 }

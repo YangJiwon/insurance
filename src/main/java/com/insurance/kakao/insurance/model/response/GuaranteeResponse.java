@@ -15,9 +15,6 @@ public class GuaranteeResponse {
 	@Schema(description = "담보명", example = "상해치료비")
 	private String guaranteeName;
 
-	@Schema(description = "상품번호", example = "2")
-	private int productNo;
-
 	@Schema(description = "가입금액", example = "1000000")
 	private double subscriptionAmount;
 

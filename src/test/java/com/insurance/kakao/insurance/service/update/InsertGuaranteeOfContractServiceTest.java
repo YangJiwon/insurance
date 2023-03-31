@@ -42,59 +42,41 @@ class InsertGuaranteeOfContractServiceTest {
 		final List<Integer> requestGuaranteeNoList = List.of(1,2);
 		final UpdateContract updateContract = getUpdateContract(requestGuaranteeNoList);
 		final ContractResponse contractResponse = new ContractResponse(LocalDate.parse("2023-03-23"), contractNo, 1, ContractStatusEnum.NORMAL.getStatus());
+		final int productNo = 1;
+		final List<GuaranteeResponse> requestGuaranteeList = List.of(
+				new GuaranteeResponse(1, "테스트담보", 10000, 100),
+				new GuaranteeResponse(2, "테스트담보2",  20000, 200)
+		);
 
 		@Test
-		@DisplayName("등록하려는 담보 리스트에 없는 담보 존재")
-		void notExistGuarantee() {
-			final List<GuaranteeResponse> notExistGuaranteeList = List.of(
-					new GuaranteeResponse(1, "테스트담보", 1, 10000, 100)
-			);
-
-			given(selectService.selectGuaranteeList(requestGuaranteeNoList)).willReturn(notExistGuaranteeList);
-
-			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
-					insertGuaranteeOfContractService.validation(updateContract));
-
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR19);
-		}
-
-		@Test
-		@DisplayName("등록하려는 담보 리스트에 현재 상품과 맞지 않는 담보 존재")
+		@DisplayName("등록하려는 담보 리스트가 매핑정보에 없거나 현재 상품과 맞지 않는 담보 존재")
 		void existOtherProduct() {
-			final List<GuaranteeResponse> guaranteeListHasOtherProduct = List.of(
-					new GuaranteeResponse(1, "테스트담보", 1, 10000, 100),
-					new GuaranteeResponse(2, "테스트담보2", 2, 20000, 200)
-			);
-
-			given(selectService.selectGuaranteeList(requestGuaranteeNoList)).willReturn(guaranteeListHasOtherProduct);
+			given(selectService.selectGuaranteeList(requestGuaranteeNoList)).willReturn(requestGuaranteeList);
 			given(selectService.getContractInfo(contractNo)).willReturn(contractResponse);
+			given(selectService.getNotExistGuaranteeCount(productNo, requestGuaranteeNoList)).willReturn(1L);
 
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					insertGuaranteeOfContractService.validation(updateContract));
 
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR14);
+			assertEquals(exception.getErrorCode(), ErrorCode.NOT_VALID_GUARANTEE);
 		}
 
 		@Test
 		@DisplayName("등록하려는 담보 리스트에 이미 가지고 있는 담보 존재")
 		void alreadyExistGuarantee() {
-			final List<GuaranteeResponse> requestGuaranteeList = List.of(
-					new GuaranteeResponse(1, "테스트담보", 1, 10000, 100),
-					new GuaranteeResponse(2, "테스트담보2", 1, 20000, 200)
-			);
-
 			final List<GuaranteeResponse> curGuaranteeList = List.of(
-					new GuaranteeResponse(1, "테스트담보", 1, 10000, 100)
+					new GuaranteeResponse(1, "테스트담보", 10000, 100)
 			);
 
 			given(selectService.selectGuaranteeList(requestGuaranteeNoList)).willReturn(requestGuaranteeList);
 			given(selectService.getContractInfo(contractNo)).willReturn(contractResponse);
+			given(selectService.getNotExistGuaranteeCount(productNo, requestGuaranteeNoList)).willReturn(0L);
 			given(selectService.selectGuaranteeList(contractNo)).willReturn(curGuaranteeList);
 
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					insertGuaranteeOfContractService.validation(updateContract));
 
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR15);
+			assertEquals(exception.getErrorCode(), ErrorCode.ALREADY_EXIST_GUARANTEE);
 		}
 	}
 
@@ -120,7 +102,7 @@ class InsertGuaranteeOfContractServiceTest {
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					insertGuaranteeOfContractService.update(updateContract));
 
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR10);
+			assertEquals(exception.getErrorCode(), ErrorCode.INSERT_GUARANTEE_OF_CONTRACT);
 		}
 	}
 

@@ -5,6 +5,7 @@ import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -48,30 +49,41 @@ public class InsuranceInsertServiceTest {
 		final double totalAmount = 1000230;
 		final List<Integer> guaranteeNoList = List.of(1,2,3);
 		final List<GuaranteeResponse> guaranteeList = List.of(
-				new GuaranteeResponse(1, "테스트담보", 1, 10000, 100),
-				new GuaranteeResponse(2, "테스트담보2", 1, 20000, 200),
-				new GuaranteeResponse(3, "테스트담보3", 1, 30000, 300)
+				new GuaranteeResponse(1, "테스트담보", 10000, 100),
+				new GuaranteeResponse(2, "테스트담보2", 20000, 200),
+				new GuaranteeResponse(3, "테스트담보3", 30000, 300)
 		);
-		final ProductResponse product = new ProductResponse(1, "테스트 상품", 3, 12);
-		final CreateContractRequest createContractRequest = new CreateContractRequest("계약명", LocalDate.parse("2023-03-31"), contractPeriod, guaranteeNoList);
+		final ProductResponse product = new ProductResponse(productNo, "테스트 상품", 3, 12);
+		final CreateContractRequest createContractRequest = new CreateContractRequest("계약명", LocalDate.parse("2023-03-31"), contractPeriod, productNo, guaranteeNoList);
 
 		@Test
 		@DisplayName("종료일자가 오늘 날짜보다 이전")
 		void createProductException(){
-			final CreateContractRequest isNotValidEndDate = new CreateContractRequest("계약명", LocalDate.parse("2020-03-31"), 3, guaranteeNoList);
+			final CreateContractRequest isNotValidEndDate = new CreateContractRequest("계약명", LocalDate.parse("2020-03-31"), 3, productNo, guaranteeNoList);
 
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					insuranceInsertService.createContract(isNotValidEndDate));
 
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR11);
+			assertEquals(exception.getErrorCode(), ErrorCode.NOT_VALID_END_DATE);
+		}
+
+		@Test
+		@DisplayName("상품에 포함되지 않은 담보 등록")
+		void otherProduct(){
+			given(selectService.getNotExistGuaranteeCount(productNo, guaranteeNoList)).willReturn(2L);
+			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
+					insuranceInsertService.createContract(createContractRequest));
+
+			assertEquals(exception.getErrorCode(), ErrorCode.NOT_VALID_GUARANTEE);
 		}
 
 		@Test
 		@DisplayName("계약기간이 해당 상품의 최소/최대 기간과 맞지 않을 때")
 		void isNotValidContractPeriod(){
-			final CreateContractRequest hasMinPeriod = new CreateContractRequest("계약명", LocalDate.parse("2023-03-31"), 1, guaranteeNoList);
-			final CreateContractRequest hasMaxPeriod = new CreateContractRequest("계약명", LocalDate.parse("2023-03-31"), 100, guaranteeNoList);
+			final CreateContractRequest hasMinPeriod = new CreateContractRequest("계약명", LocalDate.parse("2023-03-31"), 1, productNo, guaranteeNoList);
+			final CreateContractRequest hasMaxPeriod = new CreateContractRequest("계약명", LocalDate.parse("2023-03-31"), 100, productNo, guaranteeNoList);
 
+			given(selectService.getNotExistGuaranteeCount(productNo, guaranteeNoList)).willReturn(0L);
 			given(selectService.selectGuaranteeList(guaranteeNoList)).willReturn(guaranteeList);
 			given(selectService.getTotalAmount(guaranteeList, contractPeriod)).willReturn(totalAmount);
 			given(selectService.getProductInfo(productNo)).willReturn(product);
@@ -79,12 +91,12 @@ public class InsuranceInsertServiceTest {
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					insuranceInsertService.createContract(hasMinPeriod));
 
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR3);
+			assertEquals(exception.getErrorCode(), ErrorCode.NOT_VALID_CONTRACT_PERIOD);
 
 			exception = assertThrows(BusinessErrorCodeException.class, () ->
 					insuranceInsertService.createContract(hasMaxPeriod));
 
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR3);
+			assertEquals(exception.getErrorCode(), ErrorCode.NOT_VALID_CONTRACT_PERIOD);
 		}
 
 		final CreateContract createContract = CreateContract.builder()
@@ -102,6 +114,7 @@ public class InsuranceInsertServiceTest {
 		@Test
 		@DisplayName("계약 등록 실패")
 		void insertContractException() {
+			given(selectService.getNotExistGuaranteeCount(productNo, guaranteeNoList)).willReturn(0L);
 			given(selectService.selectGuaranteeList(guaranteeNoList)).willReturn(guaranteeList);
 			given(selectService.getTotalAmount(guaranteeList, contractPeriod)).willReturn(totalAmount);
 			given(selectService.getProductInfo(productNo)).willReturn(product);
@@ -110,12 +123,13 @@ public class InsuranceInsertServiceTest {
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					insuranceInsertService.createContract(createContractRequest));
 
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR1);
+			assertEquals(exception.getErrorCode(), ErrorCode.INSERT_CONTRACT);
 		}
 
 		@Test
 		@DisplayName("담보 등록 실패")
 		void insertGuaranteeOfContractException() {
+			given(selectService.getNotExistGuaranteeCount(productNo, guaranteeNoList)).willReturn(0L);
 			given(selectService.selectGuaranteeList(guaranteeNoList)).willReturn(guaranteeList);
 			given(selectService.getTotalAmount(guaranteeList, contractPeriod)).willReturn(totalAmount);
 			given(selectService.getProductInfo(productNo)).willReturn(product);
@@ -125,12 +139,13 @@ public class InsuranceInsertServiceTest {
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					insuranceInsertService.createContract(createContractRequest));
 
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR7);
+			assertEquals(exception.getErrorCode(), ErrorCode.INSERT_GUARANTEE_OF_CONTRACT);
 		}
 
 		@Test
 		@DisplayName("계약 등록 성공")
 		void createContract() {
+			given(selectService.getNotExistGuaranteeCount(productNo, guaranteeNoList)).willReturn(0L);
 			given(selectService.selectGuaranteeList(guaranteeNoList)).willReturn(guaranteeList);
 			given(selectService.getTotalAmount(guaranteeList, contractPeriod)).willReturn(totalAmount);
 			given(selectService.getProductInfo(productNo)).willReturn(product);
@@ -145,10 +160,13 @@ public class InsuranceInsertServiceTest {
 	@DisplayName("상품 등록")
 	class CreateProduct{
 		final List<CreateGuaranteeRequest> createGuaranteeList = List.of(
-				new CreateGuaranteeRequest("테스트 담보", 10000, 100, productNo),
-				new CreateGuaranteeRequest("테스트 담보2", 120000, 200, productNo),
-				new CreateGuaranteeRequest("테스트 담보3", 130000, 300, productNo)
+				new CreateGuaranteeRequest("테스트 담보", 10000, 100, productNo, 1),
+				new CreateGuaranteeRequest("테스트 담보2", 120000, 200, productNo, 2),
+				new CreateGuaranteeRequest("테스트 담보3", 130000, 300, productNo, 3)
 		);
+		final List<Integer> guaranteeNoList = createGuaranteeList.stream()
+				.map(CreateGuaranteeRequest::getGuaranteeNo)
+				.collect(Collectors.toList());
 		final CreateProductRequest createProduct = new CreateProductRequest("상품명", 1, 3, createGuaranteeList, productNo);
 
 		@Test
@@ -159,19 +177,7 @@ public class InsuranceInsertServiceTest {
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					insuranceInsertService.createProduct(createProduct));
 
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR21);
-		}
-
-		@Test
-		@DisplayName("담보 등록 실패")
-		void createGuaranteeException(){
-			given(command.insertProduct(createProduct)).willReturn(1);
-			given(command.insertGuarantee(productNo, createGuaranteeList)).willReturn(0);
-
-			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
-					insuranceInsertService.createProduct(createProduct));
-
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR22);
+			assertEquals(exception.getErrorCode(), ErrorCode.INSERT_PRODUCT);
 		}
 
 		@Test
@@ -179,6 +185,7 @@ public class InsuranceInsertServiceTest {
 		void createProduct(){
 			given(command.insertProduct(createProduct)).willReturn(1);
 			given(command.insertGuarantee(productNo, createGuaranteeList)).willReturn(createGuaranteeList.size());
+			given(command.insertGuaranteeOfProduct(productNo, guaranteeNoList)).willReturn(guaranteeNoList.size());
 
 			assertDoesNotThrow(() -> insuranceInsertService.createProduct(createProduct));
 		}
@@ -188,22 +195,14 @@ public class InsuranceInsertServiceTest {
 	@DisplayName("담보 등록")
 	class CreateGuarantee{
 		final List<CreateGuaranteeRequest> createGuaranteeList = List.of(
-				new CreateGuaranteeRequest("테스트 담보", 10000, 100, productNo),
-				new CreateGuaranteeRequest("테스트 담보2", 120000, 200, productNo),
-				new CreateGuaranteeRequest("테스트 담보3", 130000, 300, productNo)
+				new CreateGuaranteeRequest("테스트 담보", 10000, 100, productNo, 1),
+				new CreateGuaranteeRequest("테스트 담보2", 120000, 200, productNo, 2),
+				new CreateGuaranteeRequest("테스트 담보3", 130000, 300, productNo, 3)
 		);
+		final List<Integer> guaranteeNoList = createGuaranteeList.stream()
+				.map(CreateGuaranteeRequest::getGuaranteeNo)
+				.collect(Collectors.toList());
 		final ProductResponse product = new ProductResponse(1, "테스트 상품", 3, 12);
-
-		@Test
-		@DisplayName("상품 조회 실패")
-		void notExistProduct(){
-			given(selectService.getProductInfo(productNo)).willReturn(null);
-
-			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
-					insuranceInsertService.createGuarantee(productNo, createGuaranteeList));
-
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR2);
-		}
 
 		@Test
 		@DisplayName("담보 등록 실패")
@@ -214,7 +213,20 @@ public class InsuranceInsertServiceTest {
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					insuranceInsertService.createGuarantee(productNo, createGuaranteeList));
 
-			assertEquals(exception.getErrorCode(), ErrorCode.ERROR22);
+			assertEquals(exception.getErrorCode(), ErrorCode.INSERT_GUARANTEE);
+		}
+
+		@Test
+		@DisplayName("담보 매핑 등록 실패")
+		void createGuaranteeOfException(){
+			given(selectService.getProductInfo(productNo)).willReturn(product);
+			given(command.insertGuarantee(productNo, createGuaranteeList)).willReturn(createGuaranteeList.size());
+			given(command.insertGuaranteeOfProduct(productNo, guaranteeNoList)).willReturn(0);
+
+			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
+					insuranceInsertService.createGuarantee(productNo, createGuaranteeList));
+
+			assertEquals(exception.getErrorCode(), ErrorCode.CREATE_GUARANTEE_MAPPING);
 		}
 
 		@Test
@@ -222,6 +234,7 @@ public class InsuranceInsertServiceTest {
 		void createGuarantee(){
 			given(selectService.getProductInfo(productNo)).willReturn(product);
 			given(command.insertGuarantee(productNo, createGuaranteeList)).willReturn(createGuaranteeList.size());
+			given(command.insertGuaranteeOfProduct(productNo, guaranteeNoList)).willReturn(guaranteeNoList.size());
 
 			assertDoesNotThrow(() -> insuranceInsertService.createGuarantee(productNo, createGuaranteeList));
 		}

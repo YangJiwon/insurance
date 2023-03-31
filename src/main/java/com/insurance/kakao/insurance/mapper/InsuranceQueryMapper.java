@@ -27,4 +27,6 @@ public interface InsuranceQueryMapper {
 	ContractDetailResponse getContractDetail(int contractNo);
 
 	List<Integer> selectSendAdviceNoteList(LocalDate targetExpireDate);
+
+	List<Integer> selectGuaranteeMappingList(int productNo);
 }
