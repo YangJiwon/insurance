@@ -44,7 +44,7 @@ class InsertGuaranteeOfContractService implements InsuranceModifiable {
 	}
 
 	private boolean isContainGuarantee(int contractNo, List<Integer> guaranteeNoList){
-		List<GuaranteeResponse> curGuaranteeList = insuranceSelectService.selectGuaranteeList(contractNo);
+		List<GuaranteeResponse> curGuaranteeList = insuranceSelectService.selectContractGuaranteeList(contractNo);
 		return curGuaranteeList.stream()
 				.map(GuaranteeResponse::getGuaranteeNo)
 				.anyMatch(guaranteeNoList::contains);

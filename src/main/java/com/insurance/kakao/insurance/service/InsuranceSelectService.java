@@ -47,7 +47,7 @@ public class InsuranceSelectService {
 		return contractGuaranteeMappingNoList;
 	}
 
-	public List<GuaranteeResponse> selectGuaranteeList(int contractNo){
+	public List<GuaranteeResponse> selectContractGuaranteeList(int contractNo){
 		List<Integer> contractGuaranteeMappingNoList = this.selectContractGuaranteeMappingNoList(contractNo);
 		return this.selectGuaranteeList(contractGuaranteeMappingNoList);
 	}
@@ -70,7 +70,7 @@ public class InsuranceSelectService {
 	}
 
 	public double getTotalAmount(int contractNo){
-		List<GuaranteeResponse> guaranteeList = this.selectGuaranteeList(contractNo);
+		List<GuaranteeResponse> guaranteeList = this.selectContractGuaranteeList(contractNo);
 		int contractPeriod = this.getContractInfo(contractNo).getContractPeriod();
 		return  getTotalAmount(guaranteeList, contractPeriod);
 	}
@@ -97,7 +97,7 @@ public class InsuranceSelectService {
 		}
 
 		return contractDetailResponse.toBuilder()
-				.guaranteeNameList(this.selectGuaranteeList(contractNo))
+				.guaranteeNameList(this.selectContractGuaranteeList(contractNo))
 				.build();
 	}
 

@@ -71,7 +71,7 @@ class InsertGuaranteeOfContractServiceTest {
 			given(selectService.selectGuaranteeList(requestGuaranteeNoList)).willReturn(requestGuaranteeList);
 			given(selectService.getContractInfo(contractNo)).willReturn(contractResponse);
 			given(selectService.getNotExistGuaranteeCount(productNo, requestGuaranteeNoList)).willReturn(0L);
-			given(selectService.selectGuaranteeList(contractNo)).willReturn(curGuaranteeList);
+			given(selectService.selectContractGuaranteeList(contractNo)).willReturn(curGuaranteeList);
 
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					insertGuaranteeOfContractService.validation(updateContract));
