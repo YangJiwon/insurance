@@ -53,7 +53,7 @@ class InsertGuaranteeOfContractServiceTest {
 		void existOtherProduct() {
 			given(selectService.selectGuaranteeList(requestGuaranteeNoList)).willReturn(requestGuaranteeList);
 			given(selectService.getContractInfo(contractNo)).willReturn(contractResponse);
-			given(selectService.getNotExistGuaranteeCount(productNo, requestGuaranteeNoList)).willReturn(1L);
+			given(selectService.notExistGuaranteeCount(productNo, requestGuaranteeNoList)).willReturn(1L);
 
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					insertGuaranteeOfContractService.validation(updateContract));
@@ -70,7 +70,7 @@ class InsertGuaranteeOfContractServiceTest {
 
 			given(selectService.selectGuaranteeList(requestGuaranteeNoList)).willReturn(requestGuaranteeList);
 			given(selectService.getContractInfo(contractNo)).willReturn(contractResponse);
-			given(selectService.getNotExistGuaranteeCount(productNo, requestGuaranteeNoList)).willReturn(0L);
+			given(selectService.notExistGuaranteeCount(productNo, requestGuaranteeNoList)).willReturn(0L);
 			given(selectService.selectContractGuaranteeList(contractNo)).willReturn(curGuaranteeList);
 
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
@@ -109,7 +109,7 @@ class InsertGuaranteeOfContractServiceTest {
 	private UpdateContract getUpdateContract(List<Integer> requestGuaranteeNoList){
 		return UpdateContract.builder()
 				.contractNo(contractNo)
-				.serviceName(UpdateContractServiceEnums.INSERT_GUARANTEE.getName())
+				.serviceName(UpdateContractServiceEnum.INSERT_GUARANTEE.getName())
 				.guaranteeNoList(requestGuaranteeNoList)
 				.build();
 	}

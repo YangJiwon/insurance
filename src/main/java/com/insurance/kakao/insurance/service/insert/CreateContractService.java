@@ -39,7 +39,7 @@
 		 int productNo = createContractRequest.getProductNo();
 
 		 List<Integer> guaranteeNoList = createContractRequest.getGuaranteeNoList();
-		 long notExistGuaranteeCount = insuranceSelectService.getNotExistGuaranteeCount(productNo, guaranteeNoList);
+		 long notExistGuaranteeCount = insuranceSelectService.notExistGuaranteeCount(productNo, guaranteeNoList);
 		 if(notExistGuaranteeCount > 0){
 			 throw new BusinessErrorCodeException(ErrorCode.NOT_VALID_GUARANTEE);
 		 }

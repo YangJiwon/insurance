@@ -66,7 +66,7 @@ class CreateContractServiceTest {
 		@Test
 		@DisplayName("상품에 포함되지 않은 담보 등록")
 		void otherProduct(){
-			given(selectService.getNotExistGuaranteeCount(productNo, guaranteeNoList)).willReturn(2L);
+			given(selectService.notExistGuaranteeCount(productNo, guaranteeNoList)).willReturn(2L);
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
 					createContractService.create(createInsurance));
 
@@ -80,7 +80,7 @@ class CreateContractServiceTest {
 			final CreateInsurance hasMaxPeriod = getCreateInsurance(new CreateContractRequest("계약명", LocalDate.now(), 100, productNo, guaranteeNoList));
 
 
-			given(selectService.getNotExistGuaranteeCount(productNo, guaranteeNoList)).willReturn(0L);
+			given(selectService.notExistGuaranteeCount(productNo, guaranteeNoList)).willReturn(0L);
 			given(selectService.selectGuaranteeList(guaranteeNoList)).willReturn(guaranteeList);
 			given(selectService.getTotalAmount(guaranteeList, contractPeriod)).willReturn(totalAmount);
 			given(selectService.getProductInfo(productNo)).willReturn(product);
@@ -108,7 +108,7 @@ class CreateContractServiceTest {
 		@Test
 		@DisplayName("계약 등록 실패")
 		void insertContractException() {
-			given(selectService.getNotExistGuaranteeCount(productNo, guaranteeNoList)).willReturn(0L);
+			given(selectService.notExistGuaranteeCount(productNo, guaranteeNoList)).willReturn(0L);
 			given(selectService.selectGuaranteeList(guaranteeNoList)).willReturn(guaranteeList);
 			given(selectService.getTotalAmount(guaranteeList, contractPeriod)).willReturn(totalAmount);
 			given(selectService.getProductInfo(productNo)).willReturn(product);
@@ -123,7 +123,7 @@ class CreateContractServiceTest {
 		@Test
 		@DisplayName("담보 등록 실패")
 		void insertGuaranteeOfContractException() {
-			given(selectService.getNotExistGuaranteeCount(productNo, guaranteeNoList)).willReturn(0L);
+			given(selectService.notExistGuaranteeCount(productNo, guaranteeNoList)).willReturn(0L);
 			given(selectService.selectGuaranteeList(guaranteeNoList)).willReturn(guaranteeList);
 			given(selectService.getTotalAmount(guaranteeList, contractPeriod)).willReturn(totalAmount);
 			given(selectService.getProductInfo(productNo)).willReturn(product);
@@ -139,7 +139,7 @@ class CreateContractServiceTest {
 		@Test
 		@DisplayName("계약 등록 성공")
 		void createContract() {
-			given(selectService.getNotExistGuaranteeCount(productNo, guaranteeNoList)).willReturn(0L);
+			given(selectService.notExistGuaranteeCount(productNo, guaranteeNoList)).willReturn(0L);
 			given(selectService.selectGuaranteeList(guaranteeNoList)).willReturn(guaranteeList);
 			given(selectService.getTotalAmount(guaranteeList, contractPeriod)).willReturn(totalAmount);
 			given(selectService.getProductInfo(productNo)).willReturn(product);
@@ -153,7 +153,7 @@ class CreateContractServiceTest {
 	private CreateInsurance getCreateInsurance(CreateContractRequest createContractRequest){
 		return CreateInsurance.builder()
 				.createContractRequest(createContractRequest)
-				.serviceName(CreateInsuranceServiceEnums.CONTRACT.getName())
+				.serviceName(CreateInsuranceServiceEnum.CONTRACT.getName())
 				.build();
 	}
 }

@@ -88,7 +88,7 @@ class CreateGuaranteeServiceTest {
 		return CreateInsurance.builder()
 				.createGuaranteeRequest(createContractRequestList)
 				.productNo(productNo)
-				.serviceName(CreateInsuranceServiceEnums.GUARANTEE.getName())
+				.serviceName(CreateInsuranceServiceEnum.GUARANTEE.getName())
 				.build();
 	}
 }

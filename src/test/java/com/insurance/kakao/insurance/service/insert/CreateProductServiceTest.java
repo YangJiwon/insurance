@@ -65,7 +65,7 @@ class CreateProductServiceTest {
 	private CreateInsurance getCreateInsurance(CreateProductRequest createProductRequest){
 		return CreateInsurance.builder()
 				.createProductRequest(createProductRequest)
-				.serviceName(CreateInsuranceServiceEnums.PRODUCT.getName())
+				.serviceName(CreateInsuranceServiceEnum.PRODUCT.getName())
 				.build();
 	}
 }

@@ -33,7 +33,7 @@ class InsertGuaranteeOfContractService implements InsuranceModifiable {
 		List<Integer> guaranteeNoList = updateContract.getGuaranteeNoList();
 
 		int productNo = insuranceSelectService.getContractInfo(contractNo).getProductNo();
-		long notExistGuaranteeCount = insuranceSelectService.getNotExistGuaranteeCount(productNo, guaranteeNoList);
+		long notExistGuaranteeCount = insuranceSelectService.notExistGuaranteeCount(productNo, guaranteeNoList);
 		if(notExistGuaranteeCount > 0){
 			throw new BusinessErrorCodeException(ErrorCode.NOT_VALID_GUARANTEE);
 		}

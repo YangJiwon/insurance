@@ -103,7 +103,7 @@ class DeleteGuaranteeOfContractServiceTest {
 	private UpdateContract getUpdateContract(List<Integer> requestGuaranteeNoList){
 		return UpdateContract.builder()
 				.contractNo(contractNo)
-				.serviceName(UpdateContractServiceEnums.DELETE_GUARANTEE.getName())
+				.serviceName(UpdateContractServiceEnum.DELETE_GUARANTEE.getName())
 				.guaranteeNoList(requestGuaranteeNoList)
 				.build();
 	}

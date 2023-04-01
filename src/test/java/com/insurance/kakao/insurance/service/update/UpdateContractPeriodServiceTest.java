@@ -138,7 +138,7 @@ class UpdateContractPeriodServiceTest {
 	private UpdateContract getUpdateContract(int contractPeriod){
 		return UpdateContract.builder()
 				.contractNo(contractNo)
-				.serviceName(UpdateContractServiceEnums.UPDATE_PERIOD.getName())
+				.serviceName(UpdateContractServiceEnum.UPDATE_PERIOD.getName())
 				.contractPeriod(contractPeriod)
 				.build();
 	}

@@ -97,7 +97,7 @@ class UpdateContractStatusServiceTest {
 	private UpdateContract getUpdateContract(ContractStatusEnum contractStatus){
 		return UpdateContract.builder()
 				.contractNo(contractNo)
-				.serviceName(UpdateContractServiceEnums.UPDATE_STATUS.name())
+				.serviceName(UpdateContractServiceEnum.UPDATE_STATUS.name())
 				.contractStatus(contractStatus)
 				.build();
 	}

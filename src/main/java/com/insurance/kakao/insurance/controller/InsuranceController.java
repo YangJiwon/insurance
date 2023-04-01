@@ -18,10 +18,10 @@ import com.insurance.kakao.insurance.model.response.GuaranteeResponse;
 import com.insurance.kakao.insurance.model.vo.CreateInsurance;
 import com.insurance.kakao.insurance.model.vo.UpdateContract;
 import com.insurance.kakao.insurance.service.InsuranceSelectService;
-import com.insurance.kakao.insurance.service.insert.CreateInsuranceServiceEnums;
+import com.insurance.kakao.insurance.service.insert.CreateInsuranceServiceEnum;
 import com.insurance.kakao.insurance.service.insert.InsuranceCreateService;
 import com.insurance.kakao.insurance.service.update.InsuranceUpdateService;
-import com.insurance.kakao.insurance.service.update.UpdateContractServiceEnums;
+import com.insurance.kakao.insurance.service.update.UpdateContractServiceEnum;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,10 +33,10 @@ public class InsuranceController implements InsuranceControllerApi{
 	private final InsuranceUpdateService insuranceUpdateService;
 
 	@Override
-	public ResponseEntity<?> createContract(CreateContractRequest contract){
+	public ResponseEntity<?> createContract(CreateContractRequest createContractRequest){
 		CreateInsurance createInsurance = CreateInsurance.builder()
-				.createContractRequest(contract)
-				.serviceName(CreateInsuranceServiceEnums.CONTRACT.getName())
+				.createContractRequest(createContractRequest)
+				.serviceName(CreateInsuranceServiceEnum.CONTRACT.getName())
 				.build();
 
 		insuranceCreateService.create(createInsurance);
@@ -44,11 +44,11 @@ public class InsuranceController implements InsuranceControllerApi{
 	}
 
 	@Override
-	public ResponseEntity<?> insertGuaranteeOfContract(UpdateGuaranteeRequest guarantee) {
+	public ResponseEntity<?> insertGuaranteeOfContract(UpdateGuaranteeRequest updateGuaranteeRequest) {
 		UpdateContract updateContract = UpdateContract.builder()
-				.contractNo(guarantee.getContractNo())
-				.guaranteeNoList(guarantee.getGuaranteeNoList())
-				.serviceName(UpdateContractServiceEnums.INSERT_GUARANTEE.getName())
+				.contractNo(updateGuaranteeRequest.getContractNo())
+				.guaranteeNoList(updateGuaranteeRequest.getGuaranteeNoList())
+				.serviceName(UpdateContractServiceEnum.INSERT_GUARANTEE.getName())
 				.build();
 
 		insuranceUpdateService.updateContract(updateContract);
@@ -56,11 +56,11 @@ public class InsuranceController implements InsuranceControllerApi{
 	}
 
 	@Override
-	public ResponseEntity<?> deleteGuaranteeOfContract(UpdateGuaranteeRequest guarantee) {
+	public ResponseEntity<?> deleteGuaranteeOfContract(UpdateGuaranteeRequest updateGuaranteeRequest) {
 		UpdateContract updateContract = UpdateContract.builder()
-				.contractNo(guarantee.getContractNo())
-				.guaranteeNoList(guarantee.getGuaranteeNoList())
-				.serviceName(UpdateContractServiceEnums.DELETE_GUARANTEE.getName())
+				.contractNo(updateGuaranteeRequest.getContractNo())
+				.guaranteeNoList(updateGuaranteeRequest.getGuaranteeNoList())
+				.serviceName(UpdateContractServiceEnum.DELETE_GUARANTEE.getName())
 				.build();
 
 		insuranceUpdateService.updateContract(updateContract);
@@ -68,11 +68,11 @@ public class InsuranceController implements InsuranceControllerApi{
 	}
 
 	@Override
-	public ResponseEntity<?> updateContractPeriod(UpdateContractPeriodRequest contractPeriod) {
+	public ResponseEntity<?> updateContractPeriod(UpdateContractPeriodRequest updateContractPeriodRequest) {
 		UpdateContract updateContract = UpdateContract.builder()
-				.contractNo(contractPeriod.getContractNo())
-				.contractPeriod(contractPeriod.getContractPeriod())
-				.serviceName(UpdateContractServiceEnums.UPDATE_PERIOD.getName())
+				.contractNo(updateContractPeriodRequest.getContractNo())
+				.contractPeriod(updateContractPeriodRequest.getContractPeriod())
+				.serviceName(UpdateContractServiceEnum.UPDATE_PERIOD.getName())
 				.build();
 
 		insuranceUpdateService.updateContract(updateContract);
@@ -80,11 +80,11 @@ public class InsuranceController implements InsuranceControllerApi{
 	}
 
 	@Override
-	public ResponseEntity<?> updateContractStatus(UpdateContractStatusRequest contractStatus) {
+	public ResponseEntity<?> updateContractStatus(UpdateContractStatusRequest updateContractStatusRequest) {
 		UpdateContract updateContract = UpdateContract.builder()
-				.contractNo(contractStatus.getContractNo())
-				.contractStatus(contractStatus.getContractStatus())
-				.serviceName(UpdateContractServiceEnums.UPDATE_STATUS.getName())
+				.contractNo(updateContractStatusRequest.getContractNo())
+				.contractStatus(updateContractStatusRequest.getContractStatus())
+				.serviceName(UpdateContractServiceEnum.UPDATE_STATUS.getName())
 				.build();
 
 		insuranceUpdateService.updateContract(updateContract);
@@ -109,10 +109,10 @@ public class InsuranceController implements InsuranceControllerApi{
 	}
 
 	@Override
-	public ResponseEntity<?> createProduct(CreateProductRequest createProduct) {
+	public ResponseEntity<?> createProduct(CreateProductRequest createProductRequest) {
 		CreateInsurance createInsurance = CreateInsurance.builder()
-				.createProductRequest(createProduct)
-				.serviceName(CreateInsuranceServiceEnums.PRODUCT.getName())
+				.createProductRequest(createProductRequest)
+				.serviceName(CreateInsuranceServiceEnum.PRODUCT.getName())
 				.build();
 
 		insuranceCreateService.create(createInsurance);
@@ -120,11 +120,11 @@ public class InsuranceController implements InsuranceControllerApi{
 	}
 
 	@Override
-	public ResponseEntity<?> createGuarantee(int productNo, List<CreateGuaranteeRequest> createGuaranteeList){
+	public ResponseEntity<?> createGuarantee(int productNo, List<CreateGuaranteeRequest> createGuaranteeRequestList){
 		CreateInsurance createInsurance = CreateInsurance.builder()
-				.createGuaranteeRequest(createGuaranteeList)
+				.createGuaranteeRequest(createGuaranteeRequestList)
 				.productNo(productNo)
-				.serviceName(CreateInsuranceServiceEnums.GUARANTEE.getName())
+				.serviceName(CreateInsuranceServiceEnum.GUARANTEE.getName())
 				.build();
 
 		insuranceCreateService.create(createInsurance);

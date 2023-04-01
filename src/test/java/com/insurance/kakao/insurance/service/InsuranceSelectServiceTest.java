@@ -35,7 +35,7 @@ class InsuranceSelectServiceTest {
 	final int productNo = 1;
 	final int contractNo = 1;
 	final List<Integer> guaranteeNoList = List.of(1,2);
-	
+
 	final List<GuaranteeResponse> guaranteeList = List.of(
 			new GuaranteeResponse(1, "테스트담보",  10000, 100),
 			new GuaranteeResponse(2, "테스트담보2",  20000, 200)
@@ -212,8 +212,8 @@ class InsuranceSelectServiceTest {
 
 			given(query.selectProductGuaranteeMappingList(productNo)).willReturn(mappingList);
 
-			long notExistCount = insuranceSelectService.getNotExistGuaranteeCount(productNo, notExistGuaranteeNoList);
-			long existCount = insuranceSelectService.getNotExistGuaranteeCount(productNo, existGuaranteeNoList);
+			long notExistCount = insuranceSelectService.notExistGuaranteeCount(productNo, notExistGuaranteeNoList);
+			long existCount = insuranceSelectService.notExistGuaranteeCount(productNo, existGuaranteeNoList);
 
 			assertEquals(notExistCount, notExistGuaranteeNoList.size());
 			assertEquals(existCount, 0);

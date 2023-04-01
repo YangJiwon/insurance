@@ -5,7 +5,7 @@ import com.insurance.kakao.insurance.common.CommonUtil;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public enum CreateInsuranceServiceEnums {
+public enum CreateInsuranceServiceEnum {
 	CONTRACT(CreateContractService.class.getSimpleName()),
 	PRODUCT(CreateProductService.class.getSimpleName()),
 	GUARANTEE(CreateGuaranteeService.class.getSimpleName());

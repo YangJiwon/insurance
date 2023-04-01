@@ -1,7 +1,6 @@
 package com.insurance.kakao.insurance.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -92,7 +91,7 @@ public class InsuranceSelectService {
 		return mappingList;
 	}
 
-	public long getNotExistGuaranteeCount(int productNo, List<Integer> guaranteeNoList){
+	public long notExistGuaranteeCount(int productNo, List<Integer> guaranteeNoList){
 		List<Integer> productGuaranteeMappingList = this.selectProductGuaranteeMappingList(productNo);
 		return guaranteeNoList.stream()
 				.filter(v -> !productGuaranteeMappingList.contains(v))
