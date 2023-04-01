@@ -29,21 +29,21 @@
 	 @Transactional
 	 public void create(CreateInsurance createInsurance) {
 		 CreateContractRequest contract = createInsurance.getCreateContractRequest();
-		 validation(contract);
-
-		 List<Integer> guaranteeNoList = contract.getGuaranteeNoList();
 		 CreateContract createContract = getCreateContract(contract);
+
 		 if (command.insertContract(createContract) != 1) {
 			 throw new BusinessErrorCodeException(ErrorCode.INSERT_CONTRACT);
 		 }
 
-		 int contractNo = createContract.getContractNo();
-		 if (command.insertGuaranteeOfContract(contractNo, guaranteeNoList) != guaranteeNoList.size()) {
+		 List<Integer> guaranteeNoList = contract.getGuaranteeNoList();
+		 if (command.insertGuaranteeOfContract(createContract.getContractNo(), guaranteeNoList) != guaranteeNoList.size()) {
 			 throw new BusinessErrorCodeException(ErrorCode.INSERT_GUARANTEE_OF_CONTRACT);
 		 }
 	 }
 
-	 private void validation(CreateContractRequest contract){
+	 @Override
+	 public void validation(CreateInsurance createInsurance){
+		 CreateContractRequest contract = createInsurance.getCreateContractRequest();
 		 LocalDate startDate = contract.getInsuranceStartDate();
 		 if (startDate.isBefore(LocalDate.now())) {
 			 throw new BusinessErrorCodeException(ErrorCode.NOT_VALID_START_DATE);

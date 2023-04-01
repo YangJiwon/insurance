@@ -58,7 +58,7 @@ class CreateContractServiceTest {
 			final CreateInsurance isNotValidEndDate = getCreateInsurance(new CreateContractRequest("계약명", LocalDate.parse("2020-03-31"), 3, productNo, guaranteeNoList));
 
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
-					createContractService.create(isNotValidEndDate));
+					createContractService.validation(isNotValidEndDate));
 
 			assertEquals(exception.getErrorCode(), ErrorCode.NOT_VALID_START_DATE);
 		}
@@ -68,7 +68,7 @@ class CreateContractServiceTest {
 		void otherProduct(){
 			given(selectService.notExistGuaranteeCount(productNo, guaranteeNoList)).willReturn(2L);
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
-					createContractService.create(createInsurance));
+					createContractService.validation(createInsurance));
 
 			assertEquals(exception.getErrorCode(), ErrorCode.NOT_VALID_GUARANTEE);
 		}
@@ -86,11 +86,11 @@ class CreateContractServiceTest {
 			given(selectService.getProductInfo(productNo)).willReturn(product);
 
 			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
-					createContractService.create(hasMinPeriod));
+					createContractService.validation(hasMinPeriod));
 			assertEquals(exception.getErrorCode(), ErrorCode.NOT_VALID_CONTRACT_PERIOD);
 
 			exception = assertThrows(BusinessErrorCodeException.class, () ->
-					createContractService.create(hasMaxPeriod));
+					createContractService.validation(hasMaxPeriod));
 			assertEquals(exception.getErrorCode(), ErrorCode.NOT_VALID_CONTRACT_PERIOD);
 		}
 

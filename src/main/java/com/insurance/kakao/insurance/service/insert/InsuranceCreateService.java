@@ -15,6 +15,7 @@ public class InsuranceCreateService {
 
 	public void create(CreateInsurance createInsurance) {
 		InsuranceCreatable creatable = insuranceCreatableMap.get(createInsurance.getServiceName());
+		creatable.validation(createInsurance);
 		creatable.create(createInsurance);
 	}
 }
