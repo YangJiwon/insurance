@@ -26,18 +26,18 @@
 	 @Transactional
 	 public void create(CreateInsurance createInsurance) {
 		 int productNo = createInsurance.getProductNo();
-		 List<CreateGuaranteeRequest> createGuaranteeRequestList = createInsurance.getCreateGuaranteeRequest();
+		 List<CreateGuaranteeRequest> guaranteeList = createInsurance.getCreateGuaranteeRequest();
 
 		 ProductResponse product = insuranceSelectService.getProductInfo(productNo);
-		 insertGuarantee(product.getProductNo(), createGuaranteeRequestList);
+		 insertGuarantee(product.getProductNo(), guaranteeList);
 	 }
 
-	 void insertGuarantee(int productNo, List<CreateGuaranteeRequest> createGuaranteeRequestList){
-		 if(command.insertGuarantee(productNo, createGuaranteeRequestList) != createGuaranteeRequestList.size()){
+	 void insertGuarantee(int productNo, List<CreateGuaranteeRequest> guaranteeList){
+		 if(command.insertGuarantee(productNo, guaranteeList) != guaranteeList.size()){
 			 throw new BusinessErrorCodeException(ErrorCode.INSERT_GUARANTEE);
 		 }
 
-		 List<Integer> guaranteeNoList = createGuaranteeRequestList.stream()
+		 List<Integer> guaranteeNoList = guaranteeList.stream()
 				 .map(CreateGuaranteeRequest::getGuaranteeNo)
 				 .collect(Collectors.toList());
 

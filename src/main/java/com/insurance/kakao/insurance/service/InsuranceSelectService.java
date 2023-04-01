@@ -54,7 +54,7 @@ public class InsuranceSelectService {
 	public double getTotalAmount(int contractNo){
 		List<GuaranteeResponse> guaranteeList = this.selectContractGuaranteeList(contractNo);
 		int contractPeriod = this.getContractInfo(contractNo).getContractPeriod();
-		return  getTotalAmount(guaranteeList, contractPeriod);
+		return getTotalAmount(guaranteeList, contractPeriod);
 	}
 
 	public double getTotalAmount(List<GuaranteeResponse> guaranteeList, int contractPeriod){

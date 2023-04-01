@@ -23,13 +23,13 @@
 	 @Override
 	 @Transactional
 	 public void create(CreateInsurance createInsurance) {
-		 CreateProductRequest createProductRequest = createInsurance.getCreateProductRequest();
-		 if(command.insertProduct(createProductRequest) != 1){
+		 CreateProductRequest product = createInsurance.getCreateProductRequest();
+		 if(command.insertProduct(product) != 1){
 			 throw new BusinessErrorCodeException(ErrorCode.INSERT_PRODUCT);
 		 }
 
-		 int productNo = createProductRequest.getProductNo();
-		 List<CreateGuaranteeRequest> createGuaranteeRequestList = createProductRequest.getGuaranteeRequestList();
+		 int productNo = product.getProductNo();
+		 List<CreateGuaranteeRequest> createGuaranteeRequestList = product.getGuaranteeRequestList();
 
 		 createGuaranteeService.insertGuarantee(productNo, createGuaranteeRequestList);
 	 }

@@ -20,17 +20,17 @@ class InsertGuaranteeOfContractService implements InsuranceModifiable {
 	private final InsuranceSelectService insuranceSelectService;
 
 	@Override
-	public void update(UpdateContract updateContract) {
-		List<Integer> guaranteeNoList = updateContract.getGuaranteeNoList();
-		if(command.insertGuaranteeOfContract(updateContract.getContractNo(), guaranteeNoList) != guaranteeNoList.size()){
+	public void update(UpdateContract contract) {
+		List<Integer> guaranteeNoList = contract.getGuaranteeNoList();
+		if(command.insertGuaranteeOfContract(contract.getContractNo(), guaranteeNoList) != guaranteeNoList.size()){
 			throw new BusinessErrorCodeException(ErrorCode.INSERT_GUARANTEE_OF_CONTRACT);
 		}
 	}
 
 	@Override
-	public void validation(UpdateContract updateContract){
-		int contractNo = updateContract.getContractNo();
-		List<Integer> guaranteeNoList = updateContract.getGuaranteeNoList();
+	public void validation(UpdateContract contract){
+		int contractNo = contract.getContractNo();
+		List<Integer> guaranteeNoList = contract.getGuaranteeNoList();
 
 		int productNo = insuranceSelectService.getContractInfo(contractNo).getProductNo();
 		long notExistGuaranteeCount = insuranceSelectService.notExistGuaranteeCount(productNo, guaranteeNoList);

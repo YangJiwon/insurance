@@ -46,7 +46,7 @@ public interface InsuranceControllerApi {
 			}
 	)
 	@PostMapping(value = "/contract")
-	ResponseEntity<?> createContract(@Valid @RequestBody CreateContractRequest createContractRequest);
+	ResponseEntity<?> createContract(@Valid @RequestBody CreateContractRequest contract);
 
 	@Operation(
 			summary = "담보 추가",
@@ -58,7 +58,7 @@ public interface InsuranceControllerApi {
 			}
 	)
 	@PostMapping(value = "/contract/guarantee")
-	ResponseEntity<?> insertGuaranteeOfContract(@Valid @RequestBody UpdateGuaranteeRequest updateGuaranteeRequest);
+	ResponseEntity<?> insertGuaranteeOfContract(@Valid @RequestBody UpdateGuaranteeRequest guarantee);
 
 	@Operation(
 			summary = "담보 삭제",
@@ -70,7 +70,7 @@ public interface InsuranceControllerApi {
 			}
 	)
 	@DeleteMapping(value = "/contract/guarantee")
-	ResponseEntity<?> deleteGuaranteeOfContract(@Valid @RequestBody UpdateGuaranteeRequest updateGuaranteeRequest);
+	ResponseEntity<?> deleteGuaranteeOfContract(@Valid @RequestBody UpdateGuaranteeRequest guarantee);
 
 	@Operation(
 			summary = "계약 기간 변경",
@@ -82,7 +82,7 @@ public interface InsuranceControllerApi {
 			}
 	)
 	@PutMapping(value = "/contract/period")
-	ResponseEntity<?> updateContractPeriod(@Valid @RequestBody UpdateContractPeriodRequest updateContractPeriodRequest);
+	ResponseEntity<?> updateContractPeriod(@Valid @RequestBody UpdateContractPeriodRequest contractPeriod);
 
 	@Operation(
 			summary = "계약 상태 변경",
@@ -94,7 +94,7 @@ public interface InsuranceControllerApi {
 			}
 	)
 	@PutMapping(value = "/contract/status")
-	ResponseEntity<?> updateContractStatus(@Valid @RequestBody UpdateContractStatusRequest updateContractStatusRequest);
+	ResponseEntity<?> updateContractStatus(@Valid @RequestBody UpdateContractStatusRequest contractStatus);
 
 	@Operation(
 			summary = "예상 보험료 계산",
@@ -135,7 +135,7 @@ public interface InsuranceControllerApi {
 			}
 	)
 	@PostMapping(value = "/product")
-	ResponseEntity<?> createProduct(@Valid @RequestBody CreateProductRequest createProductRequest);
+	ResponseEntity<?> createProduct(@Valid @RequestBody CreateProductRequest product);
 
 	@Operation(
 			summary = "새로운 담보 등록",
@@ -149,5 +149,5 @@ public interface InsuranceControllerApi {
 	@PostMapping(value = "/{productNo}/guarantee")
 	ResponseEntity<?> createGuarantee(@Parameter(name = "productNo", description = "상품 번호")
 									  @PathVariable(name = "productNo") @Min(1) int productNo,
-									  @Valid @RequestBody @NotEmpty List<CreateGuaranteeRequest> createGuaranteeRequestList);
+									  @Valid @RequestBody @NotEmpty List<CreateGuaranteeRequest> guaranteeList);
 }

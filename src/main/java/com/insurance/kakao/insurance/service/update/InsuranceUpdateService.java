@@ -22,16 +22,16 @@ public class InsuranceUpdateService {
 	private final InsuranceCommandMapper command;
 
 	@Transactional
-	public void updateContract(UpdateContract updateContract){
-		int contractNo = updateContract.getContractNo();
+	public void updateContract(UpdateContract contract){
+		int contractNo = contract.getContractNo();
 		String status = insuranceSelectService.getContractInfo(contractNo).getContractStatus();
 		if(ContractStatusEnum.isExpire(status)){
 			throw new BusinessErrorCodeException(ErrorCode.UPDATE_EXPIRE_CONTRACT);
 		}
 
-		InsuranceModifiable insuranceModifiable = insuranceModifiableMap.get(updateContract.getServiceName());
-		insuranceModifiable.validation(updateContract);
-		insuranceModifiable.insuranceUpdate(updateContract);
+		InsuranceModifiable insuranceModifiable = insuranceModifiableMap.get(contract.getServiceName());
+		insuranceModifiable.validation(contract);
+		insuranceModifiable.insuranceUpdate(contract);
 
 		if(insuranceModifiable.isUpdateOnlyDate()){
 			if(command.updateOnlyDate(contractNo) != 1){

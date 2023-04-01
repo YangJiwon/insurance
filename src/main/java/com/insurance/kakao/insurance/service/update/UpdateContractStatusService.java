@@ -18,18 +18,18 @@ class UpdateContractStatusService implements InsuranceModifiable {
 	private final InsuranceSelectService insuranceSelectService;
 
 	@Override
-	public void update(UpdateContract updateContract) {
-		if(command.updateContractStatus(updateContract.getContractNo(), updateContract.getContractStatusValue()) != 1){
+	public void update(UpdateContract contract) {
+		if(command.updateContractStatus(contract.getContractNo(), contract.getContractStatusValue()) != 1){
 			throw new BusinessErrorCodeException(ErrorCode.UPDATE_CONTRACT_STATUS);
 		}
 	}
 
 	@Override
-	public void validation(UpdateContract updateContract){
-		int contractNo = updateContract.getContractNo();
-		ContractResponse contract = insuranceSelectService.getContractInfo(contractNo);
-		String curContractStatus = contract.getContractStatus();
-		if(curContractStatus.equals(updateContract.getContractStatusValue())){
+	public void validation(UpdateContract contract){
+		int contractNo = contract.getContractNo();
+		ContractResponse contractResponse = insuranceSelectService.getContractInfo(contractNo);
+		String curContractStatus = contractResponse.getContractStatus();
+		if(curContractStatus.equals(contract.getContractStatusValue())){
 			throw new BusinessErrorCodeException(ErrorCode.SAME_CONTRACT_STATUS);
 		}
 	}

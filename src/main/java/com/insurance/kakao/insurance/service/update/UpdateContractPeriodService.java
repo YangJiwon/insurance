@@ -22,9 +22,9 @@ class UpdateContractPeriodService implements InsuranceModifiable {
 	private final InsuranceCommandMapper command;
 
 	@Override
-	public void update(UpdateContract updateContract) {
-		int contractNo = updateContract.getContractNo();
-		int contractPeriod = updateContract.getContractPeriod();
+	public void update(UpdateContract contract) {
+		int contractNo = contract.getContractNo();
+		int contractPeriod = contract.getContractPeriod();
 		LocalDate endDate = getEndDate(contractNo, contractPeriod);
 
 		if(command.updateContractPeriod(contractNo, endDate, contractPeriod) != 1){
@@ -33,30 +33,30 @@ class UpdateContractPeriodService implements InsuranceModifiable {
 	}
 
 	@Override
-	public void validation(UpdateContract updateContract){
-		int contractNo = updateContract.getContractNo();
-		int contractPeriod = updateContract.getContractPeriod();
+	public void validation(UpdateContract contract){
+		int contractNo = contract.getContractNo();
+		int contractPeriod = contract.getContractPeriod();
 
-		ContractResponse contract = insuranceSelectService.getContractInfo(contractNo);
-		int curContractPeriod = contract.getContractPeriod();
+		ContractResponse contractResponse = insuranceSelectService.getContractInfo(contractNo);
+		int curContractPeriod = contractResponse.getContractPeriod();
 		if(curContractPeriod == contractPeriod){
 			throw new BusinessErrorCodeException(ErrorCode.SAME_CONTRACT_PERIOD);
 		}
 
-		int productNo = contract.getProductNo();
+		int productNo = contractResponse.getProductNo();
 		ProductResponse product = insuranceSelectService.getProductInfo(productNo);
 		if(product.isNotValidPeriod(contractPeriod)){
 			throw new BusinessErrorCodeException(ErrorCode.NOT_VALID_CONTRACT_PERIOD);
 		}
 
-		LocalDate endDate = getEndDate(contract, contractPeriod);
+		LocalDate endDate = getEndDate(contractResponse, contractPeriod);
 		if(LocalDate.now().isAfter(endDate)){
 			throw new BusinessErrorCodeException(ErrorCode.NOT_VALID_END_DATE);
 		}
 	}
 
-	private LocalDate getEndDate(ContractResponse contract, int contractPeriod){
-		LocalDate startDate = contract.getInsuranceStartDate();
+	private LocalDate getEndDate(ContractResponse contractResponse, int contractPeriod){
+		LocalDate startDate = contractResponse.getInsuranceStartDate();
 		return CommonUtil.plusMonth(startDate, contractPeriod);
 	}
 
