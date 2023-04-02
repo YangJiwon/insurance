@@ -4,6 +4,11 @@ Spring Boot, JAVA 11, MyBatis, Swagger3, H2를 사용하였습니다.
 # 선행조건
 1. https://github.com/kakao-insurance-quiz/20230327-yjw.git main 브랜치로 내려받기 하시면 됩니다.
 2. JDK는 11버전으로 부탁드립니다.
+```
+Project Structure - Project - Add SDK - Download JDK
+```
+<img width="741" alt="image" src="https://user-images.githubusercontent.com/9064323/229330590-33a9fe8e-e0d0-43b4-a241-e3df852a468f.png">
+
 3. Local 환경이다 보니 h2 설정이 필요합니다.
 
 # H2 DB 설정
