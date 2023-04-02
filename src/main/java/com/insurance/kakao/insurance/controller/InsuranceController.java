@@ -92,7 +92,7 @@ public class InsuranceController implements InsuranceControllerApi{
 
 	@Override
 	public ResponseEntity<?> getEstimateAmount(String guarantees, int contractPeriod, int productNo){
-		String[] split = guarantees.split(",");//todo::
+		String[] split = guarantees.split(",");
 		List<Integer> guaranteeNoList = Arrays.stream(split)
 				.filter(v -> !ObjectUtils.isEmpty(v))
 				.map(Integer::parseInt)

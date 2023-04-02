@@ -49,7 +49,7 @@ public interface InsuranceControllerApi {
 	ResponseEntity<?> createContract(@Valid @RequestBody CreateContractRequest contract);
 
 	@Operation(
-			summary = "담보 추가",
+			summary = "계약 담보 추가",
 			description = "해당 계약에 담보를 추가합니다",
 			responses = {
 					@ApiResponse(description = "Success",
@@ -61,7 +61,7 @@ public interface InsuranceControllerApi {
 	ResponseEntity<?> insertGuaranteeOfContract(@Valid @RequestBody UpdateGuaranteeRequest guarantee);
 
 	@Operation(
-			summary = "담보 삭제",
+			summary = "계약 담보 삭제",
 			description = "해당 계약에 담보를 삭제합니다",
 			responses = {
 					@ApiResponse(description = "Success",
@@ -107,7 +107,7 @@ public interface InsuranceControllerApi {
 			}
 	)
 	@GetMapping(value = "/estimate-amount")
-	ResponseEntity<?> getEstimateAmount(@Parameter(name = "guarantees", description = "담보 번호")
+	ResponseEntity<?> getEstimateAmount(@Parameter(name = "guarantees", description = "담보 번호 리스트")
 										@RequestParam(name = "guarantees") String guarantees,
 										@Parameter(name = "contractPeriod", description = "계약 기간")
 										@RequestParam(name = "contractPeriod") int contractPeriod,
