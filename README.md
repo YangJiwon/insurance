@@ -71,8 +71,10 @@ PRODUCT_GUARANTEE 테이블 - 상품이 어떤 담보를 가지고 있는지 확
 ```
 
 # Swagger URL & API 명세
+```
 API 목록 및 테스트는 http://localhost:8080/swagger-ui/index.html#/ 에서 가능합니다.
 각 API 별 요청&응답 명세 또한 swagger 에서 확인 가능합니다.
+```
 
 * 새로운 상품 생성 API (POST /product)
 > 새로운 상품 등록이 가능합니다. 
