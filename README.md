@@ -146,7 +146,7 @@ API 목록 및 테스트는 http://localhost:8080/swagger-ui/index.html#/ 에서
 계약기간은 상품의 최소 계약 기간보다 작거나 최대 계약 기간보다 크면 안 됩니다.
 담보 리스트의 정보는 상품번호 하위의 담보 정보여야만 합니다.
 ```
-<img width="717" alt="image" src="https://user-images.githubusercontent.com/9064323/229328061-4b060a3b-62cc-4572-b33e-810a450fc9e6.png">
+<img width="721" alt="image" src="https://user-images.githubusercontent.com/9064323/229338814-91fdfd85-97f7-4927-b050-5b75b588e6ab.png">
 
 
 
