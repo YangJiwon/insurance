@@ -112,7 +112,8 @@ API 목록 및 테스트는 http://localhost:8080/swagger-ui/index.html#/ 에서
 이미 존재하는 담보가 있다면 추가가 불가합니다.
 
 ```
-<img width="354" alt="image" src="https://user-images.githubusercontent.com/9064323/229109436-202fd70c-a4d3-4434-bf18-4140b3367168.png">
+<img width="382" alt="image" src="https://user-images.githubusercontent.com/9064323/229338873-80c1441d-491b-4296-b0ef-0d4aa102cf53.png">
+
 
 * 계약 담보 삭제 API (DELETE /contract/guarantee)
 > 계약에 담보 삭제가 가능합니다. 계약 번호와 삭제할 담보 리스트를 요청값으로 받으며, 삭제된 담보 리스트에 따라 총 보험료가 재계산됩니다.
@@ -120,7 +121,8 @@ API 목록 및 테스트는 http://localhost:8080/swagger-ui/index.html#/ 에서
 만료 상태의 계약은 담보 삭제가 불가합니다.
 현재 가지고 있는 담보 모두를 삭제할 수는 없습니다.
 ```
-<img width="366" alt="image" src="https://user-images.githubusercontent.com/9064323/229109768-5c304cd1-befc-49bd-9d39-a0942fe717c0.png">
+<img width="382" alt="image" src="https://user-images.githubusercontent.com/9064323/229338886-5a225bfa-7611-4568-bdfb-b7eb586ffff2.png">
+
 
 * 계약기간 변경 API (PUT /contract/period)
 > 계약 종료일 변경이 가능합니다. 변경할 기간을 요청값으로 받아 계약 시작일 기준으로 종료일을 재계산합니다. 변경된 계약기간에 따라 총 보험료가 재계산됩니다.
@@ -141,7 +143,7 @@ API 목록 및 테스트는 http://localhost:8080/swagger-ui/index.html#/ 에서
 <img width="397" alt="image" src="https://user-images.githubusercontent.com/9064323/229110164-a8e29f06-931c-4d47-92c0-ad265a61a2ae.png">
 
 * 예상 보험료 계산 API (GET /estimate-amount)
-> 보험 가입 전 예상 보험료를 산출 가능합니다. 상품과 담보번호 리스트, 계약 기간을 요청값으로 받습니다.
+> 보험 가입 전 예상 보험료를 산출 가능합니다. 상품번호와 담보번호 리스트, 계약 기간을 요청값으로 받습니다.
 ```
 계약기간은 상품의 최소 계약 기간보다 작거나 최대 계약 기간보다 크면 안 됩니다.
 담보 리스트의 정보는 상품번호 하위의 담보 정보여야만 합니다.
