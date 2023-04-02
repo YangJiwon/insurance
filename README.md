@@ -4,6 +4,11 @@ Spring Boot, JAVA 11, MyBatis, Swagger3, H2를 사용하였습니다.
 # 선행조건
 1. https://github.com/kakao-insurance-quiz/20230327-yjw.git main 브랜치로 내려받기 하시면 됩니다.
 2. JDK는 11버전으로 부탁드립니다.
+```
+Project Structure - Project - Add SDK - Download JDK
+```
+<img width="741" alt="image" src="https://user-images.githubusercontent.com/9064323/229330590-33a9fe8e-e0d0-43b4-a241-e3df852a468f.png">
+
 3. Local 환경이다 보니 h2 설정이 필요합니다.
 
 # H2 DB 설정
@@ -25,6 +30,7 @@ CREATE TABLE IF NOT EXISTS CONTRACT (
   UPDATE_DATE DATETIME, --수정일
   TOTAL_AMOUNT NUMERIC(20, 2) NOT NULL, --총보험료
   CONTRACT_STATUS CHAR(1) NOT NULL,  --계약상태
+  SEND_ADVICE_NOTE CHAR(1) NOT NULL DEFAULT 'N', --안내장 발송여부
   PRIMARY KEY (CONTRACT_NO)
 );
 
@@ -66,7 +72,7 @@ CREATE TABLE IF NOT EXISTS PRODUCT_GUARANTEE (
 CONTRACT 테이블 - 보유한 상품의 번호 및 기본적인 계약 정보가 있습니다.
 CONTRACT_GUARANTEE 테이블 - 해당 계약이 보유한 상품 담보 번호들이 있습니다.
 PRODUCT 테이블 - 상품 정보가 있습니다. 최소/최대 계약기간을 벗어난다면 비즈니스 로직에서 exception이 발생합니다.
-GUARANTEE 테이블 - 담보 정보를 가지고 있습니다.
+GUARANTEE 테이블 - 담보 정보를 가지고 있습니다. 현재 담보는 한개의 상품에 종속적입니다.
 PRODUCT_GUARANTEE 테이블 - 상품이 어떤 담보를 가지고 있는지 확인 가능합니다.
 ```
 
@@ -107,7 +113,8 @@ API 목록 및 테스트는 http://localhost:8080/swagger-ui/index.html#/ 에서
 이미 존재하는 담보가 있다면 추가가 불가합니다.
 
 ```
-<img width="354" alt="image" src="https://user-images.githubusercontent.com/9064323/229109436-202fd70c-a4d3-4434-bf18-4140b3367168.png">
+<img width="382" alt="image" src="https://user-images.githubusercontent.com/9064323/229338873-80c1441d-491b-4296-b0ef-0d4aa102cf53.png">
+
 
 * 계약 담보 삭제 API (DELETE /contract/guarantee)
 > 계약에 담보 삭제가 가능합니다. 계약 번호와 삭제할 담보 리스트를 요청값으로 받으며, 삭제된 담보 리스트에 따라 총 보험료가 재계산됩니다.
@@ -115,7 +122,8 @@ API 목록 및 테스트는 http://localhost:8080/swagger-ui/index.html#/ 에서
 만료 상태의 계약은 담보 삭제가 불가합니다.
 현재 가지고 있는 담보 모두를 삭제할 수는 없습니다.
 ```
-<img width="366" alt="image" src="https://user-images.githubusercontent.com/9064323/229109768-5c304cd1-befc-49bd-9d39-a0942fe717c0.png">
+<img width="382" alt="image" src="https://user-images.githubusercontent.com/9064323/229338886-5a225bfa-7611-4568-bdfb-b7eb586ffff2.png">
+
 
 * 계약기간 변경 API (PUT /contract/period)
 > 계약 종료일 변경이 가능합니다. 변경할 기간을 요청값으로 받아 계약 시작일 기준으로 종료일을 재계산합니다. 변경된 계약기간에 따라 총 보험료가 재계산됩니다.
@@ -136,12 +144,12 @@ API 목록 및 테스트는 http://localhost:8080/swagger-ui/index.html#/ 에서
 <img width="397" alt="image" src="https://user-images.githubusercontent.com/9064323/229110164-a8e29f06-931c-4d47-92c0-ad265a61a2ae.png">
 
 * 예상 보험료 계산 API (GET /estimate-amount)
-> 보험 가입 전 예상 보험료를 산출 가능합니다. 상품과 담보번호 리스트, 계약 기간을 요청값으로 받습니다.
+> 보험 가입 전 예상 보험료를 산출 가능합니다. 상품번호와 담보번호 리스트, 계약 기간을 요청값으로 받습니다.
 ```
 계약기간은 상품의 최소 계약 기간보다 작거나 최대 계약 기간보다 크면 안 됩니다.
 담보 리스트의 정보는 상품번호 하위의 담보 정보여야만 합니다.
 ```
-<img width="717" alt="image" src="https://user-images.githubusercontent.com/9064323/229328061-4b060a3b-62cc-4572-b33e-810a450fc9e6.png">
+<img width="721" alt="image" src="https://user-images.githubusercontent.com/9064323/229338814-91fdfd85-97f7-4927-b050-5b75b588e6ab.png">
 
 
 
@@ -156,7 +164,10 @@ API 목록 및 테스트는 http://localhost:8080/swagger-ui/index.html#/ 에서
 3. 계약 생성 및 수정 API 의 실질적인 로직을 수행하는 클래스들은 모두 default 접근 제한자를 가집니다. 
 이는 같은 패키지의 public class(InsuranceUpdateService, InsuranceCreateService)를 통해서만 접근이 가능합니다.
 
-4. 익숙하지 않은 도메인이다보니, 네이밍에 어려움을 겪었습니다.
+4. 담보는 상품에 종속적입니다.
+시간상 구현은 못했지만 하나의 담보를 여러 상품에서 사용할 수 있도록 변경하면 좋을 것 같습니다.
+
+5. 익숙하지 않은 도메인이다보니, 네이밍에 어려움을 겪었습니다.
 제가 생각한 기본적인 네이밍 규칙은 아래와 같습니다.
 보험 - Insurance
 계약 - Contract
@@ -164,3 +175,4 @@ API 목록 및 테스트는 http://localhost:8080/swagger-ui/index.html#/ 에서
 담보 - Guarantee
 금액 - Amount
 ```
+
