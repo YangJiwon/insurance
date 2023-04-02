@@ -64,7 +64,9 @@
     <select id="selectSendAdviceNoteList" resultType="Integer">
         SELECT CONTRACT_NO
         FROM CONTRACT
-        WHERE INSURANCE_END_DATE = #{targetExpireDate}
+        WHERE INSURANCE_END_DATE  <![CDATA[ <= ]]> #{targetExpireDate}
+        AND CONTRACT_STATUS != 'E'
+        AND SEND_ADVICE_NOTE = 'N'
     </select>
 
     <select id="selectProductGuaranteeMappingList" resultType="Integer">

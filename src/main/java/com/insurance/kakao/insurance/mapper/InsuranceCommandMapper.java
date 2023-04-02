@@ -30,4 +30,6 @@ public interface InsuranceCommandMapper {
 	int insertGuaranteeOfProduct(int productNo, List<Integer> guaranteeNoList);
 
 	int insertGuarantee(int productNo, List<CreateGuaranteeRequest> createGuaranteeList);
+
+	int updateSendAdviceNote(int contractNo);
 }

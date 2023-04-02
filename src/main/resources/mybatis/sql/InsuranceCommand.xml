@@ -72,4 +72,10 @@
             (#{productNo}, #{no})
         </foreach>
     </insert>
+
+    <update id="updateSendAdviceNote">
+        UPDATE CONTRACT
+        SET SEND_ADVICE_NOTE = 'Y'
+        WHERE CONTRACT_NO = #{contractNo}
+    </update>
 </mapper>
