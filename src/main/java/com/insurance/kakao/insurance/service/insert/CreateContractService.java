@@ -12,7 +12,6 @@
  import com.insurance.kakao.insurance.model.enums.ContractStatusEnum;
  import com.insurance.kakao.insurance.model.request.CreateContractRequest;
  import com.insurance.kakao.insurance.model.response.GuaranteeResponse;
- import com.insurance.kakao.insurance.model.response.ProductResponse;
  import com.insurance.kakao.insurance.model.vo.CreateContract;
  import com.insurance.kakao.insurance.model.vo.CreateInsurance;
  import com.insurance.kakao.insurance.service.InsuranceSelectService;
@@ -56,10 +55,7 @@
 			 throw new BusinessErrorCodeException(ErrorCode.NOT_VALID_GUARANTEE);
 		 }
 
-		 ProductResponse product = insuranceSelectService.getProductInfo(productNo);
-		 if(product.isNotValidPeriod(contract.getContractPeriod())) {
-			 throw new BusinessErrorCodeException(ErrorCode.NOT_VALID_CONTRACT_PERIOD);
-		 }
+		 insuranceSelectService.validProductInfo(productNo, contract.getContractPeriod());
 	 }
 
 	 private CreateContract getCreateContract(CreateContractRequest contract){

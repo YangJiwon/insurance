@@ -9,7 +9,6 @@ import com.insurance.kakao.insurance.common.exception.BusinessErrorCodeException
 import com.insurance.kakao.insurance.common.exception.ErrorCode;
 import com.insurance.kakao.insurance.mapper.InsuranceCommandMapper;
 import com.insurance.kakao.insurance.model.response.ContractResponse;
-import com.insurance.kakao.insurance.model.response.ProductResponse;
 import com.insurance.kakao.insurance.model.vo.UpdateContract;
 import com.insurance.kakao.insurance.service.InsuranceSelectService;
 
@@ -43,16 +42,13 @@ class UpdateContractPeriodService implements InsuranceModifiable {
 			throw new BusinessErrorCodeException(ErrorCode.SAME_CONTRACT_PERIOD);
 		}
 
-		int productNo = contractResponse.getProductNo();
-		ProductResponse product = insuranceSelectService.getProductInfo(productNo);
-		if(product.isNotValidPeriod(contractPeriod)){
-			throw new BusinessErrorCodeException(ErrorCode.NOT_VALID_CONTRACT_PERIOD);
-		}
-
 		LocalDate endDate = getEndDate(contractResponse, contractPeriod);
 		if(LocalDate.now().isAfter(endDate)){
 			throw new BusinessErrorCodeException(ErrorCode.NOT_VALID_END_DATE);
 		}
+
+		int productNo = contractResponse.getProductNo();
+		insuranceSelectService.validProductInfo(productNo, contractPeriod);
 	}
 
 	private LocalDate getEndDate(ContractResponse contractResponse, int contractPeriod){

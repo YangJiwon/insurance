@@ -29,6 +29,13 @@ public class InsuranceSelectService {
 		return productInfo;
 	}
 
+	public void validProductInfo(int productNo, int contractPeriod){
+		ProductResponse product = this.getProductInfo(productNo);
+		if(product.isNotValidPeriod(contractPeriod)) {
+			throw new BusinessErrorCodeException(ErrorCode.NOT_VALID_CONTRACT_PERIOD);
+		}
+	}
+
 	public List<Integer> selectContractGuaranteeMappingNoList(int contractNo){
 		List<Integer> contractGuaranteeMappingNoList = query.selectContractGuaranteeMappingNoList(contractNo);
 		if(CollectionUtils.isEmpty(contractGuaranteeMappingNoList)){
@@ -49,6 +56,17 @@ public class InsuranceSelectService {
 		}
 
 		return guaranteeList;
+	}
+
+	public double getEstimateAmount(List<Integer> guaranteeNoList, int contractPeriod, int productNo){
+		this.validProductInfo(productNo, contractPeriod);
+		long notExistGuaranteeCount = this.notExistGuaranteeCount(productNo, guaranteeNoList);
+		if(notExistGuaranteeCount > 0){
+			throw new BusinessErrorCodeException(ErrorCode.NOT_VALID_GUARANTEE);
+		}
+
+		List<GuaranteeResponse> guaranteeList = this.selectGuaranteeList(guaranteeNoList);
+		return this.getTotalAmount(guaranteeList, contractPeriod);
 	}
 
 	public double getTotalAmount(int contractNo){

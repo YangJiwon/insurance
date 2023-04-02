@@ -60,30 +60,6 @@ class UpdateContractPeriodServiceTest {
 		}
 
 		@Test
-		@DisplayName("변경하려는 기간이 상품의 최소 기간보다 작을때")
-		void minPeriod() {
-			final UpdateContract updateContract = getUpdateContract(2);
-			isNotValidPeriod(updateContract);
-		}
-
-		@Test
-		@DisplayName("변경하려는 기간이 상품의 최대 기간보다 클 떄")
-		void maxPeriod() {
-			final UpdateContract updateContract = getUpdateContract(15);
-			isNotValidPeriod(updateContract);
-		}
-
-		private void isNotValidPeriod(UpdateContract updateContract){
-			given(selectService.getContractInfo(contractNo)).willReturn(contractResponse);
-			given(selectService.getProductInfo(productNo)).willReturn(product);
-
-			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
-					updateContractPeriodService.validation(updateContract));
-
-			assertEquals(exception.getErrorCode(), ErrorCode.NOT_VALID_CONTRACT_PERIOD);
-		}
-
-		@Test
 		@DisplayName("변경하려는 종료기간이 오늘날짜보다 이전일 떄")
 		void endDateEarlierThanNow() {
 			final ContractResponse notValidEndDate = new ContractResponse(LocalDate.parse("2022-01-23"), curContractPeriod, productNo, ContractStatusEnum.NORMAL.getStatus());

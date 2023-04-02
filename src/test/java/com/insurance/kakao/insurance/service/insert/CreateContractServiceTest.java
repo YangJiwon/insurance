@@ -73,27 +73,6 @@ class CreateContractServiceTest {
 			assertEquals(exception.getErrorCode(), ErrorCode.NOT_VALID_GUARANTEE);
 		}
 
-		@Test
-		@DisplayName("계약기간이 해당 상품의 최소/최대 기간과 맞지 않을 때")
-		void isNotValidContractPeriod(){
-			final CreateInsurance hasMinPeriod = getCreateInsurance(new CreateContractRequest("계약명", LocalDate.now(), 1, productNo, guaranteeNoList));
-			final CreateInsurance hasMaxPeriod = getCreateInsurance(new CreateContractRequest("계약명", LocalDate.now(), 100, productNo, guaranteeNoList));
-
-
-			given(selectService.notExistGuaranteeCount(productNo, guaranteeNoList)).willReturn(0L);
-			given(selectService.selectGuaranteeList(guaranteeNoList)).willReturn(guaranteeList);
-			given(selectService.getTotalAmount(guaranteeList, contractPeriod)).willReturn(totalAmount);
-			given(selectService.getProductInfo(productNo)).willReturn(product);
-
-			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
-					createContractService.validation(hasMinPeriod));
-			assertEquals(exception.getErrorCode(), ErrorCode.NOT_VALID_CONTRACT_PERIOD);
-
-			exception = assertThrows(BusinessErrorCodeException.class, () ->
-					createContractService.validation(hasMaxPeriod));
-			assertEquals(exception.getErrorCode(), ErrorCode.NOT_VALID_CONTRACT_PERIOD);
-		}
-
 		final CreateContract createContract = CreateContract.builder()
 				.contractName(createContractRequest.getContractName())
 				.contractPeriod(contractPeriod)

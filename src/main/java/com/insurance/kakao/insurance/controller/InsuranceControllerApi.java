@@ -110,7 +110,9 @@ public interface InsuranceControllerApi {
 	ResponseEntity<?> getEstimateAmount(@Parameter(name = "guarantees", description = "담보 번호")
 										@RequestParam(name = "guarantees") String guarantees,
 										@Parameter(name = "contractPeriod", description = "계약 기간")
-										@RequestParam(name = "contractPeriod") int contractPeriod);
+										@RequestParam(name = "contractPeriod") int contractPeriod,
+										@Parameter(name = "productNo", description = "상품 번호")
+										@RequestParam(name = "productNo") int productNo);
 
 	@Operation(
 			summary = "계약 정보 조회",

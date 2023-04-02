@@ -219,4 +219,51 @@ class InsuranceSelectServiceTest {
 			assertEquals(existCount, 0);
 		}
 	}
+
+	@Nested
+	@DisplayName("상품의 최소/최대 계약기간 벨리데이션")
+	class ProductPeriodValidation{
+		final ProductResponse productResponse = new ProductResponse(productNo, "여행자보험", 6, 8);
+
+		@Test
+		@DisplayName("변경하려는 기간이 상품의 최소 기간보다 작을때")
+		void minPeriod() {
+			given(query.getProductInfo(productNo)).willReturn(productResponse);
+
+			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
+					insuranceSelectService.validProductInfo(productNo, 1));
+
+			assertEquals(exception.getErrorCode(), ErrorCode.NOT_VALID_CONTRACT_PERIOD);
+		}
+
+		@Test
+		@DisplayName("변경하려는 기간이 상품의 최대 기간보다 클 떄")
+		void maxPeriod() {
+			given(query.getProductInfo(productNo)).willReturn(productResponse);
+
+			BusinessErrorCodeException exception = assertThrows(BusinessErrorCodeException.class, () ->
+					insuranceSelectService.validProductInfo(productNo, 10));
+
+			assertEquals(exception.getErrorCode(), ErrorCode.NOT_VALID_CONTRACT_PERIOD);
+		}
+	}
+
+	@Nested
+	@DisplayName("예상 보험료 계산")
+	class TotalAmount{
+		final ProductResponse productResponse = new ProductResponse(productNo, "여행자보험", 1, 8);
+		final List<Integer> mappingList = List.of(1,2);
+		final int contractPeriod = 2;
+
+		@Test
+		@DisplayName("예상 보험료 계산")
+		void getEstimateAmount(){
+			given(query.getProductInfo(productNo)).willReturn(productResponse);
+			given(query.selectProductGuaranteeMappingList(productNo)).willReturn(mappingList);
+			given(query.selectGuaranteeList(guaranteeNoList)).willReturn(guaranteeList);
+
+			double totalAmount = insuranceSelectService.getEstimateAmount(guaranteeNoList, contractPeriod, productNo);
+			assertEquals(totalAmount, 400d);
+		}
+	}
 }

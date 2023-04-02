@@ -14,7 +14,6 @@ import com.insurance.kakao.insurance.model.request.CreateProductRequest;
 import com.insurance.kakao.insurance.model.request.UpdateContractPeriodRequest;
 import com.insurance.kakao.insurance.model.request.UpdateContractStatusRequest;
 import com.insurance.kakao.insurance.model.request.UpdateGuaranteeRequest;
-import com.insurance.kakao.insurance.model.response.GuaranteeResponse;
 import com.insurance.kakao.insurance.model.vo.CreateInsurance;
 import com.insurance.kakao.insurance.model.vo.UpdateContract;
 import com.insurance.kakao.insurance.service.InsuranceSelectService;
@@ -92,15 +91,14 @@ public class InsuranceController implements InsuranceControllerApi{
 	}
 
 	@Override
-	public ResponseEntity<?> getEstimateAmount(String guarantees, int contractPeriod){
+	public ResponseEntity<?> getEstimateAmount(String guarantees, int contractPeriod, int productNo){
 		String[] split = guarantees.split(",");//todo::
 		List<Integer> guaranteeNoList = Arrays.stream(split)
 				.filter(v -> !ObjectUtils.isEmpty(v))
 				.map(Integer::parseInt)
 				.collect(Collectors.toList());
 
-		List<GuaranteeResponse> guaranteeList = insuranceSelectService.selectGuaranteeList(guaranteeNoList);
-		return ResponseEntity.ok(insuranceSelectService.getTotalAmount(guaranteeList, contractPeriod));
+		return ResponseEntity.ok(insuranceSelectService.getEstimateAmount(guaranteeNoList, contractPeriod, productNo));
 	}
 
 	@Override
