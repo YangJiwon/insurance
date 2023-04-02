@@ -132,6 +132,16 @@ API 목록 및 테스트는 http://localhost:8080/swagger-ui/index.html#/  에�
 ```
 <img width="397" alt="image" src="https://user-images.githubusercontent.com/9064323/229110164-a8e29f06-931c-4d47-92c0-ad265a61a2ae.png">
 
+* 예상 보험료 계산 API (GET /estimate-amount)
+> 보험 가입전 예상 보험료를 산출 가능합니다. 상품과 담보번호 리스트, 계약기간을 요청값으로 받습니다.
+```
+계약기간은 상품의 최소 계약기간보다 작거나 최대 계약기간보다 크면 안됩니다.
+담보 리스트의 정보는 상품번호 하위의 담보 정보여야만 합니다.
+```
+<img width="717" alt="image" src="https://user-images.githubusercontent.com/9064323/229328061-4b060a3b-62cc-4572-b33e-810a450fc9e6.png">
+
+
+
 # 참고 사항
 1. 
 
