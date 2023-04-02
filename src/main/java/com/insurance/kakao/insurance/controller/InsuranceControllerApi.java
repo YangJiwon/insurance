@@ -42,7 +42,7 @@ public interface InsuranceControllerApi {
 			responses = {
 					@ApiResponse(description = "Success",
 							responseCode = "200",
-							content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = Integer.class)))
+							content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema()))
 			}
 	)
 	@PostMapping(value = "/contract")

@@ -3,7 +3,6 @@
  import java.util.List;
 
  import org.springframework.stereotype.Service;
- import org.springframework.transaction.annotation.Transactional;
 
  import com.insurance.kakao.insurance.common.exception.BusinessErrorCodeException;
  import com.insurance.kakao.insurance.common.exception.ErrorCode;
@@ -21,7 +20,6 @@
 	 private final CreateGuaranteeService createGuaranteeService;
 
 	 @Override
-	 @Transactional
 	 public void create(CreateInsurance createInsurance) {
 		 CreateProductRequest product = createInsurance.getCreateProductRequest();
 		 if(command.insertProduct(product) != 1){

@@ -4,7 +4,6 @@
  import java.util.stream.Collectors;
 
  import org.springframework.stereotype.Service;
- import org.springframework.transaction.annotation.Transactional;
 
  import com.insurance.kakao.insurance.common.exception.BusinessErrorCodeException;
  import com.insurance.kakao.insurance.common.exception.ErrorCode;
@@ -23,7 +22,6 @@
 	 private final InsuranceSelectService insuranceSelectService;
 
 	 @Override
-	 @Transactional
 	 public void create(CreateInsurance createInsurance) {
 		 int productNo = createInsurance.getProductNo();
 		 List<CreateGuaranteeRequest> guaranteeList = createInsurance.getCreateGuaranteeRequest();
