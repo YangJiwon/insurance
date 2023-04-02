@@ -146,6 +146,7 @@ API 목록 및 테스트는 http://localhost:8080/swagger-ui/index.html#/ 에서
 
 
 # 참고 사항
+```
 1. 보험/상품/담보 생성 API에서 실행하는 로직들은 각각 별도 클래스로 만들었습니다.
 계약 생성의 경우 유효성 검사를 진행하지만, 도메인 지식이 부족해 상품과 담보 생성 로직내에서는 어떤 유효성 검사가 필요할지 상상이 힘들었습니다.
 
@@ -155,7 +156,6 @@ API 목록 및 테스트는 http://localhost:8080/swagger-ui/index.html#/ 에서
 3. 계약 생성 및 수정 API 의 실질적인 로직을 수행하는 클래스들은 모두 default 접근제한자를 가집니다. 
 이는 같은 패키지의 public class(InsuranceUpdateService, InsuranceCreateService)를 통해서만 접근이 가능합니다.
 
-
 4. 익숙하지 않은 도메인이다보니, 네이밍에 어려움을 겪었습니다.
 제가 생각한 기본적인 네이밍 규칙은 아래와 같습니다.
 보험 - Insurance
@@ -163,3 +163,4 @@ API 목록 및 테스트는 http://localhost:8080/swagger-ui/index.html#/ 에서
 상품 - Product
 담보 - Guarantee
 금액 - Amount
+```
