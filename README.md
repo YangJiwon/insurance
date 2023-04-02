@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS PRODUCT_GUARANTEE (
 CONTRACT 테이블 - 보유한 상품의 번호 및 기본적인 계약 정보가 있습니다.
 CONTRACT_GUARANTEE 테이블 - 해당 계약이 보유한 상품 담보 번호들이 있습니다.
 PRODUCT 테이블 - 상품 정보가 있습니다. 최소/최대 계약기간을 벗어난다면 비즈니스 로직에서 exception이 발생합니다.
-GUARANTEE 테이블 - 담보 정보를 가지고 있습니다.
+GUARANTEE 테이블 - 담보 정보를 가지고 있습니다. 현재 담보는 한개의 상품에 종속적입니다.
 PRODUCT_GUARANTEE 테이블 - 상품이 어떤 담보를 가지고 있는지 확인 가능합니다.
 ```
 
